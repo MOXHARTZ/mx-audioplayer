@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <section id="container">
+        <form>
+            <span id="url-header">
+                A song url
+                <span>Spotify</span>
+                <span>Youtube</span>
+                <span>SoundCloud</span>
+            </span>
+            <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=pTdihu-mp90&ab_channel=JamesBrownVevo" pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?" required>
+            <button type="submit" id="submit">Lets Dance</button>
+        </form>
+    </section>
+    <script src="script.js"></script>
+</body>
+
+</html>
