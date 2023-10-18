@@ -6,19 +6,24 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Box, IconButton } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/stores';
-import { setPlaying, setTimeStamp, setVolume } from '@/stores/Main';
+import { setPlaying, setVolume } from '@/stores/Main';
 import { toast } from 'react-toastify';
 import { handlePlay } from '@/thunks/handlePlay';
 import { fetchNui } from '@/utils/fetchNui';
+import useNuiEvent from '@/hooks/useNuiEvent';
 
 const Header = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch()
-    const { position, playing, timeStamp, volume, playlist } = useAppSelector(state => state.Main)
+    const [timeStamp, setTimeStamp] = useState(0)
+    const { position, playing, volume, playlist } = useAppSelector(state => state.Main)
     const [seeking, setSeeking] = useState<number | false>(false)
     const volumeOnChange = useCallback((_: any, newValue: number | number[]) => {
         dispatch(setVolume(newValue as number));
     }, []);
+    useEffect(() => {
+        if (position === -1) setTimeStamp(0);
+    }, [position])
     function formatDuration(value: number) {
         const minute = Math.floor(value / 60);
         const secondLeft = value - minute * 60;
@@ -34,9 +39,9 @@ const Header = () => {
         dispatch(handlePlay({
             position: newPos,
             soundData: playlist[newPos],
-            volume: volume
+            volume
         }))
-    }, [position, playlist])
+    }, [position, playlist, volume])
     const nextBtn = useCallback(async () => {
         const index = playlist.findIndex(song => song.id === currentSong?.id)
         const newPos = index === playlist.length - 1 ? 0 : index + 1
@@ -48,21 +53,16 @@ const Header = () => {
             soundData: playlist[newPos],
             volume: volume
         }))
-    }, [position, playlist])
-    useEffect(() => {
-        const interval = setInterval(async () => {
-            if (playing) {
-                let currentTimeStamp: number = await fetchNui('getCurrentTimeStamp')
-                currentTimeStamp = Math.floor(currentTimeStamp)
-                dispatch(setTimeStamp(currentTimeStamp))
-            }
-            const duration = playlist[position]?.duration ?? 0
-            if (playing && duration && timeStamp === duration) {
-                nextBtn()
-            }
-        }, 1000)
-        return () => clearInterval(interval)
-    }, [playlist, playing, position, timeStamp])
+    }, [position, playlist, volume])
+
+    useNuiEvent<{ time: number }>('timeUpdate', ({ time }) => {
+        setTimeStamp(time)
+        const duration = playlist[position]?.duration ?? 0
+        if (playing && duration && timeStamp === duration) {
+            if (!playlist[position + 1]) return;
+            nextBtn()
+        }
+    })
 
     const currentSong = useAppSelector(state => state.Main.playlist[position])
     return (
@@ -109,7 +109,7 @@ const Header = () => {
                     min={0}
                     step={1}
                     max={currentSong?.duration ?? 0}
-                    onChange={(_, value) => dispatch(setTimeStamp(value as number))}
+                    onChange={(_, value) => setTimeStamp(value as number)}
                     onChangeCommitted={async (_, value) => {
                         if (!currentSong) return
                         setSeeking(value as number)

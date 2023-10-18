@@ -11,7 +11,6 @@ export interface StaticType {
     playlist: Song[];
     editMode: boolean;
     selectedSongs: string[];
-    timeStamp: number;
     volume: number;
     waitingForResponse: boolean;
 }
@@ -47,13 +46,10 @@ const Static = createSlice({
         setSelectedSongs: (state, action: PayloadAction<string[]>) => {
             state.selectedSongs = action.payload;
         },
-        setTimeStamp: (state, action: PayloadAction<number>) => {
-            state.timeStamp = action.payload;
-        },
-        clearSound: (state) => {
+        clearSound: (state, action: PayloadAction<true | undefined>) => {
             state.playing = false;
             state.position = -1;
-            state.timeStamp = 0;
+            if (action.payload) return; // If its true then dont send the nui event
             fetchNui('togglePlay', {
                 playing: false
             })
@@ -63,11 +59,13 @@ const Static = createSlice({
         },
         setWaitingForResponse: (state, action: PayloadAction<boolean>) => {
             state.waitingForResponse = action.payload;
+        },
+        setPosition: (state, action: PayloadAction<number>) => {
+            state.position = action.payload;
         }
     },
     extraReducers: (builder) => {
         builder.addCase(handlePlay.fulfilled, (state, { payload }) => {
-            state.timeStamp = 0;
             state.waitingForResponse = false;
             if (!payload.response) return;
             const soundData = state.playlist[payload.position]
@@ -92,10 +90,10 @@ export const {
     setPlaylist,
     setEditMode,
     setSelectedSongs,
-    setTimeStamp,
     clearSound,
     setVolume,
-    setWaitingForResponse
+    setWaitingForResponse,
+    setPosition
 } = Static.actions
 
 export default Static.reducer

@@ -38,7 +38,7 @@ const Playlist = () => {
         setCurrentSong(song.id)
     }, [editMode, selectedSongs, playlist])
     return (
-        <section ref={animationParent} className='bg-zinc-600 p-4 rounded-lg mt-5 gap-4 flex flex-col overflow-auto md:max-h-[calc(100vh-24rem)] xl:max-h-[calc(100vh-18rem)] sm:max-h-[calc(100vh-24rem)]'>
+        <section ref={animationParent} className='bg-zinc-600 p-4 rounded-lg mt-5 gap-4 flex flex-col overflow-auto md:h-[calc(100vh-24rem)] xl:h-[calc(100vh-18rem)] sm:h-[calc(100vh-24rem)]'>
             {playlist.map((song, index) => (
                 <article key={song.id} onClick={() => handleSongClick(song)} className={classNames({
                     'w-full flex items-center border-b gap-4 border-zinc-500 pb-4 last:border-0 cursor-pointer hover:bg-zinc-700 p-4 hover:rounded-lg transition-all': true,

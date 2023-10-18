@@ -27,4 +27,5 @@ export interface Song {
     cover: string;
     url: string;
     duration: number;
+    playing?: boolean;
 }

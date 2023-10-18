@@ -39,10 +39,8 @@ const Actions = () => {
     const handlePlay = useCallback(async () => {
         handleClose()
         if (!soundUrl) return;
-        console.log(soundUrl)
         const response = await fetchNui<{ title: string; artist: string; thumbnail: string }>('getSoundData', { url: soundUrl })
         if (!response) return toast.error('Invalid url');
-        console.log(response)
         const soundData = {
             id: nanoid(),
             soundId: nanoid(),

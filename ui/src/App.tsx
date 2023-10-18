@@ -10,30 +10,28 @@ import { useAppDispatch, useAppSelector } from './stores'
 import useNuiEvent from './hooks/useNuiEvent'
 import { useExitListener } from './hooks/useExitListener'
 import { fetchNui } from './utils/fetchNui'
-import { motion } from "framer-motion"
-import { setPlaylist } from './stores/Main'
+import { clearSound, setPlaying, setPlaylist, setPosition } from './stores/Main'
 import { Song } from './fake-api/song'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 
 function App() {
   const waitingForResponse = useAppSelector(state => state.Main.waitingForResponse)
   const [visible, setVisible] = useState(IN_DEVELOPMENT);
-  console.log('visible', visible)
   const dispatch = useAppDispatch()
+  const [animationParent] = useAutoAnimate()
   useEffect(() => {
     if (!IN_DEVELOPMENT) return;
     document.body.style.backgroundImage = 'url(https://wallpaperaccess.com/full/707055.jpg)'
   }, [])
-  useNuiEvent('open', () => {
+  useNuiEvent<{ playlist: Song[]; currentSound: Song }>('open', (data) => {
     setVisible(true)
+    dispatch(setPlaylist(data.playlist))
+    if (!data.currentSound) return dispatch(clearSound(true));
+    dispatch(setPlaying(data.currentSound.playing ?? false))
+    dispatch(setPosition(data.playlist.findIndex(song => song.id === data.currentSound.id)))
+
   })
-  useEffect(() => {
-    if (IN_DEVELOPMENT) return;
-    (async () => {
-      const _playlist: Song[] = await fetchNui('getPlaylist')
-      dispatch(setPlaylist(_playlist))
-    })()
-  }, [])
   useExitListener(() => {
     setVisible(false)
     fetchNui('close')
@@ -41,35 +39,24 @@ function App() {
   return (
     <>
       <ToastContainer {...NOTIFICATION} />
-      <motion.main
-        key='app'
-        animate={{
-          opacity: visible ? 1 : 0,
-          scale: visible ? 1 : 1.1,
-        }}
-        initial={{
-          opacity: 0,
-          scale: 1.1,
-        }}
-        transition={{
-          duration: 0.3
-        }}
-        exit={{
-          opacity: 0,
-          scale: 1.1,
-        }} className='flex items-center justify-center w-full h-full'>
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={waitingForResponse}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-        <section className='sm:w-[80vh] md:w-[100vh] xl:w-[120vh] p-6 bg-zinc-700 rounded-lg text-white'>
-          <Header />
-          <Actions />
-          <Playlist />
-        </section>
-      </motion.main>
+      <main ref={animationParent} className='flex items-center justify-center w-full h-full'>
+        {visible && (
+          <>
+            <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={waitingForResponse}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+            <section className='sm:w-[80vh] md:w-[100vh] xl:w-[120vh] p-6 bg-zinc-700 rounded-lg text-white'>
+              <Header />
+              <Actions />
+              <Playlist />
+            </section>
+          </>
+        )}
+
+      </main>
     </>
 
   )
