@@ -23,7 +23,6 @@ const Static = createSlice({
         playlist: IN_DEVELOPMENT ? playlist : [],
         editMode: false,
         selectedSongs: [],
-        timeStamp: 0, // Current song time (not song duration its just the passed time)
         volume: 1,
         waitingForResponse: false,
     } as StaticType,

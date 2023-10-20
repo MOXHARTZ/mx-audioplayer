@@ -5,10 +5,11 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [million.vite({ auto: true }), react()],
+  // plugins: [million.vite({ auto: true }), react()],
   base: './',
   publicDir: 'public',
   build: {
-    minify: 'terser',
+    minify: 'esbuild',
     outDir: 'build',
     target: 'esnext',
     // rollupOptions: {

@@ -37,3 +37,7 @@ end)
 RegisterNetEvent('mx-audioplayer:stop', function(soundId)
     exports['mx-surround']:Stop(-1, soundId)
 end)
+
+RegisterNetEvent('mx-audioplayer:destroy', function(soundId)
+    exports['mx-surround']:Destroy(-1, soundId)
+end)

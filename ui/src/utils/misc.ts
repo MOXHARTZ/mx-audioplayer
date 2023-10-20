@@ -37,3 +37,10 @@ export const generateSoundId = (length: number) => {
 
     return result;
 }
+
+export const formatDuration = (value: number) => {
+    const minute = Math.floor(value / 60);
+    const secondLeft = value - minute * 60;
+    const formattedSecond = secondLeft < 10 ? `0${secondLeft}` : secondLeft;
+    return `${minute}:${formattedSecond}`;
+}

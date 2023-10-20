@@ -82,6 +82,9 @@ RegisterNUICallback('play', function(data, cb)
     local url = soundData.url
     local soundId = soundData.soundId
     local volume = data.volume
+    if currentSounds[invokingResource] and currentSounds[invokingResource].soundId ~= soundId then
+        TriggerServerEvent('mx-audioplayer:destroy', currentSounds[invokingResource].soundId)
+    end
     TriggerServerEvent('mx-audioplayer:play', url, soundId, volume, invokingResource)
     local loaded = exports['mx-surround']:soundIsLoaded(soundId) -- wait for the sound to load
     if not loaded then return cb(false) end                      -- if it doesn't load, return false
