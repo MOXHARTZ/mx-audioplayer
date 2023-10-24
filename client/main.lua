@@ -31,10 +31,6 @@ end
 
 exports('open', openUi)
 
-RegisterCommand('ayo', function()
-    openUi()
-end, false)
-
 local function onTimeUpdate(soundData)
     SendNUIMessage({
         action = 'timeUpdate',
