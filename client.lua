@@ -1,49 +1,20 @@
-local invokingResource
+local invokingResource, customId
 local playlist, currentSounds, audioplayerHandlers = {}, {}, {}
 
-RegisterNUICallback('togglePlay', function(data, cb)
-    if not currentSounds[invokingResource] then
-        print('No sound playing')
-        return cb('ok')
-    end
-    currentSounds[invokingResource].playing = data.playing
-    if currentSounds[invokingResource].playing then
-        if audioplayerHandlers[invokingResource].onResume then
-            audioplayerHandlers[invokingResource].onResume(currentSounds[invokingResource])
-        end
-        TriggerServerEvent('mx-audioplayer:resume', currentSounds[invokingResource].soundId)
-    else
-        if audioplayerHandlers[invokingResource].onPause then
-            audioplayerHandlers[invokingResource].onPause(currentSounds[invokingResource])
-        end
-        TriggerServerEvent('mx-audioplayer:stop', currentSounds[invokingResource].soundId)
-    end
-    cb('ok')
-end)
-
-RegisterNUICallback('getSoundData', function(data, cb)
-    local url = data.url
-    local info = exports['mx-surround']:getInfoFromUrl(url)
-    cb(info)
-end)
-
-RegisterNUICallback('setPlaylist', function(data, cb)
-    playlist = data.playlist
-    SetResourceKvp('audioplayer_playlist_' .. (invokingResource or ''), json.encode(playlist))
-    cb('ok')
-end)
-
 ---@param handlers? {onPlay: function, onPause: function, onResume: function, onVolumeChange: function, onSeek: function, onClose: function}
-local function openUi(handlers)
+---@param _customId? string
+local function openUi(handlers, _customId)
     if not handlers then handlers = {} end
     invokingResource = GetInvokingResource() or ''
+    customId = _customId or ''
     local _playlist = GetResourceKvpString('audioplayer_playlist_' .. (invokingResource))
     SetNuiFocus(true, true)
     _playlist = _playlist and json.decode(_playlist) or {}
-    if currentSounds[invokingResource] then
+    local id = invokingResource .. customId
+    if currentSounds[id] then
         for k, v in pairs(_playlist) do
-            if v.id == currentSounds[invokingResource].id then
-                _playlist[k].duration = math.floor(currentSounds[invokingResource].duration)
+            if v.id == currentSounds[id].id then
+                _playlist[k].duration = math.floor(currentSounds[id].duration)
                 break
             end
         end
@@ -52,10 +23,10 @@ local function openUi(handlers)
         action = 'open',
         data = {
             playlist = _playlist,
-            currentSound = currentSounds[invokingResource]
+            currentSound = currentSounds[id]
         }
     })
-    audioplayerHandlers[invokingResource] = handlers
+    audioplayerHandlers[id] = handlers
 end
 
 exports('open', openUi)
@@ -80,47 +51,85 @@ RegisterNUICallback('play', function(data, cb)
         return cb(false)
     end
     local url = soundData.url
-    local soundId = soundData.soundId
+    local soundId = soundData.soundId .. customId
     local volume = data.volume
-    if currentSounds[invokingResource] and currentSounds[invokingResource].soundId ~= soundId then
-        TriggerServerEvent('mx-audioplayer:destroy', currentSounds[invokingResource].soundId)
+    local id = invokingResource .. customId
+    if currentSounds[id] and (currentSounds[id].soundId) ~= soundId then
+        TriggerServerEvent('mx-audioplayer:destroy', currentSounds[id].soundId)
     end
-    TriggerServerEvent('mx-audioplayer:play', url, soundId, volume, invokingResource)
+    TriggerServerEvent('mx-audioplayer:play', url, soundId, volume, invokingResource, customId, currentSounds[id])
     local loaded = exports['mx-surround']:soundIsLoaded(soundId) -- wait for the sound to load
     if not loaded then return cb(false) end                      -- if it doesn't load, return false
     local maxDuration = exports['mx-surround']:getMaxDuration(soundId)
     soundData.duration = maxDuration
     soundData.playing = true
-    currentSounds[invokingResource] = soundData
-    if audioplayerHandlers[invokingResource].onPlay then
-        audioplayerHandlers[invokingResource].onPlay(currentSounds[invokingResource])
+    soundData.soundId = soundId
+    currentSounds[id] = soundData
+    if audioplayerHandlers[id].onPlay then
+        audioplayerHandlers[id].onPlay(currentSounds[id])
     end
     exports['mx-surround']:onTimeUpdate(soundId, onTimeUpdate)
     cb(maxDuration)
 end)
 
+RegisterNUICallback('togglePlay', function(data, cb)
+    local id = invokingResource .. customId
+    if not currentSounds[id] then
+        print('No sound playing')
+        return cb('ok')
+    end
+    currentSounds[id].playing = data.playing
+    if currentSounds[id].playing then
+        if audioplayerHandlers[id].onResume then
+            audioplayerHandlers[id].onResume(currentSounds[id])
+        end
+        TriggerServerEvent('mx-audioplayer:resume', currentSounds[id].soundId)
+    else
+        if audioplayerHandlers[id].onPause then
+            audioplayerHandlers[id].onPause(currentSounds[id])
+        end
+        TriggerServerEvent('mx-audioplayer:stop', currentSounds[id].soundId)
+    end
+    cb('ok')
+end)
+
 RegisterNUICallback('setVolume', function(data, cb)
-    if not currentSounds[invokingResource] then return cb(0) end
-    TriggerServerEvent('mx-audioplayer:setVolume', currentSounds[invokingResource].soundId, data.volume)
-    if audioplayerHandlers[invokingResource].onVolumeChange then
-        audioplayerHandlers[invokingResource].onVolumeChange(currentSounds[invokingResource])
+    local id = invokingResource .. customId
+    if not currentSounds[id] then return cb(0) end
+    TriggerServerEvent('mx-audioplayer:setVolume', currentSounds[id].soundId, data.volume)
+    if audioplayerHandlers[id].onVolumeChange then
+        audioplayerHandlers[id].onVolumeChange(currentSounds[id])
     end
     cb('ok')
 end)
 
 RegisterNUICallback('seek', function(data, cb)
-    if not currentSounds[invokingResource] then return cb(0) end
-    TriggerServerEvent('mx-audioplayer:seek', currentSounds[invokingResource].soundId, data.position)
-    if audioplayerHandlers[invokingResource].onSeek then
-        audioplayerHandlers[invokingResource].onSeek(currentSounds[invokingResource])
+    local id = invokingResource .. customId
+    if not currentSounds[id] then return cb(0) end
+    TriggerServerEvent('mx-audioplayer:seek', currentSounds[id].soundId, data.position)
+    if audioplayerHandlers[id].onSeek then
+        audioplayerHandlers[id].onSeek(currentSounds[id])
     end
     cb('ok')
 end)
 
+RegisterNUICallback('getSoundData', function(data, cb)
+    local url = data.url
+    local info = exports['mx-surround']:getInfoFromUrl(url)
+    cb(info)
+end)
+
+RegisterNUICallback('setPlaylist', function(data, cb)
+    playlist = data.playlist
+    SetResourceKvp('audioplayer_playlist_' .. (invokingResource or ''), json.encode(playlist))
+    cb('ok')
+end)
+
 RegisterNUICallback('close', function(data, cb)
+    local id = invokingResource .. customId
     SetNuiFocus(false, false)
-    if audioplayerHandlers[invokingResource].onClose then
-        audioplayerHandlers[invokingResource].onClose(currentSounds[invokingResource])
+    if audioplayerHandlers[id].onClose then
+        audioplayerHandlers[id].onClose(currentSounds[id])
     end
     cb('ok')
 end)

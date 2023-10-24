@@ -1,9 +1,23 @@
 local sounds = {}
 
-RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingResource)
+local function checkCustomIdExist(customId)
+    for k, v in pairs(sounds) do
+        local id, res, custom = k:match('(.*):(.*):(.*)')
+        if custom == customId then return k end
+    end
+    return false
+end
+
+RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingResource, customId)
     local src = source
     local id = src
     if invokingResource then id = id .. ':' .. invokingResource end
+    if customId then id = id .. ':' .. customId end
+    local currentSound = checkCustomIdExist(customId)
+    if currentSound then
+        exports['mx-surround']:Destroy(-1, sounds[currentSound])
+        sounds[currentSound] = nil
+    end
     local player = GetPlayerPed(src)
     local playerCoords = GetEntityCoords(player)
     exports['mx-surround']:Play(-1, soundId, url, playerCoords, false, volume)
@@ -15,7 +29,10 @@ end)
 AddEventHandler('playerDropped', function()
     local src = source
     for k, v in pairs(sounds) do
-        if k:find(src) then
+        local id, res, custom = k:match('(.*):(.*):(.*)')
+        id = tonumber(id)
+        src = tonumber(src)
+        if id == src then
             exports['mx-surround']:Destroy(-1, v)
             sounds[k] = nil
         end
