@@ -12,14 +12,13 @@ import { useExitListener } from './hooks/useExitListener'
 import { fetchNui } from './utils/fetchNui'
 import { clearSound, setPlaying, setPlaylist, setPosition } from './stores/Main'
 import { Song } from './fake-api/song'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
+import classNames from 'classnames'
 
 
 function App() {
   const waitingForResponse = useAppSelector(state => state.Main.waitingForResponse)
   const [visible, setVisible] = useState(IN_DEVELOPMENT);
   const dispatch = useAppDispatch()
-  const [animationParent] = useAutoAnimate()
   useEffect(() => {
     if (!IN_DEVELOPMENT) return;
     document.body.style.backgroundImage = 'url(https://wallpaperaccess.com/full/707055.jpg)'
@@ -30,7 +29,6 @@ function App() {
     if (!data.currentSound) return dispatch(clearSound(true));
     dispatch(setPlaying(data.currentSound.playing ?? false))
     dispatch(setPosition(data.playlist.findIndex(song => song.id === data.currentSound.id)))
-
   })
   useExitListener(() => {
     setVisible(false)
@@ -39,23 +37,23 @@ function App() {
   return (
     <>
       <ToastContainer {...NOTIFICATION} />
-      <main ref={animationParent} className='flex items-center justify-center w-full h-full'>
-        {visible && (
-          <>
-            <Backdrop
-              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={waitingForResponse}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop>
-            <section className='sm:w-[80vh] md:w-[100vh] xl:w-[120vh] p-6 bg-zinc-700 rounded-lg text-white'>
-              <Header />
-              <Actions />
-              <Playlist />
-            </section>
-          </>
-        )}
-
+      <main className={classNames({
+        'flex items-center justify-center w-full h-full transition scale-100': true,
+        'opacity-0 scale-110': !visible
+      })}>
+        <>
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={waitingForResponse}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+          <section className='sm:w-[80vh] md:w-[100vh] xl:w-[120vh] p-6 bg-zinc-700 rounded-lg text-white'>
+            <Header />
+            <Actions />
+            <Playlist />
+          </section>
+        </>
       </main>
     </>
 
