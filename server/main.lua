@@ -1,3 +1,5 @@
+local Surround = exports['mx-surround']
+local callback = Surround:callback()
 local sounds = {}
 
 local function checkCustomIdExist(customId)
@@ -24,6 +26,15 @@ RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingR
     if not soundId then return print('Failed to play sound') end
     exports['mx-surround']:setDestroyOnFinish(-1, soundId, false)
     sounds[id] = soundId
+end)
+
+local disabledUis = {}
+RegisterNetEvent('mx-audioplayer:disableUi', function(customId, disabled)
+    disabledUis[customId] = disabled
+end)
+
+callback.register('mx-audioplayer:isUiDisabled', function(source, customId)
+    return disabledUis[customId]
 end)
 
 AddEventHandler('playerDropped', function()

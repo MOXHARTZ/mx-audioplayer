@@ -1,5 +1,7 @@
 local invokingResource, customId
 local playlist, currentSounds, audioplayerHandlers = {}, {}, {}
+local Surround = exports['mx-surround']
+local callback = Surround:callback()
 
 ---@param handlers? {onPlay: function, onPause: function, onResume: function, onVolumeChange: function, onSeek: function, onClose: function}
 ---@param _customId? string
@@ -7,10 +9,12 @@ local function openUi(handlers, _customId)
     if not handlers then handlers = {} end
     invokingResource = GetInvokingResource() or ''
     customId = _customId or ''
+    local id = invokingResource .. customId
+    local uiDisabled = callback.await('mx-audioplayer:isUiDisabled', 0, id)
+    if uiDisabled then return Surround:pushNotification('You cannot ui now. Ui is using by another person') end
     local _playlist = GetResourceKvpString('audioplayer_playlist_' .. (invokingResource))
     SetNuiFocus(true, true)
     _playlist = _playlist and json.decode(_playlist) or {}
-    local id = invokingResource .. customId
     if currentSounds[id] then
         for k, v in pairs(_playlist) do
             if v.id == currentSounds[id].id then
@@ -27,6 +31,7 @@ local function openUi(handlers, _customId)
         }
     })
     audioplayerHandlers[id] = handlers
+    TriggerServerEvent('mx-audioplayer:disableUi', id, true)
 end
 
 exports('open', openUi)
@@ -54,9 +59,9 @@ RegisterNUICallback('play', function(data, cb)
         TriggerServerEvent('mx-audioplayer:destroy', currentSounds[id].soundId)
     end
     TriggerServerEvent('mx-audioplayer:play', url, soundId, volume, invokingResource, customId, currentSounds[id])
-    local loaded = exports['mx-surround']:soundIsLoaded(soundId) -- wait for the sound to load
-    if not loaded then return cb(false) end                      -- if it doesn't load, return false
-    local maxDuration = exports['mx-surround']:getMaxDuration(soundId)
+    local loaded = Surround:soundIsLoaded(soundId) -- wait for the sound to load
+    if not loaded then return cb(false) end        -- if it doesn't load, return false
+    local maxDuration = Surround:getMaxDuration(soundId)
     soundData.duration = maxDuration
     soundData.playing = true
     soundData.soundId = soundId
@@ -64,7 +69,7 @@ RegisterNUICallback('play', function(data, cb)
     if audioplayerHandlers[id].onPlay then
         audioplayerHandlers[id].onPlay(currentSounds[id])
     end
-    exports['mx-surround']:onTimeUpdate(soundId, onTimeUpdate)
+    Surround:onTimeUpdate(soundId, onTimeUpdate)
     cb(maxDuration)
 end)
 
@@ -111,7 +116,7 @@ end)
 
 RegisterNUICallback('getSoundData', function(data, cb)
     local url = data.url
-    local info = exports['mx-surround']:getInfoFromUrl(url)
+    local info = Surround:getInfoFromUrl(url)
     cb(info)
 end)
 
@@ -127,5 +132,6 @@ RegisterNUICallback('close', function(data, cb)
     if audioplayerHandlers[id].onClose then
         audioplayerHandlers[id].onClose(currentSounds[id])
     end
+    TriggerServerEvent('mx-audioplayer:disableUi', id, false)
     cb('ok')
 end)
