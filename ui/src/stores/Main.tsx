@@ -13,6 +13,8 @@ export interface StaticType {
     selectedSongs: string[];
     volume: number;
     waitingForResponse: boolean;
+    shuffle: boolean;
+    repeat: boolean;
 }
 
 const Static = createSlice({
@@ -25,6 +27,8 @@ const Static = createSlice({
         selectedSongs: [],
         volume: 1,
         waitingForResponse: false,
+        shuffle: false,
+        repeat: false
     } as StaticType,
     reducers: {
         setPlaying: (state, action: PayloadAction<boolean>) => {
@@ -61,6 +65,12 @@ const Static = createSlice({
         },
         setPosition: (state, action: PayloadAction<number>) => {
             state.position = action.payload;
+        },
+        setShuffle: (state, action: PayloadAction<boolean>) => {
+            state.shuffle = action.payload;
+        },
+        setRepeat: (state, action: PayloadAction<boolean>) => {
+            state.repeat = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -92,7 +102,9 @@ export const {
     clearSound,
     setVolume,
     setWaitingForResponse,
-    setPosition
+    setPosition,
+    setShuffle,
+    setRepeat
 } = Static.actions
 
 export default Static.reducer

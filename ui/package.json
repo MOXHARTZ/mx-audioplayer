@@ -17,6 +17,7 @@
     "@mui/material": "^5.14.11",
     "@reduxjs/toolkit": "^1.9.7",
     "classnames": "^2.3.2",
+    "fast-memoize": "^2.5.2",
     "million": "^2.6.3",
     "nanoid": "^5.0.2",
     "path": "^0.12.7",
