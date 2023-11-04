@@ -87,7 +87,7 @@ const Control: FC<{ timeStamp: number; setTimeStamp: Function }> = ({ timeStamp,
                     <BiPlay size={54} color='#fff' />
                 )}
             </IconButton>
-            <IconButton aria-label="next song" onClick={() => nextBtn(false)}>
+            <IconButton aria-label="next song" onClick={() => nextBtn(true)}>
                 <BiSkipNext size={40} color='#fff' />
             </IconButton>
             <IconButton aria-label="repeat" onClick={() => dispatch(setRepeat(!repeat))}>
