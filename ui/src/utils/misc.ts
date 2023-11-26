@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 export const isEnvBrowser = (): boolean => !(window as any).invokeNative;
 export const IN_DEVELOPMENT = process.env.NODE_ENV === "development";
 export const noop = () => { }
@@ -27,20 +29,49 @@ export const NOTIFICATION = {
     pauseOnHover: boolean;
     pauseOnFocusLoss: boolean
 }
-export const generateSoundId = (length: number) => {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-
-    for (let i = 0; i < length; i++)
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-
-    return result;
-}
 
 export const formatDuration = (value: number) => {
     const minute = Math.floor(value / 60);
     const secondLeft = value - minute * 60;
     const formattedSecond = secondLeft < 10 ? `0${secondLeft}` : secondLeft;
     return `${minute}:${formattedSecond}`;
+}
+
+// https://usehooks-ts.com/react-hook/use-debounce
+export function useDebounce<T>(value: T, delay?: number): T {
+    const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedValue(value), delay ?? 500)
+
+        return () => {
+            clearTimeout(timer)
+        }
+    }, [value, delay])
+
+    return debouncedValue
+}
+
+export const isUrl = (url: string) => {
+    try {
+        new URL(url);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export const isYoutubeUrl = (url: string) => {
+    const youtubeRegex = /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+    return youtubeRegex.test(url);
+}
+
+export const isSoundCloudUrl = (url: string) => {
+    const soundcloudRegex = /^(https?\:\/\/)?(www\.)?(soundcloud\.com)\/.+$/;
+    return soundcloudRegex.test(url);
+}
+
+export const isSpotifyUrl = (url: string) => {
+    const spotifyRegex = /^(https?\:\/\/)?(www\.)?(open\.spotify\.com)\/.+$/;
+    return spotifyRegex.test(url);
 }

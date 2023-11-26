@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchNui } from '../utils/fetchNui';
 import { Song } from '@/fake-api/song';
-import { IN_DEVELOPMENT } from '@/utils/misc';
+import { IN_DEVELOPMENT, isSpotifyUrl, isYoutubeUrl } from '@/utils/misc';
+import { toast } from 'react-toastify';
 
 export const handlePlay = createAsyncThunk<
   { response: false | number; position: number },
@@ -19,6 +20,14 @@ export const handlePlay = createAsyncThunk<
           response: 1,
           position: data.position
         }
+      }
+      const url = data.soundData.url;
+      if (!url) {
+        return rejectWithValue(false);
+      }
+      if (isYoutubeUrl(url) || isSpotifyUrl(url)) {
+        toast.error('Spotify and Youtube are not supported anymore. Please add songs from SoundCloud');
+        return rejectWithValue(false);
       }
       const response = await fetchNui<false | number>('play', {
         soundData: data.soundData,

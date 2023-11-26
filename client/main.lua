@@ -120,6 +120,12 @@ RegisterNUICallback('getSoundData', function(data, cb)
     cb(info)
 end)
 
+RegisterNUICallback('searchQuery', function(data, cb)
+    local query = data.query
+    local response = Surround:searchTrack(query)
+    cb(response)
+end)
+
 RegisterNUICallback('setPlaylist', function(data, cb)
     playlist = data.playlist
     SetResourceKvp('audioplayer_playlist_' .. (invokingResource or ''), json.encode(playlist))
