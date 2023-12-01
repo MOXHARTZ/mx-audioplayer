@@ -25,10 +25,6 @@ export const handlePlay = createAsyncThunk<
       if (!url) {
         return rejectWithValue(false);
       }
-      if (isYoutubeUrl(url) || isSpotifyUrl(url)) {
-        toast.error('Spotify and Youtube are not supported anymore. Please add songs from SoundCloud');
-        return rejectWithValue(false);
-      }
       const response = await fetchNui<false | number>('play', {
         soundData: data.soundData,
         volume: data.volume

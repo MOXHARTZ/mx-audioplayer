@@ -14,6 +14,8 @@ import memoize from 'fast-memoize'
 import { BiSearch } from 'react-icons/bi'
 import { Error } from '@/utils/types'
 
+const YOUTUBE_URL = 'https://www.youtube.com/watch?v='
+
 const Actions = () => {
     const { editMode, selectedSongs, playlist, position } = useAppSelector(state => state.Main)
     const dispatch = useAppDispatch()
@@ -57,26 +59,41 @@ const Actions = () => {
         const soundData = {
             id: nanoid(),
             soundId: nanoid(),
-            title: track?.title ?? 'Unknown',
-            artist: track?.user?.username ?? 'Unknown',
-            cover: track.artwork_url,
-            url: track.permalink_url,
+            title: track?.name ?? 'Unknown',
+            artist: track?.artists?.[0]?.name ?? 'Unknown',
+            cover: track.thumbnails[0].url,
+            url: track.videoId,
             duration: 0,
         }
         dispatch(setPlaylist([...playlist, soundData]))
     }), [playlist])
+    const processUrl = useCallback(async (url: string) => {
+        dispatch(setWaitingForResponse(true))
+        const response = await fetchNui<{ title: string; artist: string; thumbnail: string }>('getSoundData', { url: url })
+        if (!response) return toast.error('Invalid url');
+        const _data = {
+            id: nanoid(),
+            artists: [{ name: response.artist, artistId: 'unknown' }],
+            name: response.title,
+            thumbnails: [{ url: response.thumbnail, width: 90, height: 90 }],
+            videoId: url,
+        }
+        setTrackList([_data])
+        dispatch(setWaitingForResponse(false))
+    }, [])
     const fetchTrackList = useCallback(async () => {
         if (!queryDebounced) return setTrackList([])
         const queryIsUrl = isUrl(queryDebounced)
-        if (queryIsUrl) return toast.error('You can\'t add a url to the playlist');
+        if (queryIsUrl) return processUrl(queryDebounced)
         dispatch(setWaitingForResponse(true))
-        const result = await fetchNui<Error | any>('searchQuery', { query: queryDebounced })
+        const _query = queryDebounced.replace(/\s/g, '%20')
+        const result = await fetchNui<Error | any>('searchQuery', { query: _query })
         dispatch(setWaitingForResponse(false))
         if (!result) return setTrackList([])
         if (result.error) return toast.error(result.error);
-        let response = result?.collection as Track[]
+        let response = result as Track[]
         if (!response) return setTrackList([])
-        response = response.map(track => ({ ...track, id: nanoid() }))
+        response = response.map(track => ({ ...track, id: nanoid(), videoId: `${YOUTUBE_URL}${track.videoId}` }))
         setTrackList(response)
     }, [queryDebounced])
     useEffect(() => {
@@ -103,7 +120,7 @@ const Actions = () => {
                 <DialogTitle>Enter a track</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        You can add a song to the playlist by entering a track name
+                        <a>You can add a song to the playlist by entering a track name or you can pass here by a spotify, youtube or soundcloud url</a>
                     </DialogContentText>
                     <div className='flex items-center justify-between'>
                         <TextField
@@ -122,13 +139,14 @@ const Actions = () => {
                             <BiSearch size={24} color='#fff' />
                         </IconButton>
                     </div>
+                    <a className='text-red-500 text-sm'>You can't play songs with a song duration of more than 15 minutes (for performance reasons)</a>
                     <ul ref={searchResultsAnimationParent} className='flex flex-col gap-2 max-h-120 overflow-y-auto md:max-h-96 sm:max-h-64'>
                         {trackList.length > 0 && <div className='mt-2 bg-zinc-800 rounded-lg flex flex-col gap-4 border-b border-zinc-700 last:border-b-0'>
                             {trackList.map(track => <li key={track.id} className='flex gap-2 items-center cursor-pointer hover:bg-zinc-700 p-2 rounded-lg' onClick={() => handlePlay(track)}>
-                                <img src={track.artwork_url} alt={track?.title ?? ''} className='w-16 h-16 rounded-lg' />
+                                <img src={track.thumbnails[0].url} alt={track.name ?? ''} className='w-16 h-16 rounded-lg' />
                                 <div className='flex flex-col'>
-                                    <span className='text-white'>{track?.title ?? 'Unknown'}</span>
-                                    <span className='text-gray-400'>{track?.user?.username ?? 'Unknown'}</span>
+                                    <span className='text-white'>{track.name ?? 'Unknown'}</span>
+                                    <span className='text-gray-400'>{track?.artists?.[0]?.name ?? 'Unknown'}</span>
                                 </div>
                             </li>)}
                         </div>}

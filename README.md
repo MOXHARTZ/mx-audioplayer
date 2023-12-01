@@ -11,6 +11,7 @@ This script is made for mx-surround. And other official addon scripts use this s
 ![Screenshot 1](/screenshots/1.png)
 ![Screenshot 2](/screenshots/2.png)
 ![Screenshot 3](/screenshots/3.png)
+![Screenshot 4](/screenshots/4.png)
 
 # REQUIREMENTS
 - [mx-surround](https://mxstore.tebex.io/package/5864855)
