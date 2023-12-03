@@ -2,11 +2,15 @@ local invokingResource, customId
 local playlist, currentSounds, audioplayerHandlers = {}, {}, {}
 local Surround = exports['mx-surround']
 local callback = Surround:callback()
+local volume = 1
+local playQuietly = false
 
 ---@param handlers? {onPlay: function, onPause: function, onResume: function, onVolumeChange: function, onSeek: function, onClose: function}
 ---@param _customId? string
-local function openUi(handlers, _customId)
+---@param silent? boolean @If true, volume will be set to 0
+local function openUi(handlers, _customId, silent)
     if not handlers then handlers = {} end
+    playQuietly = silent and true or false
     invokingResource = GetInvokingResource() or ''
     customId = _customId or ''
     local id = invokingResource .. customId
@@ -36,6 +40,10 @@ end
 
 exports('open', openUi)
 
+exports('getVolume', function()
+    return volume
+end)
+
 local function onTimeUpdate(soundData)
     SendNUIMessage({
         action = 'timeUpdate',
@@ -53,12 +61,12 @@ RegisterNUICallback('play', function(data, cb)
     end
     local url = soundData.url
     local soundId = soundData.soundId .. customId
-    local volume = data.volume
+    local _volume = data.volume
     local id = invokingResource .. customId
     if currentSounds[id] and (currentSounds[id].soundId) ~= soundId then
         TriggerServerEvent('mx-audioplayer:destroy', currentSounds[id].soundId)
     end
-    TriggerServerEvent('mx-audioplayer:play', url, soundId, volume, invokingResource, customId, currentSounds[id])
+    TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, invokingResource, customId, playQuietly)
     local loaded = Surround:soundIsLoaded(soundId) -- wait for the sound to load
     if not loaded then return cb(false) end        -- if it doesn't load, return false
     local maxDuration = Surround:getMaxDuration(soundId)
@@ -96,6 +104,7 @@ end)
 
 RegisterNUICallback('setVolume', function(data, cb)
     local id = invokingResource .. customId
+    volume = data.volume
     if not currentSounds[id] then return cb(0) end
     TriggerServerEvent('mx-audioplayer:setVolume', currentSounds[id].soundId, data.volume)
     if audioplayerHandlers[id].onVolumeChange then
