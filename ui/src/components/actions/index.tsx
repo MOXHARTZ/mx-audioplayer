@@ -12,7 +12,7 @@ import { IN_DEVELOPMENT, isUrl, useDebounce } from '@/utils/misc'
 import { tracks, Track } from '@/fake-api/search-results'
 import memoize from 'fast-memoize'
 import { BiSearch } from 'react-icons/bi'
-import { Error } from '@/utils/types'
+import { Error, QueryResult } from '@/utils/types'
 
 const YOUTUBE_URL = 'https://www.youtube.com/watch?v='
 
@@ -87,14 +87,13 @@ const Actions = () => {
         if (queryIsUrl) return processUrl(queryDebounced)
         dispatch(setWaitingForResponse(true))
         const _query = queryDebounced.replace(/\s/g, '%20')
-        const result = await fetchNui<Error | any>('searchQuery', { query: _query })
+        let result = await fetchNui<QueryResult>('searchQuery', { query: _query })
         dispatch(setWaitingForResponse(false))
         if (!result) return setTrackList([])
-        if (result.error) return toast.error(result.error);
-        let response = result as Track[]
-        if (!response) return setTrackList([])
-        response = response.map(track => ({ ...track, id: nanoid(), videoId: `${YOUTUBE_URL}${track.videoId}` }))
-        setTrackList(response)
+        if (typeof result === 'object' && 'error' in result) return toast.error(result.error)
+        if (!result) return setTrackList([])
+        result = result.map(track => ({ ...track, id: nanoid(), videoId: `${YOUTUBE_URL}${track.videoId}` }))
+        setTrackList(result)
     }, [queryDebounced])
     useEffect(() => {
         fetchTrackList()
