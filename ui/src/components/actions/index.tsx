@@ -70,7 +70,10 @@ const Actions = () => {
     const processUrl = useCallback(async (url: string) => {
         dispatch(setWaitingForResponse(true))
         const response = await fetchNui<{ title: string; artist: string; thumbnail: string }>('getSoundData', { url: url })
-        if (!response) return toast.error('Invalid url');
+        if (!response) {
+            dispatch(setWaitingForResponse(false))
+            return toast.error('Invalid url');
+        }
         const _data = {
             id: nanoid(),
             artists: [{ name: response.artist, artistId: 'unknown' }],

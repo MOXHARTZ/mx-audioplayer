@@ -45,6 +45,9 @@ exports('getVolume', function()
 end)
 
 local function onTimeUpdate(soundData)
+    if not soundData then return end
+    local id = invokingResource .. customId
+    if not currentSounds[id] or currentSounds[id].soundId ~= soundData.soundId then return end
     SendNUIMessage({
         action = 'timeUpdate',
         data = {

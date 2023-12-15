@@ -1,8 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchNui } from '../utils/fetchNui';
 import { Song } from '@/fake-api/song';
-import { IN_DEVELOPMENT, isSpotifyUrl, isYoutubeUrl } from '@/utils/misc';
-import { toast } from 'react-toastify';
+import { IN_DEVELOPMENT } from '@/utils/misc';
 
 export const handlePlay = createAsyncThunk<
   { response: false | number; position: number },
