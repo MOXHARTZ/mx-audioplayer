@@ -48,7 +48,7 @@ function App() {
         'flex items-center justify-center w-full h-full transition scale-100': true,
         'opacity-0 scale-110': !visible
       })}>
-        <section className='sm:w-[80vh] md:w-[100vh] xl:w-[120vh] p-6 bg-zinc-700 rounded-lg text-white'>
+        <section className='sm:w-[80vh] md:w-[100vh] xl:w-[105vh] p-6 bg-zinc-700 rounded-lg text-white'>
           <Header />
           <Actions />
           <Playlist />

@@ -12,7 +12,7 @@ import { IN_DEVELOPMENT, isUrl, useDebounce } from '@/utils/misc'
 import { tracks, Track } from '@/fake-api/search-results'
 import memoize from 'fast-memoize'
 import { BiSearch } from 'react-icons/bi'
-import { Error, QueryResult } from '@/utils/types'
+import { QueryResult } from '@/utils/types'
 
 const YOUTUBE_URL = 'https://www.youtube.com/watch?v='
 
