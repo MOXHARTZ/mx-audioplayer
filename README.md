@@ -14,7 +14,7 @@ This script is made for mx-surround. And other official addon scripts use this s
 ![Screenshot 4](/screenshots/4.png)
 
 # REQUIREMENTS
-- [mx-surround](https://mxstore.tebex.io/package/5864855)
+- [mx-surround](https://moxha.store/category/resources)
 
 # Other official addon scripts
 - [mx-caradio](https://github.com/MOXHARTZ/mx-caradio)
