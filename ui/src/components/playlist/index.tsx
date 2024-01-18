@@ -7,6 +7,7 @@ import { Checkbox } from '@mui/material'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Song } from '@/fake-api/song'
 import { handlePlay } from '@/thunks/handlePlay'
+import { toast } from 'react-toastify'
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -15,11 +16,12 @@ const Playlist = () => {
     const dispatch = useAppDispatch()
     const [animationParent] = useAutoAnimate()
     const setCurrentSong = useCallback(async (id: string) => {
+        const _position = playlist.findIndex(song => song.id === id)
+        if (_position === position) return toast.error('This song is already playing');
         dispatch(setPlaying(false))
-        const position = playlist.findIndex(song => song.id === id)
         dispatch(handlePlay({
-            position,
-            soundData: playlist[position],
+            position: _position,
+            soundData: playlist[_position],
             volume
         }))
     }, [position, playlist])

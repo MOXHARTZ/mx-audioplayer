@@ -21,7 +21,7 @@ local function openUi(handlers, _customId, silent)
     _playlist = _playlist and json.decode(_playlist) or {}
     if currentSounds[id] then
         for k, v in pairs(_playlist) do
-            if v.id == currentSounds[id].id then
+            if v.id == currentSounds[id].id and currentSounds[id].duration then
                 _playlist[k].duration = math.floor(currentSounds[id].duration)
                 break
             end
