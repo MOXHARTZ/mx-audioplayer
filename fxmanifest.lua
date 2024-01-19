@@ -2,7 +2,7 @@ fx_version 'cerulean'
 games { 'gta5' }
 author 'https://github.com/MOXHARTZ'
 repository 'https://github.com/MOXHARTZ/mx-audioplayer'
-version '1.1.7'
+version '1.1.8'
 lua54 'yes'
 
 client_scripts {

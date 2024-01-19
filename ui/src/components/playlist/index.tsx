@@ -15,16 +15,16 @@ const Playlist = () => {
     const { playlist, playing, position, editMode, selectedSongs, volume } = useAppSelector(state => state.Main)
     const dispatch = useAppDispatch()
     const [animationParent] = useAutoAnimate()
-    const setCurrentSong = useCallback(async (id: string) => {
-        const _position = playlist.findIndex(song => song.id === id)
-        if (_position === position) return toast.error('This song is already playing');
+    const setCurrentSong = useCallback((id: string) => {
+        const playlistPos = playlist.findIndex(song => song.id === id)
+        if (playlistPos === position) return toast.error('This song is already playing');
         dispatch(setPlaying(false))
         dispatch(handlePlay({
-            position: _position,
-            soundData: playlist[_position],
+            position: playlistPos,
+            soundData: playlist[playlistPos],
             volume
         }))
-    }, [position, playlist])
+    }, [playlist, position])
     const toggleSelectedSong = useCallback((id: string) => {
         if (selectedSongs.includes(id)) {
             dispatch(setSelectedSongs(selectedSongs.filter(song => song !== id)))
@@ -38,7 +38,7 @@ const Playlist = () => {
             return
         }
         setCurrentSong(song.id)
-    }, [editMode, selectedSongs, playlist])
+    }, [editMode, selectedSongs, playlist, position])
     return (
         <section ref={animationParent} className='bg-zinc-600 p-4 rounded-lg mt-5 gap-4 flex flex-col overflow-auto md:h-[calc(100vh-24rem)] xl:h-[calc(100vh-28rem)] sm:h-[calc(100vh-24rem)]'>
             {playlist.map((song, index) => (
