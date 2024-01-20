@@ -1,7 +1,7 @@
 import { playlist, Song } from "@/fake-api/song";
 import { handlePlay } from "@/thunks/handlePlay";
 import { fetchNui } from "@/utils/fetchNui";
-import { IN_DEVELOPMENT } from "@/utils/misc";
+import { isEnvBrowser } from "@/utils/misc";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
@@ -22,7 +22,7 @@ const Static = createSlice({
     initialState: {
         playing: false,
         position: -1, // Current song id
-        playlist: IN_DEVELOPMENT ? playlist : [],
+        playlist: isEnvBrowser() ? playlist : [],
         editMode: false,
         selectedSongs: [],
         volume: 1,

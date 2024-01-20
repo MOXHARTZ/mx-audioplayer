@@ -8,7 +8,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { toast } from 'react-toastify';
 import { fetchNui } from '@/utils/fetchNui'
 import { nanoid } from '@reduxjs/toolkit'
-import { IN_DEVELOPMENT, isUrl, useDebounce } from '@/utils/misc'
+import { isEnvBrowser, isUrl, useDebounce } from '@/utils/misc'
 import { tracks, Track } from '@/fake-api/search-results'
 import memoize from 'fast-memoize'
 import { BiSearch } from 'react-icons/bi'
@@ -23,7 +23,7 @@ const Actions = () => {
     const [searchResultsAnimationParent] = useAutoAnimate()
     const [query, setQuery] = useState('')
     const queryDebounced = useDebounce(query, 500)
-    const [trackList, setTrackList] = useState<Track[]>(IN_DEVELOPMENT ? tracks : [])
+    const [trackList, setTrackList] = useState<Track[]>(isEnvBrowser() ? tracks : [])
     const deleteSelectedSongs = useCallback(() => {
         if (playlist.length === 0) return toast.error('Playlist is empty');
         if (selectedSongs.length === 0) return toast.error('No songs selected');

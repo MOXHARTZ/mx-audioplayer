@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IN_DEVELOPMENT, NOTIFICATION } from '@/utils/misc'
+import { NOTIFICATION, isEnvBrowser } from '@/utils/misc'
 import Header from './components/header'
 import Playlist from './components/playlist'
 import Actions from './components/actions'
@@ -17,10 +17,10 @@ import classNames from 'classnames'
 
 function App() {
   const waitingForResponse = useAppSelector(state => state.Main.waitingForResponse)
-  const [visible, setVisible] = useState(IN_DEVELOPMENT);
+  const [visible, setVisible] = useState(isEnvBrowser());
   const dispatch = useAppDispatch()
   useEffect(() => {
-    if (!IN_DEVELOPMENT) return;
+    if (!isEnvBrowser()) return;
     document.body.style.backgroundImage = 'url(https://wallpaperaccess.com/full/707055.jpg)'
   }, [])
   useNuiEvent<{ playlist: Song[]; currentSound: Song }>('open', (data) => {

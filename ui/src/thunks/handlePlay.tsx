@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchNui } from '../utils/fetchNui';
 import { Song } from '@/fake-api/song';
-import { IN_DEVELOPMENT } from '@/utils/misc';
+import { isEnvBrowser } from '@/utils/misc';
 
 export const handlePlay = createAsyncThunk<
   { response: false | number; position: number },
@@ -14,7 +14,7 @@ export const handlePlay = createAsyncThunk<
 >('boombox/handlePlay',
   async (data, { rejectWithValue }) => {
     try {
-      if (IN_DEVELOPMENT) {
+      if (isEnvBrowser()) {
         return {
           response: 1,
           position: data.position

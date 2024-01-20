@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 export const isEnvBrowser = (): boolean => !(window as any).invokeNative;
-export const IN_DEVELOPMENT = process.env.NODE_ENV === "development";
 export const noop = () => { }
 export const formatNumber = (amount: string | number) => new Intl.NumberFormat().format(+amount);
 export const defaultNumber = (value: string | number) => String(value).split(",").join("");
