@@ -30,6 +30,9 @@ function App() {
     dispatch(setPlaying(data.currentSound.playing ?? false))
     dispatch(setPosition(data.playlist.findIndex(song => song.id === data.currentSound.id)))
   })
+  useNuiEvent('destroyed', () => {
+    dispatch(clearSound(true));
+  })
   useExitListener(() => {
     setVisible(false)
     fetchNui('close')

@@ -15,7 +15,7 @@ local function openUi(handlers, _customId, silent)
     customId = _customId or ''
     local id = invokingResource .. customId
     local uiDisabled = callback.await('mx-audioplayer:isUiDisabled', 0, id)
-    if uiDisabled then return Surround:pushNotification('You cannot ui now. Ui is using by another person') end
+    if uiDisabled then return Surround:pushNotification('At the moment you can\'t open the radio cause its using by another player.') end
     local _playlist = GetResourceKvpString('audioplayer_playlist_' .. (invokingResource))
     SetNuiFocus(true, true)
     _playlist = _playlist and json.decode(_playlist) or {}
@@ -56,10 +56,22 @@ local function onTimeUpdate(soundData)
     })
 end
 
+local function onDestroyed(soundData)
+    if not soundData then return end
+    local id = invokingResource .. customId
+    if not currentSounds[id] or currentSounds[id].soundId ~= soundData.soundId then return end
+    if audioplayerHandlers[id].onClose then
+        audioplayerHandlers[id].onClose(currentSounds[id])
+    end
+    currentSounds[id] = nil
+    SendNUIMessage({
+        action = 'destroyed'
+    })
+end
+
 RegisterNUICallback('play', function(data, cb)
     local soundData = data.soundData
     if not soundData then
-        print('No sound data')
         return cb(false)
     end
     local url = soundData.url
@@ -81,13 +93,13 @@ RegisterNUICallback('play', function(data, cb)
         audioplayerHandlers[id].onPlay(currentSounds[id])
     end
     Surround:onTimeUpdate(soundId, onTimeUpdate)
+    Surround:onDestroy(soundId, onDestroyed)
     cb(maxDuration)
 end)
 
 RegisterNUICallback('togglePlay', function(data, cb)
     local id = invokingResource .. customId
     if not currentSounds[id] then
-        print('No sound playing')
         return cb('ok')
     end
     currentSounds[id].playing = data.playing
