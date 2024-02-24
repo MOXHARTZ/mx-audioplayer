@@ -17,7 +17,7 @@ import { QueryResult } from '@/utils/types'
 const YOUTUBE_URL = 'https://www.youtube.com/watch?v='
 
 const Actions = () => {
-    const { editMode, selectedSongs, playlist, position } = useAppSelector(state => state.Main)
+    const { editMode, selectedSongs, playlist, position, waitingForResponse } = useAppSelector(state => state.Main)
     const dispatch = useAppDispatch()
     const [animationParent] = useAutoAnimate()
     const [searchResultsAnimationParent] = useAutoAnimate()
@@ -136,6 +136,7 @@ const Actions = () => {
                             fullWidth
                             variant="standard"
                             autoComplete='off'
+                            disabled={waitingForResponse}
                         />
                         <IconButton aria-label="search">
                             <BiSearch size={24} color='#fff' />
