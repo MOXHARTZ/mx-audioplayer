@@ -1,0 +1,23 @@
+{
+    "header.title": "Title",
+    "header.artist": "Artist",
+    "playlist.empty": "No songs in playlist",
+    "playlist.not_selected": "No song selected",
+    "playlist.deleted_songs": "Songs are deleted successfully",
+    "playlist.cleared": "Playlist cleared successfully",
+    "playlist.no_more_songs": "No more songs to play",
+    "playlist.song_already_playing": "Song is already playing",
+    "playlist.song_not_exist": "Song does not exist",
+    "playlist.search": "Search…",
+    "edit.clear": "Delete all",
+    "edit.delete": "Delete Selected Songs",
+    "edit.cancel": "Cancel",
+    "search_track.content": "You can add a song to the playlist by entering a track name or you can pass here by a spotify, youtube or soundcloud url",
+    "search_track.title": "Add a song to the playlist",
+    "search_track.placeholder": "Track name or url",
+    "search_track.invalid_url": "Invalid url",
+    "search_track.knowledge": "You can't play songs with a song duration of more than 15 minutes (for performance reasons)",
+    "general.unknown": "Unknown",
+    "general.something_went_wrong": "Something went wrong",
+    "general.ui.disabled": "At the moment you can't open the radio cause its using by another player."
+}

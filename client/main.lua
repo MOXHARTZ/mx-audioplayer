@@ -15,7 +15,7 @@ local function openUi(handlers, _customId, silent)
     customId = _customId or ''
     local id = invokingResource .. customId
     local uiDisabled = callback.await('mx-audioplayer:isUiDisabled', 0, id)
-    if uiDisabled then return Surround:pushNotification('At the moment you can\'t open the radio cause its using by another player.') end
+    if uiDisabled then return Surround:pushNotification(_U('general.ui.disabled')) end
     local _playlist = GetResourceKvpString('audioplayer_playlist_' .. (invokingResource))
     SetNuiFocus(true, true)
     _playlist = _playlist and json.decode(_playlist) or {}
@@ -163,5 +163,26 @@ RegisterNUICallback('close', function(data, cb)
         audioplayerHandlers[id].onClose(currentSounds[id])
     end
     TriggerServerEvent('mx-audioplayer:disableUi', id, false)
+    cb('ok')
+end)
+
+local function languageToI18Next()
+    local lang = Config.Locale
+    local data = {}
+    data[lang] = {}
+    data[lang].translation = _T
+    return lang, data
+end
+
+RegisterNUICallback('uiReady', function(data, cb)
+    while not _T do Wait(200) end
+    local locale, resources = languageToI18Next()
+    SendNUIMessage({
+        action = 'onUiReady',
+        data = {
+            languageName = locale,
+            resources = resources
+        }
+    })
     cb('ok')
 end)

@@ -9,7 +9,7 @@ const Volume = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch()
     const { volume } = useAppSelector(state => state.Main)
-    const volumeOnChange = useCallback((_: any, newValue: number | number[]) => {
+    const volumeOnChange = useCallback((_: unknown, newValue: number | number[]) => {
         dispatch(setVolume(newValue as number));
     }, []);
     return (

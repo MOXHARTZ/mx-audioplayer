@@ -4,9 +4,9 @@ import { Song } from '@/fake-api/song';
 import { isEnvBrowser } from '@/utils/misc';
 
 export const handlePlay = createAsyncThunk<
-  { response: false | number; position: number },
+  { response: false | number; position: number | string },
   {
-    position: number;
+    position: string | number;
     volume: number;
     soundData: Song;
   },

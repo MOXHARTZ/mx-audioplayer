@@ -8,21 +8,22 @@ import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '@/stores';
 import { fetchNui } from '@/utils/fetchNui';
 import memoize from "fast-memoize";
+import i18next from 'i18next';
 
-
-const Control: FC<{ timeStamp: number; setTimeStamp: Function }> = ({ timeStamp, setTimeStamp }) => {
+const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> = ({ timeStamp, setTimeStamp }) => {
     const dispatch = useAppDispatch()
     const { position, playing, volume, playlist, shuffle, repeat } = useAppSelector(state => state.Main)
-    const currentSong = playlist[position]
+    const currentSong = playlist.find(song => song.id === position)
     const previousBtn = useCallback(async () => {
         const index = playlist.findIndex(song => song.id === currentSong?.id)
         const newPos = index === 0 ? playlist.length - 1 : index - 1
-        if (playlist.length === 0) return toast.error('Playlist is empty');
-        if (playlist[newPos].id === currentSong?.id) return toast.error('No more songs in playlist');
+        if (playlist.length === 0) return toast.error(i18next.t('playlist.empty'))
+        const newSoundData = playlist[newPos]
+        if (newSoundData.id === currentSong?.id) return toast.error(i18next.t('playlist.no_more_songs'))
         dispatch(setPlaying(false))
         dispatch(handlePlay({
-            position: newPos,
-            soundData: playlist[newPos],
+            position: newSoundData.id,
+            soundData: newSoundData,
             volume
         }))
     }, [position, playlist, volume])
@@ -35,18 +36,19 @@ const Control: FC<{ timeStamp: number; setTimeStamp: Function }> = ({ timeStamp,
                 newPos = Math.floor(Math.random() * playlist.length)
             }
         }
-        if (playlist.length === 0) return toast.error('Playlist is empty');
-        if (playlist[newPos].id === currentSong?.id) return toast.error('No more songs in playlist');
+        if (playlist.length === 0) return toast.error(i18next.t('playlist.empty'))
+        const newSoundData = playlist[newPos]
+        if (newSoundData.id === currentSong?.id) return toast.error(i18next.t('playlist.no_more_songs'))
         dispatch(setPlaying(false))
         dispatch(handlePlay({
-            position: newPos,
-            soundData: playlist[newPos],
+            position: newSoundData.id,
+            soundData: newSoundData,
             volume: volume
         }))
     }), [position, playlist, volume])
     useNuiEvent<{ time: number }>('timeUpdate', ({ time }) => {
         setTimeStamp(time)
-        const duration = playlist[position]?.duration ?? 0
+        const duration = currentSong?.duration ?? 0
         if (playing && duration && timeStamp === duration) {
             if (repeat) {
                 setTimeStamp(0)

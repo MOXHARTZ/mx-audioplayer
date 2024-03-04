@@ -4,10 +4,11 @@ import { fetchNui } from "@/utils/fetchNui";
 import { isEnvBrowser } from "@/utils/misc";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import i18next from 'i18next'
 
 export interface StaticType {
     playing: boolean;
-    position: number;
+    position: string | number;
     playlist: Song[];
     editMode: boolean;
     selectedSongs: string[];
@@ -15,6 +16,7 @@ export interface StaticType {
     waitingForResponse: boolean;
     shuffle: boolean;
     repeat: boolean;
+    filterPlaylist: string;
 }
 
 const Static = createSlice({
@@ -28,7 +30,8 @@ const Static = createSlice({
         volume: 1,
         waitingForResponse: false,
         shuffle: false,
-        repeat: false
+        repeat: false,
+        filterPlaylist: ''
     } as StaticType,
     reducers: {
         setPlaying: (state, action: PayloadAction<boolean>) => {
@@ -63,7 +66,7 @@ const Static = createSlice({
         setWaitingForResponse: (state, action: PayloadAction<boolean>) => {
             state.waitingForResponse = action.payload;
         },
-        setPosition: (state, action: PayloadAction<number>) => {
+        setPosition: (state, action: PayloadAction<string>) => {
             state.position = action.payload;
         },
         setShuffle: (state, action: PayloadAction<boolean>) => {
@@ -71,13 +74,16 @@ const Static = createSlice({
         },
         setRepeat: (state, action: PayloadAction<boolean>) => {
             state.repeat = action.payload;
+        },
+        setFilterPlaylist: (state, action: PayloadAction<string>) => {
+            state.filterPlaylist = action.payload;
         }
     },
     extraReducers: (builder) => {
         builder.addCase(handlePlay.fulfilled, (state, { payload }) => {
             state.waitingForResponse = false;
             if (!payload.response) return;
-            const soundData = state.playlist[payload.position]
+            const soundData = state.playlist.find(song => song.id === payload.position);
             if (!soundData) return;
             state.position = payload.position;
             soundData.duration = Math.floor(payload.response);
@@ -85,7 +91,7 @@ const Static = createSlice({
         })
         builder.addCase(handlePlay.rejected, (state) => {
             state.waitingForResponse = false;
-            toast.error('Something went wrong while playing the song');
+            toast.error(i18next.t('general.something_went_wrong'))
         })
         builder.addCase(handlePlay.pending, (state) => {
             state.waitingForResponse = true;
@@ -104,7 +110,8 @@ export const {
     setWaitingForResponse,
     setPosition,
     setShuffle,
-    setRepeat
+    setRepeat,
+    setFilterPlaylist
 } = Static.actions
 
 export default Static.reducer
