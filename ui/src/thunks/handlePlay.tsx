@@ -4,10 +4,11 @@ import { Song } from '@/fake-api/song';
 import { isEnvBrowser } from '@/utils/misc';
 
 export const handlePlay = createAsyncThunk<
-  { response: false | number; position: number | string },
+  { response: false | number; position: number | string, playlistId?: string | number; },
   {
     position: string | number;
     volume: number;
+    playlistId?: string | number;
     soundData: Song;
   },
   { rejectValue: boolean }
@@ -34,7 +35,8 @@ export const handlePlay = createAsyncThunk<
       }
       return {
         response,
-        position: data.position
+        position: data.position,
+        playlistId: data.playlistId
       }
     } catch (error) {
       return rejectWithValue(false);

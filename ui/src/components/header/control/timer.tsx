@@ -2,13 +2,13 @@ import { useAppSelector } from '@/stores';
 import { fetchNui } from '@/utils/fetchNui';
 import { formatDuration } from '@/utils/misc';
 import { Box, Slider, useTheme } from '@mui/material';
-import { FC, memo, useMemo, useState } from 'react'
+import { FC, memo, useState } from 'react'
 
 const Timer: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> = ({ timeStamp, setTimeStamp }) => {
     const theme = useTheme();
     const [seeking, setSeeking] = useState<number | false>(false)
-    const { position, playlist } = useAppSelector(state => state.Main)
-    const currentSong = useMemo(() => playlist.find(song => song.id === position), [position, playlist])
+    const { currentSongData } = useAppSelector(state => state.Main)
+    const currentSong = currentSongData?.song
     return (
         <>
             <Slider

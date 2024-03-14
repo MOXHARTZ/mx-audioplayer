@@ -1,15 +1,19 @@
-import { playlist, Song } from "@/fake-api/song";
 import { handlePlay } from "@/thunks/handlePlay";
 import { fetchNui } from "@/utils/fetchNui";
 import { isEnvBrowser } from "@/utils/misc";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import i18next from 'i18next'
+import playlist, { Playlist } from "@/fake-api/playlist-categories";
+import { Song } from "@/fake-api/song";
 
 export interface StaticType {
     playing: boolean;
+    currentSongData: { playlistId: string | number, song: Song } | undefined;
     position: string | number;
-    playlist: Song[];
+    playlist: typeof playlist;
+    currentPlaylistId: number | string;
+    currentSongs: Song[] | undefined;
     editMode: boolean;
     selectedSongs: string[];
     volume: number;
@@ -23,8 +27,11 @@ const Static = createSlice({
     name: "Static",
     initialState: {
         playing: false,
+        currentSongData: undefined,
         position: -1, // Current song id
         playlist: isEnvBrowser() ? playlist : [],
+        currentPlaylistId: -1,
+        currentSongs: undefined,
         editMode: false,
         selectedSongs: [],
         volume: 1,
@@ -40,14 +47,61 @@ const Static = createSlice({
                 playing: action.payload
             })
         },
-        setPlaylist: (state, action: PayloadAction<Song[]>) => {
+        setPlaylist: (state, action: PayloadAction<typeof playlist>) => {
             state.playlist = action.payload;
+            state.currentSongs = state.playlist.find(playlist => playlist.id === state.currentPlaylistId)?.songs ?? undefined;
+            if (state.editMode) return; // Block to save ui for not farewell to ui
             fetchNui('setPlaylist', {
                 playlist: action.payload
             })
         },
+        setCurrentPlaylistId: (state, action: PayloadAction<string | number>) => {
+            state.currentPlaylistId = action.payload;
+            state.currentSongs = state.playlist.find(playlist => playlist.id === action.payload)?.songs ?? undefined;
+        },
+        setCurrentSongs: (state, action: PayloadAction<Song[]>) => {
+            state.playlist = state.playlist.map(playlist => {
+                if (playlist.id === state.currentPlaylistId) {
+                    return {
+                        ...playlist,
+                        songs: action.payload
+                    }
+                }
+                return playlist
+            })
+            state.currentSongs = action.payload;
+            fetchNui('setPlaylist', {
+                playlist: state.playlist
+            })
+        },
         setEditMode: (state, action: PayloadAction<boolean>) => {
             state.editMode = action.payload;
+            if (!state.editMode) {
+                fetchNui('setPlaylist', {
+                    playlist: state.playlist
+                })
+            }
+        },
+        deletePlaylist: (state, action: PayloadAction<number | string>) => {
+            state.playlist = state.playlist.filter(playlist => playlist.id !== action.payload);
+            if (state.currentPlaylistId === action.payload) {
+                state.currentPlaylistId = -1;
+                state.currentSongs = undefined;
+                state.playing = false;
+                state.position = -1;
+                fetchNui('togglePlay', {
+                    playing: false
+                })
+            }
+            fetchNui('setPlaylist', {
+                playlist: state.playlist
+            })
+        },
+        addPlaylist: (state, action: PayloadAction<Playlist>) => {
+            state.playlist.push(action.payload);
+            fetchNui('setPlaylist', {
+                playlist: state.playlist
+            })
         },
         setSelectedSongs: (state, action: PayloadAction<string[]>) => {
             state.selectedSongs = action.payload;
@@ -55,7 +109,8 @@ const Static = createSlice({
         clearSound: (state, action: PayloadAction<true | undefined>) => {
             state.playing = false;
             state.position = -1;
-            if (action.payload) return; // If its true then dont send the nui event
+            state.currentSongData = undefined;
+            if (action.payload) return;
             fetchNui('togglePlay', {
                 playing: false
             })
@@ -83,9 +138,13 @@ const Static = createSlice({
         builder.addCase(handlePlay.fulfilled, (state, { payload }) => {
             state.waitingForResponse = false;
             if (!payload.response) return;
-            const soundData = state.playlist.find(song => song.id === payload.position);
+            const playlistId = payload.playlistId ?? state.currentPlaylistId;
+            const playlist = state.playlist.find(playlist => playlist.id === playlistId);
+            if (!playlist) return;
+            const soundData = playlist.songs.find(song => song.id === payload.position);
             if (!soundData) return;
             state.position = payload.position;
+            state.currentSongData = { playlistId: playlistId, song: soundData };
             soundData.duration = Math.floor(payload.response);
             state.playing = true;
         })
@@ -103,6 +162,7 @@ const Static = createSlice({
 export const {
     setPlaying,
     setPlaylist,
+    setCurrentPlaylistId,
     setEditMode,
     setSelectedSongs,
     clearSound,
@@ -111,7 +171,10 @@ export const {
     setPosition,
     setShuffle,
     setRepeat,
-    setFilterPlaylist
+    setFilterPlaylist,
+    setCurrentSongs,
+    deletePlaylist,
+    addPlaylist
 } = Static.actions
 
 export default Static.reducer

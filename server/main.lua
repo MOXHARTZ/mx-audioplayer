@@ -1,5 +1,4 @@
 local Surround = exports['mx-surround']
-local callback = Surround:callback()
 local sounds = {}
 
 local function checkCustomIdExist(customId)
@@ -10,7 +9,7 @@ local function checkCustomIdExist(customId)
     return false
 end
 
-RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingResource, customId, playQuietly)
+RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingResource, customId, playQuietly, coords)
     local src = source
     local id = src
     if invokingResource then id = id .. ':' .. invokingResource end
@@ -20,10 +19,8 @@ RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingR
         Surround:Destroy(-1, sounds[currentSound])
         sounds[currentSound] = nil
     end
-    local player = GetPlayerPed(src)
-    local playerCoords = GetEntityCoords(player)
     volume = playQuietly and 0.0 or volume
-    Surround:Play(-1, soundId, url, playerCoords, false, volume)
+    Surround:Play(-1, soundId, url, coords, false, volume)
     if not soundId then return print('Failed to play sound') end
     Surround:setDestroyOnFinish(-1, soundId, false)
     sounds[id] = soundId
@@ -34,7 +31,7 @@ RegisterNetEvent('mx-audioplayer:disableUi', function(customId, disabled)
     disabledUis[customId] = disabled
 end)
 
-callback.register('mx-audioplayer:isUiDisabled', function(source, customId)
+lib.callback.register('mx-audioplayer:isUiDisabled', function(source, customId)
     return disabledUis[customId]
 end)
 
@@ -70,3 +67,72 @@ end)
 RegisterNetEvent('mx-audioplayer:destroy', function(soundId)
     Surround:Destroy(-1, soundId)
 end)
+
+RegisterNetEvent('mx-audioplayer:attach', function(soundId, netId, volume, isInVehicle)
+    if not netId then return end
+    exports['mx-surround']:attachEntity(-1, soundId, netId)
+    local wait = isInVehicle and 0 or 200
+    Wait(wait)
+    exports['mx-surround']:setVolumeMax(-1, soundId, volume)
+end)
+
+function InitPlayersName(players)
+    for k, v in pairs(players) do
+        local firstName, lastName = GetCharacterName(v.source)
+        if not firstName or not lastName then
+            firstName, lastName = '', ''
+        end
+        players[k].name = firstName .. ' ' .. lastName
+    end
+    return players
+end
+
+lib.callback.register('mx-audioplayer:getNearbyPlayers', function(source)
+    local player = GetPlayerPed(source)
+    local playerCoords = GetEntityCoords(player)
+    local players = {}
+    for _, v in pairs(GetPlayers()) do
+        local target = GetPlayerPed(v)
+        local targetCoords = GetEntityCoords(target)
+        local distance = #(playerCoords - targetCoords)
+        if distance < 10.0 and tonumber(v) ~= tonumber(source) then
+            table.insert(players, { source = v, distance = distance })
+        end
+    end
+    table.sort(players, function(a, b) return a.distance < b.distance end)
+    players = InitPlayersName(players)
+    return players
+end)
+
+if Config.Boombox.Item then
+    RegisterUsableItem(Config.Boombox.Item, function(source)
+        TriggerClientEvent('mx-audioplayer:boombox:create', source)
+    end)
+
+    RegisterNetEvent('mx-audioplayer:boombox:destroy', function()
+        local src = source
+        local item = Config.Boombox.Item
+        AddItem(src, item, 1)
+    end)
+end
+
+RegisterNetEvent('mx-audioplayer:sharePlaylist', function(playlist, player)
+    local src = source
+    local senderName, senderLastname = GetCharacterName(src)
+    if not senderName or not senderLastname then
+        senderName, senderLastname = '', ''
+    end
+    senderName = senderName .. ' ' .. senderLastname
+    Debug('Received playlist from', senderName, 'to', player)
+    TriggerClientEvent('mx-audioplayer:receivePlaylist', player, playlist, senderName)
+end)
+
+-- Delete this shit after a while @MOXHARTZ
+local hasCarRadio = GetResourceState('mx-caradio')
+local hasBoombox = GetResourceState('mx-boombox') == 'started'
+if hasCarRadio or hasBoombox then
+    -- People love avoid errors :(
+    for i = 1, 70 do
+        print('^1Remove mx-boombox and mx-caradio from your server! the new audioplayer provides them in itself.^0')
+    end
+end

@@ -2,7 +2,8 @@ fx_version 'cerulean'
 games { 'gta5' }
 author 'https://github.com/MOXHARTZ'
 repository 'https://github.com/MOXHARTZ/mx-audioplayer'
-version '1.3.0'
+discord 'https://discord.gg/crbtDw9hT7'
+version '2.0.0'
 lua54 'yes'
 
 shared_scripts {
@@ -10,9 +11,16 @@ shared_scripts {
 }
 
 client_scripts {
-    'client/*.lua'
+    -- copy of ox_lib's callback
+    '@mx-surround/client/callback.lua',
+    'client/framework/*.lua',
+    'client/*.lua',
+    'client/addons/*.lua'
 }
 server_scripts {
+    -- copy of ox_lib's callback
+    '@mx-surround/server/callback.lua',
+    'server/framework/*.lua',
     'server/*.lua'
 }
 
@@ -26,5 +34,6 @@ files({
 })
 
 dependencies {
+    '/onesync',
     'mx-surround'
 }

@@ -73,6 +73,7 @@ interface Thumbnail {
 export interface Track {
     id: string;
     artists: Artist[];
+    artist?: Artist;
     videoId: string;
     name: string;
     album?: Album;

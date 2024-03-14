@@ -12,40 +12,46 @@ import i18next from 'i18next';
 
 const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> = ({ timeStamp, setTimeStamp }) => {
     const dispatch = useAppDispatch()
-    const { position, playing, volume, playlist, shuffle, repeat } = useAppSelector(state => state.Main)
-    const currentSong = playlist.find(song => song.id === position)
+    const { position, playing, volume, playlist, shuffle, repeat, currentSongData } = useAppSelector(state => state.Main)
+    const currentSong = currentSongData?.song
+    const currentSongChildren = playlist.find(playlist => playlist.id === currentSongData?.playlistId)?.songs
     const previousBtn = useCallback(async () => {
-        const index = playlist.findIndex(song => song.id === currentSong?.id)
-        const newPos = index === 0 ? playlist.length - 1 : index - 1
-        if (playlist.length === 0) return toast.error(i18next.t('playlist.empty'))
-        const newSoundData = playlist[newPos]
+        if (!currentSongChildren) return toast.error(i18next.t('playlist.empty'));
+        const index = currentSongChildren.findIndex(song => song.id === currentSong?.id)
+        const newPos = index === 0 ? currentSongChildren.length - 1 : index - 1
+        if (currentSongChildren.length === 0) return toast.error(i18next.t('playlist.empty'))
+        const newSoundData = currentSongChildren[newPos]
         if (newSoundData.id === currentSong?.id) return toast.error(i18next.t('playlist.no_more_songs'))
         dispatch(setPlaying(false))
+
         dispatch(handlePlay({
             position: newSoundData.id,
             soundData: newSoundData,
-            volume
+            volume,
+            playlistId: currentSongData?.playlistId
         }))
-    }, [position, playlist, volume])
+    }, [position, currentSongChildren, volume, currentSongData])
     const nextBtn = useMemo(() => memoize((checkShuffle) => {
-        const index = playlist.findIndex(song => song.id === currentSong?.id)
-        let newPos = index === playlist.length - 1 ? 0 : index + 1
-        if (checkShuffle && shuffle && playlist.length > 2) {
-            newPos = Math.floor(Math.random() * playlist.length)
+        if (!currentSongChildren) return toast.error(i18next.t('playlist.empty'));
+        const index = currentSongChildren.findIndex(song => song.id === currentSong?.id)
+        let newPos = index === currentSongChildren.length - 1 ? 0 : index + 1
+        if (checkShuffle && shuffle && currentSongChildren.length > 2) {
+            newPos = Math.floor(Math.random() * currentSongChildren.length)
             while (newPos === index) {
-                newPos = Math.floor(Math.random() * playlist.length)
+                newPos = Math.floor(Math.random() * currentSongChildren.length)
             }
         }
-        if (playlist.length === 0) return toast.error(i18next.t('playlist.empty'))
-        const newSoundData = playlist[newPos]
+        if (currentSongChildren.length === 0) return toast.error(i18next.t('playlist.empty'))
+        const newSoundData = currentSongChildren[newPos]
         if (newSoundData.id === currentSong?.id) return toast.error(i18next.t('playlist.no_more_songs'))
         dispatch(setPlaying(false))
         dispatch(handlePlay({
             position: newSoundData.id,
             soundData: newSoundData,
-            volume: volume
+            volume: volume,
+            playlistId: currentSongData?.playlistId
         }))
-    }), [position, playlist, volume])
+    }), [position, currentSongChildren, volume, currentSongData])
     useNuiEvent<{ time: number }>('timeUpdate', ({ time }) => {
         setTimeStamp(time)
         const duration = currentSong?.duration ?? 0
@@ -57,7 +63,7 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
                 })
                 return
             }
-            if (playlist.length === 0) return;
+            if (currentSongChildren?.length === 0) return;
             nextBtn(true)
         }
     })

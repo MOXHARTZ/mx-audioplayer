@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
 import { NOTIFICATION, isEnvBrowser } from '@/utils/misc'
-import Header from './components/header'
-import Playlist from './components/playlist'
-import Actions from './components/actions'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Backdrop, CircularProgress, CssBaseline } from '@mui/material'
@@ -10,13 +7,15 @@ import { useAppDispatch, useAppSelector } from './stores'
 import useNuiEvent from './hooks/useNuiEvent'
 import { useExitListener } from './hooks/useExitListener'
 import { fetchNui } from './utils/fetchNui'
-import { clearSound, setPlaying, setPlaylist, setPosition } from './stores/Main'
+import { addPlaylist, clearSound, setPlaying, setPlaylist, setPosition } from './stores/Main'
 import { Song } from './fake-api/song'
 import classNames from 'classnames'
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { ReadyListener } from './utils/types'
-
+import router from './routes'
+import { RouterProvider } from 'react-router-dom'
+import { Playlist } from './fake-api/playlist-categories';
 
 function App() {
   const waitingForResponse = useAppSelector(state => state.Main.waitingForResponse)
@@ -27,7 +26,7 @@ function App() {
     if (!isEnvBrowser()) return;
     document.body.style.backgroundImage = 'url(https://wallpaperaccess.com/full/707055.jpg)'
   }, [])
-  useNuiEvent<{ playlist: Song[]; currentSound: Song }>('open', (data) => {
+  useNuiEvent<{ playlist: Playlist[]; currentSound: Song }>('open', (data) => {
     setVisible(true)
     dispatch(setPlaylist(data.playlist))
     if (!data.currentSound) return dispatch(clearSound(true));
@@ -51,6 +50,10 @@ function App() {
       }
     })
   })
+  useNuiEvent<Playlist>('receivePlaylist', (newPlaylist) => {
+    if (!visible) return;
+    dispatch(addPlaylist(newPlaylist))
+  })
 
   return (
     <>
@@ -66,11 +69,7 @@ function App() {
         'flex items-center justify-center w-full h-full transition scale-100': true,
         'opacity-0 scale-110': !visible
       })}>
-        <section className='sm:w-[80vh] md:w-[100vh] xl:w-[105vh] p-6 bg-zinc-700 rounded-lg text-white'>
-          <Header />
-          <Actions />
-          <Playlist />
-        </section>
+        <RouterProvider router={router} />
       </main>
     </>
 

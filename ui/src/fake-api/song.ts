@@ -1,4 +1,4 @@
-export const playlist = [
+export const Songs = [
     {
         id: '1',
         soundId: '1',

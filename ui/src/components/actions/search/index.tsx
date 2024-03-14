@@ -1,27 +1,25 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import memoize from 'fast-memoize'
 import { Dialog, DialogContent, DialogContentText, DialogTitle, IconButton, TextField } from '@mui/material'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { nanoid } from '@reduxjs/toolkit'
 import { useAppDispatch, useAppSelector } from '@/stores'
 import { tracks, Track } from '@/fake-api/search-results'
-import { isEnvBrowser, isUrl, useDebounce } from '@/utils/misc'
-import { setPlaylist, setWaitingForResponse } from '@/stores/Main'
+import { isEnvBrowser, isUrl } from '@/utils/misc'
+import { setCurrentSongs, setWaitingForResponse } from '@/stores/Main'
 import { fetchNui } from '@/utils/fetchNui'
 import { toast } from 'react-toastify'
 import { QueryResult } from '@/utils/types'
 import { BiSearch } from 'react-icons/bi'
 import i18next from 'i18next'
 
-
 const YOUTUBE_URL = 'https://www.youtube.com/watch?v='
 
 const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) => {
-    const { playlist, waitingForResponse } = useAppSelector(state => state.Main)
+    const { waitingForResponse, currentSongs } = useAppSelector(state => state.Main)
     const [query, setQuery] = useState('')
     const [trackList, setTrackList] = useState<Track[]>(isEnvBrowser() ? tracks : [])
     const dispatch = useAppDispatch()
-    const queryDebounced = useDebounce(query, 500)
     const [searchResultsAnimationParent] = useAutoAnimate()
     const handleClose = useCallback(() => {
         setOpen(false);
@@ -29,18 +27,20 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
     }, []);
 
     const handlePlay = useMemo(() => memoize(async (track: Track) => {
+        if (!currentSongs) return toast.error(i18next.t('playlist.select_playlist'));
         handleClose()
+        const artist = track?.artist ? track?.artist?.name : track?.artists?.[0]?.name ?? i18next.t('general.unknown')
         const soundData = {
             id: nanoid(),
             soundId: nanoid(),
             title: track?.name ?? i18next.t('general.unknown'),
-            artist: track?.artists?.[0]?.name ?? i18next.t('general.unknown'),
+            artist,
             cover: track.thumbnails[0].url,
             url: track.videoId,
             duration: 0,
         }
-        dispatch(setPlaylist([...playlist, soundData]))
-    }), [playlist])
+        dispatch(setCurrentSongs([...currentSongs, soundData]))
+    }), [setCurrentSongs, currentSongs])
 
     const processUrl = useCallback(async (url: string) => {
         dispatch(setWaitingForResponse(true))
@@ -60,11 +60,11 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
         dispatch(setWaitingForResponse(false))
     }, [])
     const fetchTrackList = useCallback(async () => {
-        if (!queryDebounced) return setTrackList([])
-        const queryIsUrl = isUrl(queryDebounced)
-        if (queryIsUrl) return processUrl(queryDebounced)
+        if (!query) return setTrackList([])
+        const queryIsUrl = isUrl(query)
+        if (queryIsUrl) return processUrl(query)
         dispatch(setWaitingForResponse(true))
-        const _query = queryDebounced.replace(/\s/g, '%20')
+        const _query = query.replace(/\s/g, '%20')
         let result = await fetchNui<QueryResult>('searchQuery', { query: _query })
         dispatch(setWaitingForResponse(false))
         if (!result) return setTrackList([])
@@ -72,10 +72,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
         if (!result) return setTrackList([])
         result = result.map(track => ({ ...track, id: nanoid(), videoId: `${YOUTUBE_URL}${track.videoId}` }))
         setTrackList(result)
-    }, [queryDebounced])
-    useEffect(() => {
-        fetchTrackList()
-    }, [queryDebounced])
+    }, [query])
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{i18next.t('search_track.title')}</DialogTitle>
@@ -96,8 +93,9 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
                         variant="standard"
                         autoComplete='off'
                         disabled={waitingForResponse}
+                        onKeyDown={e => e.key === 'Enter' && fetchTrackList()}
                     />
-                    <IconButton aria-label="search">
+                    <IconButton aria-label="search" onClick={fetchTrackList}>
                         <BiSearch size={24} color='#fff' />
                     </IconButton>
                 </div>
@@ -108,7 +106,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
                             <img src={track.thumbnails[0].url} alt={track.name ?? ''} className='w-16 h-16 rounded-lg' />
                             <div className='flex flex-col'>
                                 <span className='text-white'>{track.name ?? i18next.t('general.unknown')}</span>
-                                <span className='text-gray-400'>{track?.artists?.[0]?.name ?? i18next.t('general.unknown')}</span>
+                                <span className='text-gray-400'>{track?.artist ? track?.artist?.name : track?.artists?.[0]?.name ?? i18next.t('general.unknown')}</span>
                             </div>
                         </li>)}
                     </div>}

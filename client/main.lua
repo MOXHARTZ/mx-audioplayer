@@ -1,22 +1,81 @@
 local invokingResource, customId
 local playlist, currentSounds, audioplayerHandlers = {}, {}, {}
-local Surround = exports['mx-surround']
-local callback = Surround:callback()
-local volume = 1
+Surround = exports['mx-surround']
+---@type number -- Audio Player's custom volume
+AudioVolume = 1
 local playQuietly = false
+PlayerData = nil
+local audioPlayer = {}
 
----@param handlers? {onPlay: function, onPause: function, onResume: function, onVolumeChange: function, onSeek: function, onClose: function}
----@param _customId? string
----@param silent? boolean @If true, volume will be set to 0
-local function openUi(handlers, _customId, silent)
+CreateThread(function()
+    while true do
+        PlayerPed = PlayerPedId()
+        PlayerCoords = GetEntityCoords(PlayerPed)
+        CurrentVehicle = GetVehiclePedIsIn(PlayerPed, false)
+        IsInVehicle = CurrentVehicle ~= 0
+        Wait(300)
+    end
+end)
+
+local function generateId()
+    local id = ''
+    for i = 1, 10 do
+        id = id .. string.char(math.random(97, 122))
+    end
+    return id
+end
+
+-- !IMPORTANT After a few months this function should be removed @MOXHARTZ
+---@param scriptName string
+function InitDeprecatedScriptPlaylist(scriptName)
+    local kvpPlaylist = GetResourceKvpString('audioplayer_playlist_' .. (scriptName))
+    if not kvpPlaylist then return end
+    local playlist = json.decode(kvpPlaylist)
+    local _defaultPlaylist = GetResourceKvpString('mx_audioplayer_playlist')
+    _defaultPlaylist = _defaultPlaylist and json.decode(_defaultPlaylist) or {}
+    local songs = {}
+    for _, v in pairs(playlist) do
+        table.insert(songs, v)
+    end
+    local id = generateId()
+    while table.find(_defaultPlaylist, function(p) return p.id == id end) do
+        Debug('id exists', id)
+        Wait(100)
+        id = generateId()
+    end
+    table.insert(_defaultPlaylist, {
+        id = id,
+        name = 'New Playlist' .. #_defaultPlaylist + 1,
+        songs = songs
+    })
+    SetResourceKvp('mx_audioplayer_playlist', json.encode(_defaultPlaylist))
+    DeleteResourceKvp('audioplayer_playlist_' .. (scriptName))
+    Info(scriptName .. ' playlist has been added to the default playlist')
+end
+
+CreateThread(function()
+    InitDeprecatedScriptPlaylist('')
+end)
+
+---@param data? OpenAudioPlayerData
+---@param handlers? OpenAudioPlayerHandlers
+function OpenAudioPlayer(data, handlers)
+    if not data then data = {} end
     if not handlers then handlers = {} end
+    local silent = data.silent
+    local staySameCoords = data.staySameCoords
+    customId = data.customId
     playQuietly = silent and true or false
     invokingResource = GetInvokingResource() or ''
-    customId = _customId or ''
+    customId = customId or ''
     local id = invokingResource .. customId
-    local uiDisabled = callback.await('mx-audioplayer:isUiDisabled', 0, id)
-    if uiDisabled then return Surround:pushNotification(_U('general.ui.disabled')) end
-    local _playlist = GetResourceKvpString('audioplayer_playlist_' .. (invokingResource))
+    if customId ~= '' then
+        local uiDisabled = lib.callback.await('mx-audioplayer:isUiDisabled', 0, id)
+        if uiDisabled then return Surround:pushNotification(_U('general.ui.disabled')) end
+    else
+        Debug('No custom id provided')
+    end
+    local _playlist = GetResourceKvpString('mx_audioplayer_playlist')
     SetNuiFocus(true, true)
     _playlist = _playlist and json.decode(_playlist) or {}
     if currentSounds[id] then
@@ -26,6 +85,11 @@ local function openUi(handlers, _customId, silent)
                 break
             end
         end
+    end
+    if staySameCoords then
+        audioPlayer[id] = {
+            coords = PlayerCoords
+        }
     end
     SendNUIMessage({
         action = 'open',
@@ -38,10 +102,10 @@ local function openUi(handlers, _customId, silent)
     TriggerServerEvent('mx-audioplayer:disableUi', id, true)
 end
 
-exports('open', openUi)
+exports('open', OpenAudioPlayer)
 
 exports('getVolume', function()
-    return volume
+    return AudioVolume
 end)
 
 local function onTimeUpdate(soundData)
@@ -81,9 +145,10 @@ RegisterNUICallback('play', function(data, cb)
     if currentSounds[id] and (currentSounds[id].soundId) ~= soundId then
         TriggerServerEvent('mx-audioplayer:destroy', currentSounds[id].soundId)
     end
-    TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, invokingResource, customId, playQuietly)
-    local loaded = Surround:soundIsLoaded(soundId) -- wait for the sound to load
-    if not loaded then return cb(false) end        -- if it doesn't load, return false
+    local coords = audioPlayer[id] and audioPlayer[id].coords or GetEntityCoords(PlayerPed) -- need instant coords
+    TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, invokingResource, customId, playQuietly, coords)
+    local loaded = Surround:soundIsLoaded(soundId)                                          -- wait for the sound to load
+    if not loaded then return cb(false) end                                                 -- if it doesn't load, return false
     local maxDuration = Surround:getMaxDuration(soundId)
     soundData.duration = maxDuration
     soundData.playing = true
@@ -119,7 +184,7 @@ end)
 
 RegisterNUICallback('setVolume', function(data, cb)
     local id = invokingResource .. customId
-    volume = data.volume
+    AudioVolume = data.volume
     if not currentSounds[id] then return cb(0) end
     TriggerServerEvent('mx-audioplayer:setVolume', currentSounds[id].soundId, data.volume)
     if audioplayerHandlers[id].onVolumeChange then
@@ -152,7 +217,7 @@ end)
 
 RegisterNUICallback('setPlaylist', function(data, cb)
     playlist = data.playlist
-    SetResourceKvp('audioplayer_playlist_' .. (invokingResource or ''), json.encode(playlist))
+    SetResourceKvp('mx_audioplayer_playlist', json.encode(playlist))
     cb('ok')
 end)
 
@@ -186,3 +251,54 @@ RegisterNUICallback('uiReady', function(data, cb)
     })
     cb('ok')
 end)
+
+RegisterNUICallback('getNearbyPlayers', function(data, cb)
+    local players = lib.callback.await('mx-audioplayer:getNearbyPlayers', 0)
+    cb(players)
+end)
+
+RegisterNUICallback('sharePlaylist', function(data, cb)
+    local playlist = data.playlist
+    local player = data.player
+    TriggerServerEvent('mx-audioplayer:sharePlaylist', playlist, player)
+    cb('ok')
+end)
+
+local function checkPlaylistAlreadyExist(playlist)
+    local _playlist = GetResourceKvpString('mx_audioplayer_playlist')
+    _playlist = _playlist and json.decode(_playlist) or {}
+    local finded = table.find(_playlist, function(v)
+        return v.id == playlist.id
+    end)
+    return finded
+end
+
+RegisterNetEvent('mx-audioplayer:receivePlaylist', function(playlist, senderName)
+    if checkPlaylistAlreadyExist(playlist) then
+        return Surround:pushNotification(_U('playlist.already_exist', senderName, playlist.name))
+    end
+    SendNUIMessage({
+        action = 'receivePlaylist',
+        data = playlist
+    })
+    local _playlist = GetResourceKvpString('mx_audioplayer_playlist')
+    _playlist = _playlist and json.decode(_playlist) or {}
+    table.insert(_playlist, playlist)
+    SetResourceKvp('mx_audioplayer_playlist', json.encode(_playlist))
+    Surround:pushNotification(_U('playlist.received', senderName, playlist.name))
+end)
+
+function DrawText3D(x, y, z, text)
+    SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry('STRING')
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x, y, z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0 + 0.0125, 0.017 + factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end

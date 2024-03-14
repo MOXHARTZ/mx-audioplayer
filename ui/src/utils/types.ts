@@ -10,3 +10,8 @@ export type ReadyListener = {
     languageName: string;
     resources: Record<string, Record<string, string>>;
 }
+
+export type Player = {
+    source: number;
+    name: string;
+}
