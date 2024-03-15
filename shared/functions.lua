@@ -36,6 +36,7 @@ function Error(...)
 end
 
 table.includes = function(t, value)
+    if not t then return false end
     for k, v in pairs(t) do
         if v == value then
             return true
