@@ -28,3 +28,8 @@ function AddItem(source, item, count, slot, metadata)
     local player = GetPlayerFromId(source)
     player.addInventoryItem(item, count, metadata, slot)
 end
+
+function RemoveItem(source, item, count, slot)
+    local player = GetPlayerFromId(source)
+    player.removeInventoryItem(item, count, slot)
+end

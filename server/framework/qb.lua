@@ -19,3 +19,8 @@ function AddItem(source, item, count, slot, metadata)
     local player = GetPlayerFromId(source)
     player.Functions.AddItem(item, count, slot, metadata)
 end
+
+function RemoveItem(source, item, count, slot)
+    local player = GetPlayerFromId(source)
+    player.Functions.RemoveItem(item, count, slot)
+end

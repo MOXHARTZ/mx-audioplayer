@@ -87,17 +87,6 @@ local function carryAnim()
     StopAnimTask(ped, carry_anim_dict, carry_anim_name, 3.0)
 end
 
-local function pickup()
-    local player = PlayerPed
-    local boombox = nearbyBoombox()
-    if not boombox then return end
-    AttachEntityToEntity(boombox, player, GetPedBoneIndex(player, 24817), 0.0, 0.40, -0.0, -180.0, 90.0, 0.0, false, false, false, false, 2, true)
-    carrying_boombox = true
-    CreateThread(carryAnim)
-    Surround:pushNotification(_U('boombox.drop_info', Config.Boombox.DropBoomboxCommand))
-    return
-end
-
 local function drop()
     local player = PlayerPed
     local playerCoords = GetEntityCoords(player)
@@ -111,6 +100,25 @@ local function drop()
     TaskPlayAnim(player, put_anim_dict, put_anim_name, 8.0, -8.0, -1, 0, 0, false, false, false)
     Wait(500)
     PlaceObjectOnGroundProperly(boombox)
+end
+
+local function pickup()
+    local player = PlayerPed
+    local boombox = nearbyBoombox()
+    if not boombox then return end
+    AttachEntityToEntity(boombox, player, GetPedBoneIndex(player, 24817), 0.0, 0.40, -0.0, -180.0, 90.0, 0.0, false, false, false, false, 2, true)
+    carrying_boombox = true
+    CreateThread(carryAnim)
+    local text = _U('boombox.drop.text')
+    while carrying_boombox do
+        Wait(0)
+        local coords = GetEntityCoords(player)
+        DrawText3D(coords.x, coords.y, coords.z + 1.0, text)
+        if IsControlJustPressed(0, 74) then
+            drop()
+            break
+        end
+    end
 end
 
 local function destroy()

@@ -106,6 +106,7 @@ end)
 
 if Config.Boombox.Item then
     RegisterUsableItem(Config.Boombox.Item, function(source)
+        RemoveItem(source, Config.Boombox.Item, 1)
         TriggerClientEvent('mx-audioplayer:boombox:create', source)
     end)
 
@@ -128,8 +129,8 @@ RegisterNetEvent('mx-audioplayer:sharePlaylist', function(playlist, player)
 end)
 
 -- Delete this shit after a while @MOXHARTZ
-local hasCarRadio = GetResourceState('mx-caradio') == 'started'
-local hasBoombox = GetResourceState('mx-boombox') == 'started'
+local hasCarRadio = GetResourceState('mx-caradio') ~= 'missing'
+local hasBoombox = GetResourceState('mx-boombox') ~= 'missing'
 if hasCarRadio or hasBoombox then
     -- People love avoid errors :(
     for i = 1, 70 do

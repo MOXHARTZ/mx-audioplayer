@@ -36,3 +36,8 @@ function AddItem(source, item, count, slot, metadata)
     print('Add Item : You need to implement this function for your framework.')
     return true
 end
+
+function RemoveItem(source, item, count, slot)
+    print('Remove Item : You need to implement this function for your framework.')
+    return true
+end

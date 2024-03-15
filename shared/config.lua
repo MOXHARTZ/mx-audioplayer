@@ -22,7 +22,6 @@ Config.Boombox.AccessBoomboxCommand = 'bx'
 
 Config.DJ = {}
 Config.DJ.Enable = true
-Config.DJ.Item = 'sandwich'                            -- Set false if you don't want item.
 Config.DJ.Target = true                                -- Uses qb-target. But if you are using ox_target it'll provide this.
 Config.DJ.Jobs = { 'police', 'ambulance', 'mechanic' } -- Jobs that can use the DJ (you can set false if you want to allow everyone)
 Config.DJ.Locations = {

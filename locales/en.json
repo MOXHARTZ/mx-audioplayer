@@ -43,7 +43,7 @@
     "boombox.target.open": "Open",
     "boombox.target.destroy": "Destroy Boombox",
     "boombox.target.pickup": "Pickup Boombox",
-    "boombox.drop_info": "Use %s command to drop the boombox",
+    "boombox.drop.text": "Press [H] to drop the boombox",
     "dj.open.menu": "Press [E] to open the DJ menu",
     "dj.target.open": "Open UI",
     "radio.command": "Open Car Radio"
