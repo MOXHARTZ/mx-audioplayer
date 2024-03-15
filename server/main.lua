@@ -128,7 +128,7 @@ RegisterNetEvent('mx-audioplayer:sharePlaylist', function(playlist, player)
 end)
 
 -- Delete this shit after a while @MOXHARTZ
-local hasCarRadio = GetResourceState('mx-caradio')
+local hasCarRadio = GetResourceState('mx-caradio') == 'started'
 local hasBoombox = GetResourceState('mx-boombox') == 'started'
 if hasCarRadio or hasBoombox then
     -- People love avoid errors :(
