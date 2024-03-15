@@ -28,6 +28,14 @@ Config.DJ.Locations = {
     {
         id = 'Sex On The Beach',                                                      -- Unique ID
         coords = vector3(-1382.1446533203125, -614.4506225585938, 31.49793624877929), -- Location
+        panner = {                                                                    -- optional. Useful for big areas
+            -- https://developer.mozilla.org/en-US/docs/Web/API/PannerNode
+            panningModel = 'HRTF',
+            refDistance = 15.0,            -- Distance of the volume dropoff start (bigger = more distance)
+            rolloffFactor = 1.8,           -- How fast the volume drops off
+            distanceModel = 'exponential', -- How the volume drops off (linear, inverse, exponential)
+
+        }
     }
 }
 

@@ -9,7 +9,7 @@ local function checkCustomIdExist(customId)
     return false
 end
 
-RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingResource, customId, playQuietly, coords)
+RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingResource, customId, playQuietly, coords, customData)
     local src = source
     local id = src
     if invokingResource then id = id .. ':' .. invokingResource end
@@ -20,7 +20,7 @@ RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingR
         sounds[currentSound] = nil
     end
     volume = playQuietly and 0.0 or volume
-    Surround:Play(-1, soundId, url, coords, false, volume)
+    Surround:Play(-1, soundId, url, coords, false, volume, customData.panner)
     if not soundId then return print('Failed to play sound') end
     Surround:setDestroyOnFinish(-1, soundId, false)
     sounds[id] = soundId

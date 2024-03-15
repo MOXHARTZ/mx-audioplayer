@@ -58,12 +58,27 @@ CreateThread(function()
 end)
 
 ---@param data? OpenAudioPlayerData
+local function initAudioPlayerData(id, data)
+    local audioPlayerData = {}
+    if not data then
+        audioPlayer[id] = audioPlayerData
+        return
+    end
+    if data.staySameCoords then
+        audioPlayerData.coords = PlayerCoords
+    end
+    if data.panner then
+        audioPlayerData.panner = data.panner
+    end
+    audioPlayer[id] = audioPlayerData
+end
+
+---@param data? OpenAudioPlayerData
 ---@param handlers? OpenAudioPlayerHandlers
 function OpenAudioPlayer(data, handlers)
     if not data then data = {} end
     if not handlers then handlers = {} end
     local silent = data.silent
-    local staySameCoords = data.staySameCoords
     customId = data.customId
     playQuietly = silent and true or false
     invokingResource = GetInvokingResource() or ''
@@ -86,11 +101,7 @@ function OpenAudioPlayer(data, handlers)
             end
         end
     end
-    if staySameCoords then
-        audioPlayer[id] = {
-            coords = PlayerCoords
-        }
-    end
+    initAudioPlayerData(id, data)
     SendNUIMessage({
         action = 'open',
         data = {
@@ -145,10 +156,11 @@ RegisterNUICallback('play', function(data, cb)
     if currentSounds[id] and (currentSounds[id].soundId) ~= soundId then
         TriggerServerEvent('mx-audioplayer:destroy', currentSounds[id].soundId)
     end
-    local coords = audioPlayer[id] and audioPlayer[id].coords or GetEntityCoords(PlayerPed) -- need instant coords
-    TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, invokingResource, customId, playQuietly, coords)
-    local loaded = Surround:soundIsLoaded(soundId)                                          -- wait for the sound to load
-    if not loaded then return cb(false) end                                                 -- if it doesn't load, return false
+    local audioPlayerData = audioPlayer[id]
+    local coords = audioPlayerData.coords or GetEntityCoords(PlayerPed) -- need instant coords
+    TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, invokingResource, customId, playQuietly, coords, audioPlayerData)
+    local loaded = Surround:soundIsLoaded(soundId)                      -- wait for the sound to load
+    if not loaded then return cb(false) end                             -- if it doesn't load, return false
     local maxDuration = Surround:getMaxDuration(soundId)
     soundData.duration = maxDuration
     soundData.playing = true

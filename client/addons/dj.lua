@@ -7,6 +7,7 @@ local djSettings = {
 
 local function openUi(locationData)
     djSettings.customId = locationData.id
+    djSettings.panner = locationData.panner
     OpenAudioPlayer(djSettings)
 end
 
