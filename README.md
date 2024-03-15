@@ -1,11 +1,30 @@
 # INTRODUCTION
-This script is made for mx-surround. And other official addon scripts use this script. With this script you can create playlists and hear them as real-time surround sound.
+This script is made for mx-surround. It's a audio player that allows you to play music in your server. Search songs by name and create your own playlists
 
 # INSTALLATION
 1. Download the zip file from the [download](https://github.com/MOXHARTZ/mx-audioplayer/archive/refs/heads/main.zip)
 2. Extract the zip file
 3. Rename the folder to `mx-audioplayer` (Be sure to remove the `-main` from the folder name)
 4. Copy the folder to your `resources` folder
+   
+# Features
+- Real-time surround sound
+- Playlists
+- Volume control
+- Play/Pause 
+- Repeat
+- Shuffle
+- Create playlists
+- Delete playlists
+- Add songs to playlists
+- Remove songs from playlists
+- Share playlists with players
+- Special dj script
+- Special car radio script
+- Special boombox script
+- Search songs by directly name
+- Sort your songs when you want
+- Sort your playlists when you want
 
 # SCREENSHOTS
 ![Screenshot 1](/screenshots/1.png)
@@ -14,8 +33,4 @@ This script is made for mx-surround. And other official addon scripts use this s
 ![Screenshot 4](/screenshots/4.png)
 
 # REQUIREMENTS
-- [mx-surround](https://moxha.store/category/resources)
-
-# Other official addon scripts
-- [mx-caradio](https://github.com/MOXHARTZ/mx-caradio)
-- [mx-boombox](https://github.com/MOXHARTZ/mx-boombox)
+- [mx-surround](https://store.moxha.dev/category/resources)
