@@ -19,7 +19,7 @@
     "array-move": "^4.0.0",
     "classnames": "^2.3.2",
     "fast-memoize": "^2.5.2",
-    "i18next": "^23.10.0",
+    "i18next": "^23.10.1",
     "million": "^3.0.6",
     "path": "^0.12.7",
     "react": "^18.2.0",
