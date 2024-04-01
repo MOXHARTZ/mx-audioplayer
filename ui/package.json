@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@formkit/auto-animate": "^0.8.0",
     "@mui/material": "^5.15.13",
-    "@reduxjs/toolkit": "^2.2.2",
+    "@reduxjs/toolkit": "^2.2.3",
     "array-move": "^4.0.0",
     "classnames": "^2.3.2",
     "fast-memoize": "^2.5.2",
