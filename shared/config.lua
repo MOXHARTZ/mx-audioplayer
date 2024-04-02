@@ -54,7 +54,7 @@ Config.Framework = getFramework()
 
 if Config.Framework == 'standalone' then
     Config.DJ.Jobs = false
-    Info('DJ is enabled but no framework found. DJ is now available for everyone.')
+    print('DJ is enabled but no framework found. DJ is now available for everyone.')
 end
 
 local function checkHasTarget()
@@ -62,7 +62,7 @@ local function checkHasTarget()
     if not hasTarget then
         Config.Boombox.Target = false
         Config.DJ.Target = false
-        Info('No target resource found. Boombox and DJ will not use target.')
+        print('No target resource found. Boombox and DJ will not use target.')
     end
 end
 
