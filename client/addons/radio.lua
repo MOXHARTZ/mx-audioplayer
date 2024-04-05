@@ -1,4 +1,4 @@
-if not Config.Radio then return end
+if not Config.Radio.Enable then return end
 CreateThread(function()
     Info('Radio is enabled')
     InitDeprecatedScriptPlaylist('mx-caradio')
