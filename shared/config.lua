@@ -6,7 +6,7 @@ Config.Locale = 'en' -- 'en', 'fr'
 Config.Radio = {}
 Config.Radio.Enable = true
 Config.Radio.DisableDefaultRadio = true -- Set to false if you want to use the default radio stations
-Config.Radio.RadioKey = 'N'             -- Default key to open the radio
+Config.Radio.RadioKey = 'N'             -- Default key to open the radio (You can set false if you don't want a key)
 
 Config.Boombox = {}
 Config.Boombox.Enable = true

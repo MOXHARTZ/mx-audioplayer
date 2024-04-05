@@ -25,7 +25,9 @@ local function openUi()
 end
 
 RegisterCommand('carRadio', openUi, false)
-RegisterKeyMapping('carRadio', _U('radio.command'), 'keyboard', Config.Radio.RadioKey)
+if Config.Radio.RadioKey then
+    RegisterKeyMapping('carRadio', _U('radio.command'), 'keyboard', Config.Radio.RadioKey)
+end
 
 local disabledRadios = {
     'RADIO_01_CLASS_ROCK',
