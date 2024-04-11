@@ -5,7 +5,7 @@ import Image from '../image';
 import { Playlist } from '@/fake-api/playlist-categories';
 import { toast } from 'react-toastify';
 import { useAppDispatch } from '@/stores';
-import { addPlaylist } from '@/stores/Main';
+import { addPlaylist, updatePlaylist } from '@/stores/Main';
 import { nanoid } from '@reduxjs/toolkit';
 import { isEmpty } from '@/utils/misc';
 import classNames from 'classnames';
@@ -20,6 +20,16 @@ const PlaylistDialog = ({ open, setOpen, currentPlaylist }: { open: boolean, set
     }, []);
     const handleFinish = useCallback(() => {
         setOpen(false);
+        if (currentPlaylist) {
+            dispatch(updatePlaylist({
+                id: currentPlaylist.id,
+                name,
+                description,
+                thumbnail: isEmpty(image) ? undefined : image,
+                songs: currentPlaylist.songs
+            }))
+            return;
+        }
         toast.success(i18next.t('playlist.dialog.created'))
         dispatch(addPlaylist({
             id: nanoid(),

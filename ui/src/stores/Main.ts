@@ -103,6 +103,17 @@ const Static = createSlice({
                 playlist: state.playlist
             })
         },
+        updatePlaylist: (state, action: PayloadAction<Playlist>) => {
+            state.playlist = state.playlist.map(playlist => {
+                if (playlist.id === action.payload.id) {
+                    return action.payload;
+                }
+                return playlist;
+            })
+            fetchNui('setPlaylist', {
+                playlist: state.playlist
+            })
+        },
         setSelectedSongs: (state, action: PayloadAction<string[]>) => {
             state.selectedSongs = action.payload;
         },
@@ -174,7 +185,8 @@ export const {
     setFilterPlaylist,
     setCurrentSongs,
     deletePlaylist,
-    addPlaylist
+    addPlaylist,
+    updatePlaylist
 } = Static.actions
 
 export default Static.reducer
