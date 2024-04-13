@@ -3,7 +3,7 @@ games { 'gta5' }
 author 'https://github.com/MOXHARTZ'
 repository 'https://github.com/MOXHARTZ/mx-audioplayer'
 discord 'https://discord.gg/crbtDw9hT7'
-version '2.2.0'
+version '2.2.1'
 lua54 'yes'
 
 shared_scripts {
