@@ -106,7 +106,7 @@ export interface Song {
     title: string;
     artist: string;
     cover: string;
-    url: string;
+    url?: string;
     duration: number;
     playing?: boolean;
 }

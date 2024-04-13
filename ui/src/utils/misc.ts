@@ -74,3 +74,35 @@ export const isSpotifyUrl = (url: string) => {
     const spotifyRegex = /^(https?\:\/\/)?(www\.)?(open\.spotify\.com)\/.+$/;
     return spotifyRegex.test(url);
 }
+
+const validQueryDomains = new Set([
+    'youtube.com',
+    'www.youtube.com',
+    'm.youtube.com',
+    'music.youtube.com',
+    'gaming.youtube.com',
+]);
+
+export const getYoutubePlaylistID = (url: string) => {
+    try {
+        const parsed = new URL(url);
+        if (!validQueryDomains.has(parsed.hostname)) return null;
+        const id = parsed.searchParams.get('list');
+        if (!id) return null;
+        return id
+    } catch (e) {
+        return null;
+    }
+}
+
+export const isSpotifyPlaylist = (url: string) => {
+    const regex = /^(https:\/\/open\.spotify\.com\/playlist\/)([a-zA-Z0-9]+)(.*)$/;
+    return regex.test(url)
+}
+
+export const isSpotifyAlbum = (url: string) => {
+    const regex = /^(https:\/\/open\.spotify\.com\/album\/)([a-zA-Z0-9]+)(.*)$/;
+    return regex.test(url)
+}
+
+export const YOUTUBE_URL = 'https://www.youtube.com/watch?v=';

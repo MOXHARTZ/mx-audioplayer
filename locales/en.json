@@ -23,9 +23,9 @@
     "edit.clear": "Delete all",
     "edit.delete": "Delete Selected Songs",
     "edit.cancel": "Cancel",
-    "search_track.content": "You can add a song to the playlist by entering a track name or you can pass here by a spotify, youtube or soundcloud url",
+    "search_track.content": "You can add a song to the playlist by entering a track name or you can pass here by a spotify, youtube or soundcloud url. For now, soundcloud playlists are not supported.",
     "search_track.title": "Add a song to the playlist",
-    "search_track.placeholder": "Track name or url",
+    "search_track.placeholder": "Track name or url (supports playlist and album)",
     "search_track.invalid_url": "Invalid url",
     "search_track.knowledge": "You can't play songs with a song duration of more than 15 minutes (for performance reasons)",
     "general.unknown": "Unknown",
@@ -46,5 +46,6 @@
     "boombox.drop.text": "Press [H] to drop the boombox",
     "dj.open.menu": "Press [E] to open the DJ menu",
     "dj.target.open": "Open UI",
-    "radio.command": "Open Car Radio"
+    "radio.command": "Open Car Radio",
+    "search_track.add_all": "Add all to playlist"
 }

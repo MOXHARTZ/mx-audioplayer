@@ -9,7 +9,10 @@ _T = locale and json.decode(locale) or nil
 for k, v in pairs(defaultLocale) do
     if not _T[k] then
         _T[k] = v
-        print(('^3[MX-AUDIOPLAYER]^1 WARNING: ^7Locale %s is missing key %s, falling back to default (en).'):format(Config.Locale, k))
+        CreateThread(function()
+            Wait(5000) --  Wait 5 seconds so people can see the warning
+            print(('^3[MX-AUDIOPLAYER]^1 WARNING: ^7Locale %s is missing key `%s`, falling back to default (en). Please add this key to your locale file.'):format(Config.Locale, k))
+        end)
     end
 end
 if not _T then

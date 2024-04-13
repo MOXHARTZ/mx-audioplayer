@@ -150,11 +150,37 @@ const Static = createSlice({
             state.waitingForResponse = false;
             if (!payload.response) return;
             const playlistId = payload.playlistId ?? state.currentPlaylistId;
+            state.position = payload.position;
+
+            if (payload.updatedSoundData) {
+                const url = payload.updatedSoundData.url;
+                state.playlist = state.playlist.map(playlist => {
+                    if (playlist.id === playlistId) {
+                        return {
+                            ...playlist,
+                            songs: playlist.songs.map(song => {
+                                if (song.id === payload.position) {
+                                    song.url = url;
+                                    return song;
+                                }
+                                return song;
+                            })
+                        }
+                    }
+                    return playlist;
+                })
+                state.currentSongs = state.playlist.find(playlist => playlist.id === playlistId)?.songs ?? undefined;
+                fetchNui('setPlaylist', {
+                    playlist: state.playlist
+                })
+            }
+
             const playlist = state.playlist.find(playlist => playlist.id === playlistId);
             if (!playlist) return;
+
             const soundData = playlist.songs.find(song => song.id === payload.position);
             if (!soundData) return;
-            state.position = payload.position;
+
             state.currentSongData = { playlistId: playlistId, song: soundData };
             soundData.duration = Math.floor(payload.response);
             state.playing = true;

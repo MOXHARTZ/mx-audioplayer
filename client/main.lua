@@ -227,6 +227,12 @@ RegisterNUICallback('searchQuery', function(data, cb)
     cb(response)
 end)
 
+RegisterNUICallback('searchTracks', function(data, cb)
+    local query = data.query
+    local response = Surround:searchTracks(query)
+    cb(response)
+end)
+
 RegisterNUICallback('setPlaylist', function(data, cb)
     playlist = data.playlist
     SetResourceKvp('mx_audioplayer_playlist', json.encode(playlist))

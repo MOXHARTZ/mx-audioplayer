@@ -35,6 +35,16 @@ function Error(...)
     print(msg)
 end
 
+function LoopError(...)
+    local unpacked = table.unpack({ ... })
+    CreateThread(function()
+        while true do
+            print('^1[ERROR]^7', unpacked)
+            Wait(2000)
+        end
+    end)
+end
+
 table.includes = function(t, value)
     if not t then return false end
     for k, v in pairs(t) do
@@ -58,4 +68,11 @@ table.find = function(arr, func)
         end
     end
     return false, false
+end
+
+string.split = function(str, sep)
+    local sep, fields = sep or ':', {}
+    local pattern = string.format('([^%s]+)', sep)
+    str:gsub(pattern, function(c) fields[#fields + 1] = c end)
+    return fields
 end

@@ -1,18 +1,28 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchNui } from '../utils/fetchNui';
 import { Song } from '@/fake-api/song';
-import { isEnvBrowser } from '@/utils/misc';
+import { isEnvBrowser, YOUTUBE_URL } from '@/utils/misc';
+
+interface Params {
+  response: false | number;
+  position: number | string;
+  playlistId?: string | number;
+  updatedSoundData?: Song;
+}
+
+interface Payload {
+  position: string | number;
+  volume: number;
+  playlistId?: string | number;
+  soundData: Song;
+  updatedSoundData?: Song;
+}
 
 export const handlePlay = createAsyncThunk<
-  { response: false | number; position: number | string, playlistId?: string | number; },
-  {
-    position: string | number;
-    volume: number;
-    playlistId?: string | number;
-    soundData: Song;
-  },
+  Params,
+  Payload,
   { rejectValue: boolean }
->('boombox/handlePlay',
+>('audioplayer/handlePlay',
   async (data, { rejectWithValue }) => {
     try {
       if (isEnvBrowser()) {
@@ -21,12 +31,19 @@ export const handlePlay = createAsyncThunk<
           position: data.position
         }
       }
-      const url = data.soundData.url;
+      const soundData = data.soundData;
+      let url = soundData.url;
       if (!url) {
-        return rejectWithValue(false);
+        const response = await fetchNui<{ videoId: string }[]>('searchQuery', { query: `${soundData.title} - ${soundData.artist}` })
+        if (!response) return rejectWithValue(false);
+        url = `${YOUTUBE_URL}${response[0].videoId}`;
+      }
+      const updatedSoundData = {
+        ...soundData,
+        url
       }
       const response = await fetchNui<false | number>('play', {
-        soundData: data.soundData,
+        soundData: updatedSoundData,
         volume: data.volume
       });
 
@@ -36,7 +53,8 @@ export const handlePlay = createAsyncThunk<
       return {
         response,
         position: data.position,
-        playlistId: data.playlistId
+        playlistId: data.playlistId,
+        updatedSoundData: !soundData.url ? updatedSoundData : undefined
       }
     } catch (error) {
       return rejectWithValue(false);
