@@ -3,6 +3,7 @@ if Config.Framework ~= 'qb' then return end
 QBCore = exports['qb-core']:GetCoreObject()
 
 function GetPlayerFromId(source)
+    source = tonumber(source)
     return QBCore.Functions.GetPlayer(source)
 end
 
