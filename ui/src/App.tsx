@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { NOTIFICATION, isEnvBrowser } from '@/utils/misc'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Backdrop, CircularProgress, CssBaseline } from '@mui/material'
-import { useAppDispatch, useAppSelector } from './stores'
+import { useAppDispatch } from './stores'
 import useNuiEvent from './hooks/useNuiEvent'
 import { useExitListener } from './hooks/useExitListener'
 import { fetchNui } from './utils/fetchNui'
@@ -16,9 +15,9 @@ import { ReadyListener } from './utils/types'
 import router from './routes'
 import { RouterProvider } from 'react-router-dom'
 import { Playlist } from './fake-api/playlist-categories';
+import { NextUIProvider } from '@nextui-org/react';
 
 function App() {
-  const waitingForResponse = useAppSelector(state => state.Main.waitingForResponse)
   const [visible, setVisible] = useState(isEnvBrowser());
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -57,19 +56,14 @@ function App() {
 
   return (
     <>
-      <CssBaseline />
-      <Backdrop
-        sx={{ color: '#fff', zIndex: 9999 }}
-        open={waitingForResponse && visible}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
       <ToastContainer {...NOTIFICATION} />
       <main className={classNames({
-        'flex items-center justify-center w-full h-full transition scale-100': true,
+        'flex items-center justify-center w-full h-full transition scale-100 dark': true,
         'opacity-0 scale-110': !visible
       })}>
-        <RouterProvider router={router} />
+        <NextUIProvider className='w-full h-full items-center flex justify-center'>
+          <RouterProvider router={router} />
+        </NextUIProvider>
       </main>
     </>
 

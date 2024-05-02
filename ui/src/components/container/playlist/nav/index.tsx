@@ -1,12 +1,12 @@
 import { useAppDispatch, useAppSelector } from '@/stores'
-import { Tooltip } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import Image from './image'
+import PlaylistImage from './PlaylistImage'
 import ContextMenu from './contextmenu'
 import SortableList, { SortableItem } from "react-easy-sort";
 import { setPlaylist } from '@/stores/Main'
 import classNames from 'classnames'
 import { arrayMoveImmutable } from 'array-move'
+import { Tooltip } from '@nextui-org/react';
 
 const PlaylistNav = () => {
     const { playlist, editMode } = useAppSelector(state => state.Main)
@@ -15,7 +15,7 @@ const PlaylistNav = () => {
         dispatch(setPlaylist(arrayMoveImmutable(playlist, oldIndex, newIndex)))
     };
     return (
-        <section className='w-[7.5rem] h-full bg-zinc-600 p-4 rounded-lg overflow-y-auto relative'>
+        <section className='w-[7.5rem] h-full shadow-xl bg-default-200/50 p-4 rounded-md overflow-y-auto relative'>
             <div className='w-full h-full absolute z-0 inset-0'>
                 <ContextMenu />
             </div>
@@ -27,8 +27,8 @@ const PlaylistNav = () => {
             >
                 {playlist.map(playlist => (
                     <ContextMenu key={playlist.id} disabled={editMode} playlist={playlist}>
-                        <SortableItem key={playlist.id}>
-                            <Tooltip key={playlist.id} title={playlist.name} placement='right'>
+                        <Tooltip key={playlist.id} content={playlist.name} placement='right'>
+                            <SortableItem key={playlist.id}>
                                 <NavLink
                                     to={`/playlist/${playlist.id}`}
                                     key={playlist.id}
@@ -39,10 +39,10 @@ const PlaylistNav = () => {
                                     })} style={({ isActive }) => ({
                                         backgroundColor: isActive ? '#3f3f46' : 'transparent'
                                     })}>
-                                    <Image key={playlist.id} playlist={playlist} />
+                                    <PlaylistImage key={playlist.id} playlist={playlist} />
                                 </NavLink>
-                            </Tooltip>
-                        </SortableItem>
+                            </SortableItem>
+                        </Tooltip>
                     </ContextMenu>
                 ))}
             </SortableList>

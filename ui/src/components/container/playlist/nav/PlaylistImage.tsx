@@ -1,17 +1,18 @@
 import { Playlist } from '@/fake-api/playlist-categories'
 import { isEmpty } from '@/utils/misc'
+import { Image } from '@nextui-org/react'
 import classNames from 'classnames'
 import { MdAudiotrack } from 'react-icons/md'
 
-const Image = ({ playlist, className, url }: { playlist?: Playlist, className?: string, url?: string }) => {
+const PlaylistImage = ({ playlist, className, url }: { playlist?: Playlist, className?: string, url?: string }) => {
     if (!playlist || (!playlist.thumbnail && playlist.songs.length === 0) || url) return (
         <div className={`${className || `w-[4.5rem] h-16 rounded-md flex items-center justify-center bg-zinc-500`}`}>
-            {!isEmpty(url) ? <img src={url} alt='playlist' className='w-full h-full object-cover rounded-md pointer-events-none' /> : <MdAudiotrack size={32} className='text-gray-400 rounded-md' />}
+            {!isEmpty(url) ? <Image src={url} alt='playlist' className='w-full h-full object-cover rounded-md pointer-events-none' /> : <MdAudiotrack size={32} className='text-gray-400 rounded-md' />}
         </div>
     )
     if (playlist.thumbnail) return (
         <div className={`${className || 'w-[4.5rem] h-16 rounded-md'}`}>
-            <img src={playlist.thumbnail} alt={playlist.name} className='w-full h-full object-cover rounded-md pointer-events-none' />
+            <Image src={playlist.thumbnail} alt={playlist.name} className='w-full h-full object-cover rounded-md pointer-events-none' />
         </div>
     )
     const firstFourthSongs = playlist.songs.length > 3 ? playlist.songs.slice(0, 4) : [playlist.songs[0]]
@@ -35,4 +36,4 @@ const Image = ({ playlist, className, url }: { playlist?: Playlist, className?: 
     )
 }
 
-export default Image
+export default PlaylistImage

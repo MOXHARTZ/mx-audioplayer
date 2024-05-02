@@ -1,16 +1,26 @@
 import { MdEdit } from 'react-icons/md'
 import { IoAddOutline } from 'react-icons/io5'
-import { Button, IconButton } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '@/stores'
 import { clearSound, setCurrentSongs, setEditMode, setFilterPlaylist, setSelectedSongs } from '@/stores/Main'
 import { memo, useCallback, useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { toast } from 'react-toastify';
 import { BiSearch } from 'react-icons/bi'
-import InputBase from '@mui/material/InputBase';
-import { styled, alpha } from '@mui/material/styles';
 import SearchTrack from './search'
 import i18next from 'i18next'
+import { Button, ButtonGroup, Input } from '@nextui-org/react'
+
+{/* <Search>
+                        <SearchIconWrapper>
+                            <BiSearch size={22} />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder={i18next.t('playlist.search')}
+                            value={filterPlaylist}
+                            onChange={(e) => dispatch(setFilterPlaylist(e.target.value))}
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </Search> */}
 
 const Actions = () => {
     const { editMode, selectedSongs, position, filterPlaylist, currentSongs } = useAppSelector(state => state.Main)
@@ -44,33 +54,52 @@ const Actions = () => {
         if (!newEditMode) dispatch(setSelectedSongs([]));
     }, [currentSongs, editMode])
     return (
-        <section className='flex flex-row items-center justify-end mb-3'>
-            <aside className='self-end flex justify-end gap-2 w-full' ref={animationParent}>
-                {!editMode && <>
-                    <Search>
-                        <SearchIconWrapper>
-                            <BiSearch size={22} />
-                        </SearchIconWrapper>
-                        <StyledInputBase
+        <section className='flex flex-row items-center justify-end mb-5 mt-3'>
+            <aside className='w-[7.5rem]'>
+
+            </aside>
+            <aside className='flex justify-between gap-2 w-full' ref={animationParent}>
+                <div></div>
+                <section>
+                    {!editMode &&
+                        <Input
+                            radius="md"
+                            size='md'
                             placeholder={i18next.t('playlist.search')}
                             value={filterPlaylist}
                             onChange={(e) => dispatch(setFilterPlaylist(e.target.value))}
-                            inputProps={{ 'aria-label': 'search' }}
+                            startContent={
+                                <BiSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+                            }
                         />
-                    </Search>
-                    <IconButton aria-label="add song" onClick={handleClickOpen}>
-                        <IoAddOutline size={24} color='#fff' />
-                    </IconButton>
-                    <IconButton aria-label="edit playlist" onClick={toggleEditMode}>
-                        <MdEdit size={24} color='#fff' />
-                    </IconButton >
-                </>
+                    }
+                </section>
+                {!editMode &&
+                    <section className='flex items-center gap-2'>
+                        <Button
+                            isIconOnly
+                            color='danger'
+                            aria-label="add song"
+                            onPress={handleClickOpen}
+                        >
+                            <IoAddOutline size={24} color='#fff' />
+                        </Button>
+                        <Button
+                            isIconOnly
+                            color='default'
+                            aria-label="edit playlist"
+                            onPress={toggleEditMode}
+                        >
+                            <MdEdit size={24} color='#fff' />
+                        </Button >
+                    </section>
                 }
-                {editMode && <>
-                    <Button variant='contained' color='error' onClick={deleteAll}>{i18next.t('edit.clear')}</Button>
-                    <Button variant='contained' color='warning' onClick={deleteSelectedSongs}>{i18next.t('edit.delete')}</Button>
-                    <Button variant='contained' color='primary' onClick={toggleEditMode}>{i18next.t('general.done')}</Button>
-                </>
+                {editMode &&
+                    <ButtonGroup variant='faded'>
+                        <Button color='danger' onPress={deleteAll}>{i18next.t('edit.clear')}</Button>
+                        <Button onPress={deleteSelectedSongs} >{`${i18next.t('edit.delete')} (${selectedSongs.length})`}</Button>
+                        <Button color='success' onPress={toggleEditMode}>{i18next.t('general.done')}</Button>
+                    </ButtonGroup>
                 }
             </aside>
             <SearchTrack open={open} setOpen={setOpen} />
@@ -78,46 +107,5 @@ const Actions = () => {
 
     )
 }
-
-const Search = styled('div')(({ theme }) => ({
-    '&:not(:has(.Mui-focused)):hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-        borderRadius: '99999px',
-    },
-    '& .Mui-focused': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-        borderRadius: theme.shape.borderRadius,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 1.6),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    width: '100%',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 0, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1.5em + ${theme.spacing(3)})`,
-        transition: theme.transitions.create('width'),
-        [theme.breakpoints.up('sm')]: {
-            width: '0ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
-    },
-}));
 
 export default memo(Actions)

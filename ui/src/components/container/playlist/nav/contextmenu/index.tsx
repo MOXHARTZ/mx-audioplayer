@@ -1,46 +1,30 @@
-import Menu from '@mui/material/Menu';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import MenuItem from '@mui/material/MenuItem';
 import { MdAudiotrack, MdEdit } from 'react-icons/md';
-import { IoPerson, IoTrash } from 'react-icons/io5';
+import { IoPerson } from 'react-icons/io5';
 import { Playlist } from '@/fake-api/playlist-categories';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import PlaylistDialog from './playlist-dialog';
 import { useAppDispatch } from '@/stores';
 import { deletePlaylist } from '@/stores/Main';
 import { toast } from 'react-toastify';
-import { Divider } from '@mui/material';
 import i18next from 'i18next';
 import Share from './share';
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn, DropdownSection } from "@nextui-org/react";
+import { IoMdTrash } from "react-icons/io";
+
+const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
 export default function ContextMenu({ children, disabled, playlist }: { children?: React.ReactNode, disabled?: boolean, playlist?: Playlist }) {
-    const [contextMenu, setContextMenu] = useState<{
-        mouseX: number;
-        mouseY: number;
-    } | null>(null);
     const [showCreatePlaylist, setShowCreatePlaylist] = useState<boolean>(false);
     const [showEditPlaylist, setShowEditPlaylist] = useState<boolean>(false)
     const [showShare, setShowShare] = useState<boolean>(false)
     const dispatch = useAppDispatch();
     const [clickedDelete, setClickedDelete] = useState<boolean>(false)
+    const btnRef = useRef<HTMLButtonElement>(null);
 
     const handleContextMenu = (event: React.MouseEvent) => {
         event.preventDefault();
         if (disabled) return;
-        setContextMenu(
-            contextMenu === null
-                ? {
-                    mouseX: event.clientX + 2,
-                    mouseY: event.clientY - 6,
-                }
-                :
-                null,
-        );
-    };
-
-    const handleClose = () => {
-        setContextMenu(null);
+        btnRef?.current?.click();
     };
 
     const handleDelete = useCallback(() => {
@@ -51,57 +35,62 @@ export default function ContextMenu({ children, disabled, playlist }: { children
         if (!playlist) return toast.error('Playlist not found');
         dispatch(deletePlaylist(playlist?.id ?? 0))
         toast.success('Playlist deleted')
-        handleClose()
     }, [playlist, clickedDelete])
 
     return (
-        <div onContextMenu={handleContextMenu} className='w-full h-full' style={{ cursor: 'context-menu' }}>
+        <div className='w-full h-full' onContextMenu={handleContextMenu}>
             {children}
-            <Menu
-                open={contextMenu !== null && !showEditPlaylist && !showCreatePlaylist && !showShare}
-                onClose={handleClose}
-                anchorReference="anchorPosition"
-                anchorPosition={
-                    contextMenu !== null
-                        ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-                        : undefined
-                }
-            >
-                <div>
-                    <MenuItem onClick={() => setShowCreatePlaylist(true)}>
-                        <ListItemIcon>
-                            <MdAudiotrack />
-                        </ListItemIcon>
-                        <ListItemText>{i18next.t('playlist.context.create')}</ListItemText>
-                    </MenuItem>
-                    {playlist ? (
-                        <>
-                            <MenuItem onClick={() => setShowEditPlaylist(true)}>
-                                <ListItemIcon>
-                                    <MdEdit />
-                                </ListItemIcon>
-                                <ListItemText>{i18next.t('playlist.dialog.edit')}</ListItemText>
-                            </MenuItem>
-                            <MenuItem onClick={() => setShowShare(true)}>
-                                <ListItemIcon>
-                                    <IoPerson />
-                                </ListItemIcon>
-                                <ListItemText>{i18next.t('playlist.context.share')}</ListItemText>
-                            </MenuItem>
-                            <Divider />
-                            <MenuItem onClick={handleDelete}>
-                                <ListItemIcon>
-                                    <IoTrash />
-                                </ListItemIcon>
-                                <ListItemText>{i18next.t('playlist.context.delete')}</ListItemText>
-                            </MenuItem>
-                        </>
-                    ) : null}
-                </div>
-            </Menu>
+            <Dropdown>
+                <DropdownTrigger>
+                    <Button
+                        ref={btnRef}
+                        className='invisible absolute inset-0'
+                        variant="bordered"
+                    >
+                        Open Menu
+                    </Button>
+                </DropdownTrigger>
+                <DropdownMenu variant="faded" aria-label="Dropdown menu with icons">
+                    <DropdownSection title='Actions' showDivider>
+                        <DropdownItem
+                            key="create"
+                            startContent={<MdAudiotrack className={iconClasses} />}
+                            onPress={() => setShowCreatePlaylist(true)}
+                        >
+                            {i18next.t('playlist.context.create')}
+                        </DropdownItem>
+                        <DropdownItem
+                            key="edit"
+                            startContent={<MdEdit className={iconClasses} />}
+                            onPress={() => setShowEditPlaylist(true)}
+                        >
+                            {i18next.t('playlist.dialog.edit')}
+                        </DropdownItem>
+                        <DropdownItem
+                            key="share"
+                            startContent={<IoPerson className={iconClasses} />}
+                            onPress={() => setShowShare(true)}
+                        >
+                            {i18next.t('playlist.context.share')}
+                        </DropdownItem>
+                    </DropdownSection>
+                    <DropdownSection title='Danger Zone'>
+                        <DropdownItem
+                            key="delete"
+                            className="text-danger"
+                            color="danger"
+                            startContent={<IoMdTrash className={cn(iconClasses, "text-danger")} />}
+                            onPress={handleDelete}
+                        >
+                            {i18next.t('playlist.context.delete')}
+                        </DropdownItem>
+                    </DropdownSection>
+                </DropdownMenu>
+            </Dropdown>
             {showCreatePlaylist && <PlaylistDialog open={showCreatePlaylist} setOpen={setShowCreatePlaylist} />}
             {showEditPlaylist && <PlaylistDialog open={showEditPlaylist} setOpen={setShowEditPlaylist} currentPlaylist={playlist} />}
             {showShare && <Share open={showShare} setOpen={setShowShare} currentPlaylist={playlist} />}
         </div>
+
     );
 }

@@ -2,17 +2,17 @@ import { FC, memo, useCallback, useEffect, useMemo } from 'react';
 import useNuiEvent from '@/hooks/useNuiEvent';
 import { setPlaying, setRepeat, setShuffle } from '@/stores/Main';
 import { handlePlay } from '@/thunks/handlePlay';
-import { BiSkipPrevious, BiPause, BiPlay, BiSkipNext, BiShuffle, BiRepeat } from 'react-icons/bi'
-import { Box, IconButton } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '@/stores';
 import { fetchNui } from '@/utils/fetchNui';
 import memoize from "fast-memoize";
 import i18next from 'i18next';
+import { Button } from "@nextui-org/react";
+import { IoPauseCircle, IoPlayBack, IoPlayCircle, IoPlayForward, IoRepeat, IoShuffle } from "react-icons/io5";
 
 const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> = ({ timeStamp, setTimeStamp }) => {
     const dispatch = useAppDispatch()
-    const { position, playing, volume, playlist, shuffle, repeat, currentSongData } = useAppSelector(state => state.Main)
+    const { position, playing, volume, playlist, shuffle, repeat, currentSongData, waitingForResponse } = useAppSelector(state => state.Main)
     const currentSong = currentSongData?.song
     const currentSongChildren = playlist.find(playlist => playlist.id === currentSongData?.playlistId)?.songs
     const previousBtn = useCallback(async () => {
@@ -71,37 +71,60 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
         if (position === -1) setTimeStamp(0);
     }, [position])
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mt: -1,
-            }}
-        >
-            <IconButton aria-label="shuffle" onClick={() => dispatch(setShuffle(!shuffle))}>
-                <BiShuffle size={24} color={shuffle ? '#3b82f6' : '#fff'} />
-            </IconButton>
-            <IconButton aria-label="previous song" onClick={previousBtn}>
-                <BiSkipPrevious size={40} color='#fff' />
-            </IconButton>
-            <IconButton
-                aria-label={playing ? 'pause' : 'play'}
-                onClick={() => position !== -1 && dispatch(setPlaying(!playing))}
-            >
-                {playing ? (
-                    <BiPause size={54} color='#fff' />
-                ) : (
-                    <BiPlay size={54} color='#fff' />
-                )}
-            </IconButton>
-            <IconButton aria-label="next song" onClick={() => nextBtn(true)}>
-                <BiSkipNext size={40} color='#fff' />
-            </IconButton>
-            <IconButton aria-label="repeat" onClick={() => dispatch(setRepeat(!repeat))}>
-                <BiRepeat size={24} color={repeat ? '#3b82f6' : '#fff'} />
-            </IconButton>
-        </Box>
+        <div className="flex gap-6 md:gap-4 items-center justify-center w-full mb-3">
+            <div className="flex w-full items-center justify-center gap-1">
+                <Button
+                    isIconOnly
+                    className="data-[hover]:bg-foreground/10"
+                    radius="full"
+                    variant="light"
+                    onPress={() => dispatch(setRepeat(!repeat))}
+                >
+                    <IoRepeat size={24} className="text-foreground/80" color={repeat ? '#3b82f6' : '#fff'} />
+                </Button>
+                <Button
+                    isIconOnly
+                    className="data-[hover]:bg-foreground/10"
+                    radius="full"
+                    variant="light"
+                    onPress={previousBtn}
+                >
+                    <IoPlayBack size={24} />
+                </Button>
+                <Button
+                    isIconOnly
+                    className="w-auto h-auto data-[hover]:bg-foreground/10"
+                    radius="full"
+                    variant="light"
+                    onPress={() => position !== -1 && dispatch(setPlaying(!playing))}
+                    isLoading={waitingForResponse}
+                >
+                    {playing ? (
+                        <IoPauseCircle size={54} />
+                    ) : (
+                        <IoPlayCircle size={54} />
+                    )}
+                </Button>
+                <Button
+                    isIconOnly
+                    className="data-[hover]:bg-foreground/10"
+                    radius="full"
+                    variant="light"
+                    onPress={() => nextBtn(true)}
+                >
+                    <IoPlayForward size={24} />
+                </Button>
+                <Button
+                    isIconOnly
+                    className="data-[hover]:bg-foreground/10"
+                    radius="full"
+                    variant="light"
+                    onPress={() => dispatch(setShuffle(!shuffle))}
+                >
+                    <IoShuffle size={24} className="text-foreground/80" color={shuffle ? '#3b82f6' : '#fff'} />
+                </Button>
+            </div>
+        </div>
     )
 }
 

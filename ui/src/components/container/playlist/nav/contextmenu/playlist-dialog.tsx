@@ -1,7 +1,6 @@
-import { Button, Dialog, DialogContent, DialogTitle, TextField, TextareaAutosize } from '@mui/material'
 import i18next from 'i18next'
 import { useCallback, useState } from 'react';
-import Image from '../image';
+import PlaylistImage from '../PlaylistImage';
 import { Playlist } from '@/fake-api/playlist-categories';
 import { toast } from 'react-toastify';
 import { useAppDispatch } from '@/stores';
@@ -9,6 +8,7 @@ import { addPlaylist, updatePlaylist } from '@/stores/Main';
 import { nanoid } from '@reduxjs/toolkit';
 import { isEmpty } from '@/utils/misc';
 import classNames from 'classnames';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Textarea, Input } from "@nextui-org/react";
 
 const PlaylistDialog = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (open: boolean) => void, currentPlaylist?: Playlist }) => {
     const dispatch = useAppDispatch()
@@ -40,66 +40,67 @@ const PlaylistDialog = ({ open, setOpen, currentPlaylist }: { open: boolean, set
         }))
     }, [name, description, image]);
     return (
-        <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{currentPlaylist ? i18next.t('playlist.dialog.edit') : i18next.t('playlist.dialog.create')}</DialogTitle>
-            <DialogContent>
-                <section className='grid grid-cols-2 gap-2 mb-5'>
-                    <Image
-                        playlist={currentPlaylist}
-                        className={classNames({
-                            'w-64 h-64': true,
-                            'bg-zinc-500': isEmpty(image),
-                            'rounded-md flex items-center justify-center': !currentPlaylist
-                        })}
-                        url={image}
-                    />
-                    <aside>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            label={i18next.t('playlist.dialog.name')}
-                            type="text"
-                            fullWidth
-                            variant="filled"
-                            autoComplete='off'
-                            required
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="image-url"
-                            value={image}
-                            onChange={(e) => setImage(e.target.value)}
-                            label={i18next.t('playlist.dialog.image_url')}
-                            type="text"
-                            fullWidth
-                            variant="filled"
-                            autoComplete='off'
-                        />
-                        <TextareaAutosize
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className='w-full mt-2 p-2 rounded-md bg-zinc-800 text-white'
-                            minRows={5}
-                            maxRows={5}
-                            maxLength={500}
-                            placeholder={i18next.t('playlist.dialog.description')}
-                        />
-                    </aside>
-                </section>
-                <footer className='flex flex-row gap-4'>
-                    <Button className='mt-5 flex flex-end self-end w-full justify-end' variant='contained' size='large' onClick={handleClose} color="error">
-                        {i18next.t('general.cancel')}
-                    </Button>
-                    <Button className='mt-5 flex flex-end self-end w-full justify-end' variant='contained' size='large' onClick={handleFinish} color="info" disabled={!name}>
-                        {i18next.t('general.done')}
-                    </Button>
-                </footer>
-            </DialogContent>
-        </Dialog>
+        <Modal size='xl' isOpen={open}>
+            <ModalContent>
+                {() => (
+                    <>
+                        <ModalHeader className="flex flex-col gap-1">{currentPlaylist ? i18next.t('playlist.dialog.edit') : i18next.t('playlist.dialog.create')}</ModalHeader>
+                        <ModalBody className='grid grid-cols-2 gap-2 mb-5'>
+                            <PlaylistImage
+                                playlist={currentPlaylist}
+                                className={classNames({
+                                    'bg-zinc-500': isEmpty(image),
+                                    'rounded-md flex items-center justify-center': !currentPlaylist
+                                })}
+                                url={image}
+                            />
+                            <aside className='space-y-2'>
+                                <Input
+                                    autoFocus
+                                    id="name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    label={i18next.t('playlist.dialog.name')}
+                                    type="text"
+                                    fullWidth
+                                    variant='flat'
+                                    autoComplete='off'
+                                    required
+                                />
+                                <Input
+                                    autoFocus
+                                    id="image-url"
+                                    value={image}
+                                    onChange={(e) => setImage(e.target.value)}
+                                    label={i18next.t('playlist.dialog.image_url')}
+                                    type="text"
+                                    fullWidth
+                                    variant='flat'
+                                    autoComplete='off'
+                                />
+                                <Textarea
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    minRows={5}
+                                    maxRows={5}
+                                    maxLength={500}
+                                    variant='flat'
+                                    placeholder={i18next.t('playlist.dialog.description')}
+                                />
+                            </aside>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="danger" variant="light" onPress={handleClose}>
+                                {i18next.t('general.cancel')}
+                            </Button>
+                            <Button color="primary" onPress={handleFinish}>
+                                {i18next.t('general.done')}
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 
