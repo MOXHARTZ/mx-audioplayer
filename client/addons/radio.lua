@@ -1,7 +1,6 @@
 if not Config.Radio.Enable then return end
 CreateThread(function()
     Info('Radio is enabled')
-    InitDeprecatedScriptPlaylist('mx-caradio')
 end)
 
 local function openUi()

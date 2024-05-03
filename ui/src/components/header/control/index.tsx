@@ -88,6 +88,7 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
                     radius="full"
                     variant="light"
                     onPress={previousBtn}
+                    isDisabled={waitingForResponse}
                 >
                     <IoPlayBack size={24} />
                 </Button>
@@ -111,6 +112,7 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
                     radius="full"
                     variant="light"
                     onPress={() => nextBtn(true)}
+                    isDisabled={waitingForResponse}
                 >
                     <IoPlayForward size={24} />
                 </Button>

@@ -131,13 +131,3 @@ RegisterNetEvent('mx-audioplayer:sharePlaylist', function(playlist, player)
     Debug('Received playlist from', senderName, 'to', player)
     TriggerClientEvent('mx-audioplayer:receivePlaylist', player, playlist, senderName)
 end)
-
--- Delete this shit after a while @MOXHARTZ
-local hasCarRadio = GetResourceState('mx-caradio') ~= 'missing'
-local hasBoombox = GetResourceState('mx-boombox') ~= 'missing'
-if hasCarRadio or hasBoombox then
-    -- People love avoid errors :(
-    for i = 1, 70 do
-        print('^1Remove mx-boombox and mx-caradio from your server! the new audioplayer provides them in itself.^0')
-    end
-end

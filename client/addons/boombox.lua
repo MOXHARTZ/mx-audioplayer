@@ -1,7 +1,6 @@
 if not Config.Boombox.Enable then return end
 CreateThread(function()
     Info('Boombox is enabled')
-    InitDeprecatedScriptPlaylist('mx-boombox')
 end)
 local boombox_ = joaat('prop_boombox_01')
 local carry_anim_dict = 'anim@heists@box_carry@'

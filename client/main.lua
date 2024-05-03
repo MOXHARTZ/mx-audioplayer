@@ -17,46 +17,6 @@ CreateThread(function()
     end
 end)
 
-local function generateId()
-    local id = ''
-    for i = 1, 10 do
-        id = id .. string.char(math.random(97, 122))
-    end
-    return id
-end
-
--- !IMPORTANT After a few months this function should be removed @MOXHARTZ
----@param scriptName string
-function InitDeprecatedScriptPlaylist(scriptName)
-    local kvpPlaylist = GetResourceKvpString('audioplayer_playlist_' .. (scriptName))
-    if not kvpPlaylist then return end
-    local playlist = json.decode(kvpPlaylist)
-    local _defaultPlaylist = GetResourceKvpString('mx_audioplayer_playlist')
-    _defaultPlaylist = _defaultPlaylist and json.decode(_defaultPlaylist) or {}
-    local songs = {}
-    for _, v in pairs(playlist) do
-        table.insert(songs, v)
-    end
-    local id = generateId()
-    while table.find(_defaultPlaylist, function(p) return p.id == id end) do
-        Debug('id exists', id)
-        Wait(100)
-        id = generateId()
-    end
-    table.insert(_defaultPlaylist, {
-        id = id,
-        name = 'New Playlist' .. #_defaultPlaylist + 1,
-        songs = songs
-    })
-    SetResourceKvp('mx_audioplayer_playlist', json.encode(_defaultPlaylist))
-    DeleteResourceKvp('audioplayer_playlist_' .. (scriptName))
-    Info(scriptName .. ' playlist has been added to the default playlist')
-end
-
-CreateThread(function()
-    InitDeprecatedScriptPlaylist('')
-end)
-
 ---@param data? OpenAudioPlayerData
 local function initAudioPlayerData(id, data)
     local audioPlayerData = {}
