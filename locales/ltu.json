@@ -1,6 +1,7 @@
 {
     "header.title": "Pavadinimas",
     "header.artist": "Atlikejas",
+    "header.playlist": "Grojaraštis",
     "playlist.empty": "Grojaraštyje nėra dainų",
     "playlist.not_selected": "Nėra pasirinktos dainos",
     "playlist.deleted_songs": "Dainos sėkmingai ištrintos",
@@ -20,6 +21,8 @@
     "playlist.context.delete": "Ištrinti grojaraštį",
     "playlist.context.create": "Sukurti grojaraštį",
     "playlist.context.share": "Bendrinti grojaraštį su žaidėju",
+    "playlist.context.actions": "Veiksmai",
+    "playlist.context.danger": "Pavojaus zona",
     "edit.clear": "Ištrinti viską",
     "edit.delete": "Ištrinti pasirinktas dainas",
     "edit.cancel": "Atšaukti",
@@ -41,11 +44,13 @@
     "playlist.already_exist": "Grojaraštį gavote iš %s, bet jūs jau turite šį grojaraštį. Todėl mes jo nepridėsime į jūsų grojaraščius. Grojaraščio pavadinimas: %s",
     "playlist.received": "Grojaraštį gavote iš %s. Grojaraščio pavadinimas: %s",
     "boombox.target.open": "Atverti",
-    "boombox.target.destroy": "Sunaikinti Boombox" ,
+    "boombox.target.destroy": "Sunaikinti Boombox",
     "boombox.target.pickup": "Paiimti Boombox",
-    "boombox.drop_info": "Naudokite komandą %s, kad numestumėte boombox",
+    "boombox.drop.text": "Naudokite komandą %s, kad numestumėte boombox",
     "dj.open.menu": "Paspauskite [E], kad atidarytumėte DJ meniu",
     "dj.target.open": "Atidaryti vartotojo sąsają",
     "radio.command": "Atverti automobilio radijo imtuvą",
-    "search_track.add_all": "Pridėti visus į Grojaraštį"
+    "search_track.add_all": "Pridėti visus į Grojaraštį",
+    "general.currently_playing": "Šiuo metu grojama",
+    "general.play": "Paleisti"
 }
