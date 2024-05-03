@@ -27,22 +27,24 @@ const PlaylistNav = () => {
             >
                 {playlist.map(playlist => (
                     <ContextMenu key={playlist.id} disabled={editMode} playlist={playlist}>
-                        <Tooltip key={playlist.id} content={playlist.name} placement='right'>
-                            <SortableItem key={playlist.id}>
-                                <NavLink
-                                    to={`/playlist/${playlist.id}`}
-                                    key={playlist.id}
-                                    className={classNames({
-                                        'flex items-center justify-center w-full h-18 hover:!bg-zinc-700 p-2 rounded-lg text-white': true,
-                                        'pointer-events-none cursor-grab select-none': editMode,
-                                        'transition-colors': !editMode
-                                    })} style={({ isActive }) => ({
-                                        backgroundColor: isActive ? '#3f3f46' : 'transparent'
-                                    })}>
-                                    <PlaylistImage key={playlist.id} playlist={playlist} />
-                                </NavLink>
-                            </SortableItem>
-                        </Tooltip>
+                        <SortableItem key={playlist.id}>
+                            <div>
+                                <Tooltip key={playlist.id} content={playlist.name} placement='right'>
+                                    <NavLink
+                                        to={`/playlist/${playlist.id}`}
+                                        key={playlist.id}
+                                        className={classNames({
+                                            'flex items-center justify-center w-full h-18 hover:!bg-zinc-700 p-2 rounded-lg text-white': true,
+                                            'pointer-events-none cursor-grab select-none': editMode,
+                                            'transition-colors': !editMode
+                                        })} style={({ isActive }) => ({
+                                            backgroundColor: isActive ? '#3f3f46' : 'transparent'
+                                        })}>
+                                        <PlaylistImage key={playlist.id} playlist={playlist} />
+                                    </NavLink>
+                                </Tooltip>
+                            </div>
+                        </SortableItem>
                     </ContextMenu>
                 ))}
             </SortableList>

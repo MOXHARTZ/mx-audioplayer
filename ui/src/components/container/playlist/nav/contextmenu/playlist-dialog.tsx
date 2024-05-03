@@ -50,7 +50,7 @@ const PlaylistDialog = ({ open, setOpen, currentPlaylist }: { open: boolean, set
                                 playlist={currentPlaylist}
                                 className={classNames({
                                     'bg-zinc-500': isEmpty(image),
-                                    'rounded-md flex items-center justify-center': !currentPlaylist
+                                    'rounded-md flex items-center justify-center': !currentPlaylist || isEmpty(currentPlaylist.thumbnail)
                                 })}
                                 url={image}
                             />

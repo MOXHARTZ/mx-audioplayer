@@ -37,7 +37,10 @@ const Actions = () => {
     }, [currentSongs])
     const toggleEditMode = useCallback(() => {
         const newEditMode = !editMode
-        if (newEditMode) toast.info(i18next.t('general.edit.enabled'))
+        if (newEditMode) {
+            toast.info(i18next.t('general.edit.enabled'))
+            dispatch(setFilterPlaylist(''))
+        }
         dispatch(setEditMode(newEditMode))
         if (!newEditMode) dispatch(setSelectedSongs([]));
     }, [currentSongs, editMode])
