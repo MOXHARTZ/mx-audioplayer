@@ -6,13 +6,21 @@ AudioVolume = 1
 local playQuietly = false
 PlayerData = nil
 local audioPlayer = {}
+local vehicleEvents = {
+    ['enter'] = 'mx-audioplayer:vehicleEntered',
+    ['leave'] = 'mx-audioplayer:vehicleLeft'
+}
 
 CreateThread(function()
     while true do
         PlayerPed = PlayerPedId()
         PlayerCoords = GetEntityCoords(PlayerPed)
         CurrentVehicle = GetVehiclePedIsIn(PlayerPed, false)
-        IsInVehicle = CurrentVehicle ~= 0
+        if IsInVehicle ~= (CurrentVehicle ~= 0) then
+            local entered = CurrentVehicle ~= 0
+            TriggerEvent(vehicleEvents[entered and 'enter' or 'leave'], CurrentVehicle)
+            IsInVehicle = CurrentVehicle ~= 0
+        end
         Wait(300)
     end
 end)
