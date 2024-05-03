@@ -1,6 +1,7 @@
 {
     "header.title": "Titolo",
     "header.artist": "Artista",
+    "header.playlist": "Playlist",
     "playlist.empty": "Nessuna traccia nella Playlist",
     "playlist.not_selected": "Nessuna traccia selezionata",
     "playlist.deleted_songs": "Traccia eliminata con successo",
@@ -20,6 +21,8 @@
     "playlist.context.delete": "Elimina Playlist",
     "playlist.context.create": "Crea Playlist",
     "playlist.context.share": "Condividi Playlist con un giocatore",
+    "playlist.context.actions": "Azioni",
+    "playlist.context.danger": "Danger Zone",
     "edit.clear": "Elimina tutto",
     "edit.delete": "Elimina tracce selezionate",
     "edit.cancel": "Annulla",
@@ -46,5 +49,8 @@
     "boombox.drop.text": "Premi [H] per lasciare il boombox",
     "dj.open.menu": "Premi [E] per mettere la musica",
     "dj.target.open": "Seleziona Musica",
-    "radio.command": "Usa Radio del veicolo"
+    "radio.command": "Usa Radio del veicolo",
+    "search_track.add_all": "Aggiungi tutto alla playlist",
+    "general.currently_playing": "In riproduzione",
+    "general.play": "Play"
 }
