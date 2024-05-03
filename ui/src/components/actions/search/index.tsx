@@ -36,7 +36,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
             soundId: nanoid(),
             title: track.name ?? i18next.t('general.unknown'),
             artist: track?.artist ? track?.artist?.name : track?.artists?.[0]?.name ?? i18next.t('general.unknown'),
-            cover: track.thumbnails[0].url,
+            cover: track.thumbnails[track.thumbnails.length - 1].url,
             url: track.videoId,
             duration: 0,
         }))
@@ -47,13 +47,12 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
         if (!currentSongs) return toast.error(i18next.t('playlist.select_playlist'));
         handleClose()
         const artist = track?.artist ? track?.artist?.name : track?.artists?.[0]?.name ?? i18next.t('general.unknown')
-
         const soundData = {
             id: nanoid(),
             soundId: nanoid(),
             title: track?.name ?? i18next.t('general.unknown'),
             artist,
-            cover: track.thumbnails[0].url,
+            cover: track.thumbnails[track.thumbnails.length - 1].url,
             url: track.videoId,
             duration: 0,
         }
