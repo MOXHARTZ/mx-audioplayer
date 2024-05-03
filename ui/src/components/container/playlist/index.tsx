@@ -1,8 +1,6 @@
-import { useEffect } from 'react'
-import { memo, useCallback, useMemo } from 'react'
+import { useEffect, memo, useCallback, useMemo } from 'react'
 import { useAppDispatch, useAppSelector } from '@/stores'
 import { setCurrentPlaylistId, setCurrentSongs, setPlaying, setSelectedSongs } from '@/stores/Main'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Song } from '@/fake-api/song'
 import { handlePlay } from '@/thunks/handlePlay'
 import { toast } from 'react-toastify'
@@ -11,12 +9,13 @@ import { useParams } from 'react-router-dom'
 import SortableList from "react-easy-sort";
 import { arrayMoveImmutable } from 'array-move'
 import TrackCard from './TrackCard'
+import classNames from 'classnames'
+import { Chip } from '@nextui-org/react'
 
 const Playlist = () => {
     const { currentSongs, position, editMode, selectedSongs, volume, filterPlaylist } = useAppSelector(state => state.Main)
     const { playlistId } = useParams() as { playlistId: string }
     const dispatch = useAppDispatch()
-    const [animationParent, enableAnimations] = useAutoAnimate()
     const setCurrentSong = useCallback((id: string) => {
         if (id === position) return toast.error(i18next.t('playlist.song_already_playing'))
         dispatch(setPlaying(false))
@@ -49,9 +48,6 @@ const Playlist = () => {
         if (!currentSongs) return toast.error(i18next.t('playlist.select_playlist'));
         dispatch(setCurrentSongs(arrayMoveImmutable(currentSongs, oldIndex, newIndex)))
     };
-    useEffect(() => {
-        enableAnimations(!editMode)
-    }, [editMode])
     const _playlist = useMemo(() => currentSongs?.filter(song => song.title.toLowerCase().includes(filterPlaylist.toLowerCase()) || song.artist.toLowerCase().includes(filterPlaylist.toLowerCase())), [currentSongs, filterPlaylist])
     return (
         <SortableList
@@ -60,10 +56,12 @@ const Playlist = () => {
             draggedItemClassName="dragged"
             allowDrag={editMode}
         >
-            <ul ref={animationParent} className='w-full h-full grid grid-cols-2 gap-4'>
+            <ul className={classNames({
+                'w-full h-full grid grid-cols-2 gap-4': _playlist?.length,
+            })}>
                 {_playlist?.length === 0 &&
                     <li className='text-center text-white-500'>
-                        {i18next.t('playlist.empty')}
+                        <Chip color="default" variant="shadow">{i18next.t('playlist.empty')}</Chip>
                     </li>
                 }
                 {_playlist?.map(song => (

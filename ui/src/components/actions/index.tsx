@@ -10,18 +10,6 @@ import SearchTrack from './search'
 import i18next from 'i18next'
 import { Button, ButtonGroup, Input } from '@nextui-org/react'
 
-{/* <Search>
-                        <SearchIconWrapper>
-                            <BiSearch size={22} />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder={i18next.t('playlist.search')}
-                            value={filterPlaylist}
-                            onChange={(e) => dispatch(setFilterPlaylist(e.target.value))}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </Search> */}
-
 const Actions = () => {
     const { editMode, selectedSongs, position, filterPlaylist, currentSongs } = useAppSelector(state => state.Main)
     const dispatch = useAppDispatch()

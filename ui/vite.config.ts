@@ -4,23 +4,13 @@ import * as path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [react()],
-  // plugins: [million.vite({ auto: true }), react()],
+  plugins: [million.vite({ auto: true }), react()],
   base: './',
   publicDir: 'public',
   build: {
     minify: 'esbuild',
     outDir: 'build',
-    target: 'esnext',
-    // rollupOptions: {
-    //   output: {
-    //     manualChunks(id) {
-    //       if (id.includes('node_modules')) {
-    //         return id.toString().split('node_modules/')[1].split('/')[0].toString();
-    //       }
-    //     }
-    //   }
-    // }
+    target: 'esnext'
   },
   resolve: {
     alias: [

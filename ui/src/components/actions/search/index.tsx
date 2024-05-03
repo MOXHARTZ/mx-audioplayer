@@ -137,7 +137,6 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
                                     />
                                 </Tooltip>
                             </div>
-                            <p className='text-red-500 text-sm'>{ }</p>
                             <ScrollShadow className={classNames({
                                 'flex flex-col gap-2 max-h-120 overflow-y-auto md:max-h-96 sm:max-h-64': true,
                             })}>

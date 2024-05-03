@@ -15,7 +15,7 @@ const PlaylistNav = () => {
         dispatch(setPlaylist(arrayMoveImmutable(playlist, oldIndex, newIndex)))
     };
     return (
-        <section className='w-[7.5rem] h-full shadow-xl bg-default-200/50 p-4 rounded-md overflow-y-auto relative'>
+        <section className='w-[7.5rem] h-full shadow-xl bg-default-200/50 p-4 rounded-md overflow-y-auto overflow-x-hidden relative'>
             <div className='w-full h-full absolute z-0 inset-0'>
                 <ContextMenu />
             </div>

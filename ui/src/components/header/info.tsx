@@ -1,8 +1,7 @@
 import { useAppSelector } from '@/stores'
 import { memo } from 'react'
 import i18next from 'i18next'
-import { Card, Image } from '@nextui-org/react'
-import Volume from './volume'
+import { Image } from '@nextui-org/react'
 
 const Info = () => {
     const { currentSongData } = useAppSelector(state => state.Main)

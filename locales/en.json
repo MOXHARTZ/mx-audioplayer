@@ -1,6 +1,7 @@
 {
     "header.title": "Title",
     "header.artist": "Artist",
+    "header.playlist": "Playlist",
     "playlist.empty": "No songs in playlist",
     "playlist.not_selected": "No song selected",
     "playlist.deleted_songs": "Songs are deleted successfully",
@@ -20,6 +21,8 @@
     "playlist.context.delete": "Delete Playlist",
     "playlist.context.create": "Create Playlist",
     "playlist.context.share": "Share Playlist To A Player",
+    "playlist.context.actions": "Actions",
+    "playlist.context.danger": "Danger Zone",
     "edit.clear": "Delete all",
     "edit.delete": "Delete Selected Songs",
     "edit.cancel": "Cancel",
@@ -47,5 +50,7 @@
     "dj.open.menu": "Press [E] to open the DJ menu",
     "dj.target.open": "Open UI",
     "radio.command": "Open Car Radio",
-    "search_track.add_all": "Add all to playlist"
+    "search_track.add_all": "Add all to playlist",
+    "general.currently_playing": "Currently Playing",
+    "general.play": "Play"
 }

@@ -1,6 +1,7 @@
 import { Song } from "@/fake-api/song";
 import { Card, CardHeader, Avatar, Button, Checkbox } from "@nextui-org/react";
 import classNames from "classnames";
+import i18next from "i18next";
 import { useMemo } from "react";
 import { SortableItem } from "react-easy-sort";
 
@@ -59,13 +60,12 @@ export default function TrackCard({ song, onClick, position, editMode, selected,
                                 variant={currentlyPlaying ? "bordered" : "solid"}
                                 onPress={onClick}
                             >
-                                {currentlyPlaying ? "Currently Playing" : "Play"}
+                                {currentlyPlaying ? i18next.t('general.currently_playing') : i18next.t('general.play')}
                             </Button>
                         </aside>
                     </CardHeader>
                 </Card>
             </div>
-
         </SortableItem>
     );
 }

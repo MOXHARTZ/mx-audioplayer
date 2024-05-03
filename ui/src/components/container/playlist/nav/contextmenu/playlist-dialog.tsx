@@ -40,7 +40,7 @@ const PlaylistDialog = ({ open, setOpen, currentPlaylist }: { open: boolean, set
         }))
     }, [name, description, image]);
     return (
-        <Modal size='xl' isOpen={open}>
+        <Modal size='xl' isOpen={open} onClose={handleClose}>
             <ModalContent>
                 {() => (
                     <>

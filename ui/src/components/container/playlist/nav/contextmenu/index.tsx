@@ -24,7 +24,13 @@ export default function ContextMenu({ children, disabled, playlist }: { children
     const handleContextMenu = (event: React.MouseEvent) => {
         event.preventDefault();
         if (disabled) return;
-        btnRef?.current?.click();
+        if (!btnRef?.current) return;
+        const target = event.target as HTMLElement;
+        const offsetLeft = target.offsetLeft;
+        const offsetTop = target.offsetTop;
+        btnRef.current.style.top = `${offsetTop}px`;
+        btnRef.current.style.left = `${offsetLeft}px`;
+        btnRef.current.click();
     };
 
     const handleDelete = useCallback(() => {
@@ -51,7 +57,7 @@ export default function ContextMenu({ children, disabled, playlist }: { children
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu variant="faded" aria-label="Dropdown menu with icons">
-                    <DropdownSection title='Actions' showDivider>
+                    <DropdownSection title={i18next.t('playlist.context.actions')} showDivider>
                         <DropdownItem
                             key="create"
                             startContent={<MdAudiotrack className={iconClasses} />}
@@ -74,7 +80,7 @@ export default function ContextMenu({ children, disabled, playlist }: { children
                             {i18next.t('playlist.context.share')}
                         </DropdownItem>
                     </DropdownSection>
-                    <DropdownSection title='Danger Zone'>
+                    <DropdownSection title={i18next.t('playlist.context.danger')}>
                         <DropdownItem
                             key="delete"
                             className="text-danger"
@@ -91,6 +97,5 @@ export default function ContextMenu({ children, disabled, playlist }: { children
             {showEditPlaylist && <PlaylistDialog open={showEditPlaylist} setOpen={setShowEditPlaylist} currentPlaylist={playlist} />}
             {showShare && <Share open={showShare} setOpen={setShowShare} currentPlaylist={playlist} />}
         </div>
-
     );
 }
