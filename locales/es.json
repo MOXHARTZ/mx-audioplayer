@@ -1,6 +1,7 @@
 {
     "header.title": "Título",
     "header.artist": "Artista",
+    "header.playlist": "Lista de reproducción",
     "playlist.empty": "No hay canciones en la lista de reproducción",
     "playlist.not_selected": "No hay canción seleccionada",
     "playlist.deleted_songs": "Las canciones se han eliminado correctamente",
@@ -20,6 +21,8 @@
     "playlist.context.delete": "Eliminar Lista de Reproducción",
     "playlist.context.create": "Crear Lista de Reproducción",
     "playlist.context.share": "Compartir Lista de Reproducción con un Jugador",
+    "playlist.context.actions": "Acción",
+    "playlist.context.danger": "Zona peligrosa",
     "edit.clear": "Borrar todo",
     "edit.delete": "Eliminar Canciones Seleccionadas",
     "edit.cancel": "Cancelar",
@@ -46,5 +49,8 @@
     "boombox.drop.text": "Presiona [H] para soltar el radiocasete",
     "dj.open.menu": "Presiona [E] para abrir el menú de DJ",
     "dj.target.open": "Abrir Interfaz",
-    "radio.command": "Abrir Radio del Automóvil"
+    "radio.command": "Abrir Radio del Automóvil",
+    "search_track.add_all": "Agregar todo a la lista de reproducción",
+    "general.currently_playing": "Reproducción en curso",
+    "general.play": "Reproducir"
 }
