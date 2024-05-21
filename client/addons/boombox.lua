@@ -125,6 +125,7 @@ local function destroy()
     if not boombox then return end
     SetEntityAsMissionEntity(boombox, true, true)
     DeleteEntity(boombox)
+    if DoesEntityExist(boombox) then return Debug('Boombox not deleted') end
     if Config.Boombox.Item then
         TriggerServerEvent('mx-audioplayer:boombox:destroy')
     end
