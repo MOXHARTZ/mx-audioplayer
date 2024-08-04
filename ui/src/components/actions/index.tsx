@@ -8,12 +8,20 @@ import { toast } from 'react-toastify';
 import { BiSearch } from 'react-icons/bi'
 import SearchTrack from './search'
 import i18next from 'i18next'
-import { Button, ButtonGroup, Input } from '@nextui-org/react'
+import { Button, ButtonGroup, Input, useDisclosure } from '@nextui-org/react'
+import ConfirmModal from '../modals/ConfirmModal'
 
 const Actions = () => {
     const { editMode, selectedSongs, position, filterPlaylist, currentSongs } = useAppSelector(state => state.Main)
     const dispatch = useAppDispatch()
     const [animationParent] = useAutoAnimate()
+    const { isOpen: confirmIsOpen, onOpenChange: confirmOnOpenChange, onOpen: onConfirmOpen } = useDisclosure();
+    const handleConfirm = useCallback(() => {
+        dispatch(setCurrentSongs([]))
+        toast.success(i18next.t('playlist.cleared'))
+        dispatch(clearSound())
+        dispatch(setEditMode(false))
+    }, [])
     const [open, setOpen] = useState(false);
     const handleClickOpen = useCallback(() => {
         if (!currentSongs) return toast.error(i18next.t('playlist.select_playlist'))
@@ -30,10 +38,8 @@ const Actions = () => {
     }, [selectedSongs, currentSongs])
     const deleteAll = useCallback(() => {
         if (currentSongs?.length === 0) return toast.error(i18next.t('playlist.empty'));
-        dispatch(setCurrentSongs([]))
-        toast.success(i18next.t('playlist.cleared'))
-        dispatch(clearSound())
-        dispatch(setEditMode(false))
+        onConfirmOpen()
+
     }, [currentSongs])
     const toggleEditMode = useCallback(() => {
         const newEditMode = !editMode
@@ -93,6 +99,14 @@ const Actions = () => {
                     </ButtonGroup>
                 }
             </aside>
+            <ConfirmModal
+                isOpen={confirmIsOpen}
+                onOpenChange={confirmOnOpenChange}
+                title={i18next.t('playlist.confirm.delete_all.title')}
+                handleConfirm={handleConfirm}
+            >
+                <p>{i18next.t('playlist.confirm.delete_all.content')}</p>
+            </ConfirmModal>
             <SearchTrack open={open} setOpen={setOpen} />
         </section>
 

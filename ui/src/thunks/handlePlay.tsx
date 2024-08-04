@@ -21,7 +21,7 @@ interface Payload {
 export const handlePlay = createAsyncThunk<
   Params,
   Payload,
-  { rejectValue: boolean }
+  { rejectValue: false | string }
 >('audioplayer/handlePlay',
   async (data, { rejectWithValue }) => {
     try {
@@ -42,10 +42,14 @@ export const handlePlay = createAsyncThunk<
         ...soundData,
         url
       }
-      const response = await fetchNui<false | number>('play', {
+      const response = await fetchNui<false | number | { error: string }>('play', {
         soundData: updatedSoundData,
         volume: data.volume
       });
+
+      if (typeof response === 'object') {
+        return rejectWithValue(response.error);
+      }
 
       if (response === false) {
         return rejectWithValue(response);

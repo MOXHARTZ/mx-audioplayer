@@ -185,9 +185,9 @@ const Static = createSlice({
             soundData.duration = Math.floor(payload.response);
             state.playing = true;
         })
-        builder.addCase(handlePlay.rejected, (state) => {
+        builder.addCase(handlePlay.rejected, (state, { payload }) => {
             state.waitingForResponse = false;
-            toast.error(i18next.t('general.something_went_wrong'))
+            toast.error(payload ?? i18next.t('general.something_went_wrong'))
         })
         builder.addCase(handlePlay.pending, (state) => {
             state.waitingForResponse = true;

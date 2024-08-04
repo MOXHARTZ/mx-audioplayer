@@ -52,5 +52,9 @@
     "radio.command": "Open Car Radio",
     "search_track.add_all": "Add all to playlist",
     "general.currently_playing": "Currently Playing",
-    "general.play": "Play"
+    "general.play": "Play",
+    "playlist.confirm.delete_all.title": "Are you sure you want to delete all songs?",
+    "playlist.confirm.delete_all.content": "This action can't be undone",
+    "modal.confirm": "Confirm",
+    "modal.cancel": "Cancel"
 }
