@@ -15,7 +15,7 @@ function GetJobName()
     if not PlayerData then
         PlayerData = GetPlayerData()
     end
-    return PlayerData.job.name
+    return PlayerData?.job?.name or 'unemployed'
 end
 
 function GetPlayerData()
