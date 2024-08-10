@@ -45,6 +45,16 @@
     "boombox.target.pickup": "Boombox aufheben",
     "boombox.drop.text": "Drücken Sie [H], um die Boombox fallen zu lassen",
     "dj.open.menu": "Drücken Sie [E], um das DJ-Menü zu öffnen",
-    "dj.target.open": "UI öffnen",
-    "radio.command": "Auto-Radio öffnen"
+    "dj.target.open": "Radio öffnen",
+    "radio.command": "Auto-Radio öffnen",
+    "header.playlist": "Wiedergabeliste",
+    "playlist.confirm.delete_all.content": "Möchten Sie wirklich alle Elemente in der Wiedergabeliste löschen?",
+    "general.currently_playing": "Aktuell spielt",
+    "playlist.confirm.delete_all.title": "Alle löschen bestätigen",
+    "modal.cancel": "Abbrechen",
+    "modal.confirm": "Bestätigen",
+    "playlist.context.danger": "Verwalten",
+    "search_track.add_all": "Alle hinzufügen",
+    "playlist.context.actions": "Aktionen",
+    "general.play": "Abspielen"
 }
