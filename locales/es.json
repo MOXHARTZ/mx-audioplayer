@@ -52,5 +52,9 @@
     "radio.command": "Abrir Radio del Automóvil",
     "search_track.add_all": "Agregar todo a la lista de reproducción",
     "general.currently_playing": "Reproducción en curso",
-    "general.play": "Reproducir"
+    "general.play": "Reproducir",
+    "playlist.confirm.delete_all.title": "¿Estás seguro de que quieres eliminar todas las canciones?",
+    "playlist.confirm.delete_all.content": "Esta acción no se puede deshacer",
+    "modal.confirm": "Confirmar",
+    "modal.cancel": "Cancelar"
 }
