@@ -11,7 +11,7 @@ Config.Radio.RadioKey = 'N'             -- Default key to open the radio (You ca
 Config.Boombox = {}
 Config.Boombox.Enable = true
 Config.Boombox.Item = 'boombox' -- Set false if you don't want item.
-Config.Boombox.Target = true    -- Uses qb-target. But if you are using ox_target it'll provide this.
+Config.Boombox.Target = true    -- Uses qtarget. But if you are using ox_target it'll provide this.
 
 -- Close commands you do not want to use by setting false. Ex: Config.Boombox.CreateBoomboxCommand = false
 Config.Boombox.CreateBoomboxCommand = 'bx-create'
@@ -22,7 +22,7 @@ Config.Boombox.AccessBoomboxCommand = 'bx'
 
 Config.DJ = {}
 Config.DJ.Enable = true
-Config.DJ.Target = true                                -- Uses qb-target. But if you are using ox_target it'll provide this.
+Config.DJ.Target = true                                -- Uses qtarget. But if you are using ox_target it'll provide this.
 Config.DJ.Jobs = { 'police', 'ambulance', 'mechanic' } -- Jobs that can use the DJ (you can set false if you want to allow everyone)
 Config.DJ.Locations = {
     {
@@ -58,7 +58,7 @@ if Config.Framework == 'standalone' then
 end
 
 local function checkHasTarget()
-    local hasTarget = GetResourceState('qb-target') == 'started' or GetResourceState('ox_target') == 'started'
+    local hasTarget = GetResourceState('qtarget') == 'started' or GetResourceState('ox_target') == 'started'
     if not hasTarget then
         Config.Boombox.Target = false
         Config.DJ.Target = false

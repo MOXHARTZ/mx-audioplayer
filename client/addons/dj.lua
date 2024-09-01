@@ -39,7 +39,7 @@ if Config.DJ.Target then
         for k, v in pairs(Config.DJ.Locations) do
             local enterCoords = v.coords
             local id = 'mx_audioplayer_dj' .. k
-            exports['qb-target']:AddBoxZone(id, enterCoords, 2.0, 2.0, {
+            exports['qtarget']:AddBoxZone(id, enterCoords, 2.0, 2.0, {
                 name = id, -- This must be same with first param. qb-target is weird asf
                 heading = 90.0,
                 debugPoly = false,

@@ -150,7 +150,7 @@ end
 if Config.Boombox.Target then
     Info('Boombox target is enabled')
     CreateThread(function()
-        exports['qb-target']:AddTargetModel(boombox_, {
+        exports['qtarget']:AddTargetModel(boombox_, {
             options = {
                 {
                     icon = 'fas fa-music',
