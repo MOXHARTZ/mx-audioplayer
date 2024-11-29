@@ -1,24 +1,27 @@
 import { useCallback, useEffect, useState } from 'react';
 
-export const useKeyPress = (targetKey: KeyboardEvent['key']) => {
+export const useKeyPress = (targetKey: KeyboardEvent['key'], useShift?: boolean, callback?: () => void) => {
   const [keyPressed, setKeyPressed] = useState(false);
 
   const downHandler = useCallback(
-    ({ key }: KeyboardEvent) => {
-      if (key === targetKey) {
+    ({ key, shiftKey }: KeyboardEvent) => {
+      if (useShift && !shiftKey) return;
+      if (key == targetKey) {
         setKeyPressed(true);
+        callback?.();
       }
     },
-    [targetKey]
+    [targetKey, useShift]
   );
 
   const upHandler = useCallback(
-    ({ key }: KeyboardEvent) => {
-      if (key === targetKey) {
+    ({ key, shiftKey }: KeyboardEvent) => {
+      if (useShift && !shiftKey) return;
+      if (key == targetKey) {
         setKeyPressed(false);
       }
     },
-    [targetKey]
+    [targetKey, useShift]
   );
 
   useEffect(() => {

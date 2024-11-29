@@ -43,8 +43,39 @@ if Config.Radio.DisableDefaultRadio then
             Wait(sleep)
         end
     end)
-    AddEventHandler('mx-audioplayer:vehicleEntered', function(vehicle)
-        SetVehRadioStation(vehicle, 'OFF')
-        SetVehicleRadioEnabled(vehicle, false)
-    end)
 end
+
+AddEventHandler('mx-audioplayer:vehicleEntered', function(vehicle)
+    local plate = GetVehicleNumberPlateText(vehicle)
+    ToggleShortDisplay(true, {
+        vehicle = vehicle,
+        customId = plate
+    })
+    if not Config.Radio.DisableDefaultRadio then
+        return
+    end
+    SetVehRadioStation(vehicle, 'OFF')
+    SetVehicleRadioEnabled(vehicle, false)
+end)
+
+AddEventHandler('mx-audioplayer:vehicleLeft', function(vehicle)
+    ToggleShortDisplay(false)
+end)
+
+RegisterNetEvent('mx-audioplayer:disableUi', function(source, id, state)
+    if GetPlayerServerId(PlayerId()) == source then
+        return
+    end
+    if not InvokingResource or not CustomId then
+        return
+    end
+    local _id = InvokingResource .. CustomId
+    if state and _id == id then
+        ToggleShortDisplay(false, ShortDisplayData)
+    elseif ShortDisplayData.vehicle == CurrentVehicle then
+        ToggleShortDisplay(true, {
+            vehicle = CurrentVehicle,
+            customId = CustomId
+        })
+    end
+end)

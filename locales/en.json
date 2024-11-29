@@ -56,5 +56,8 @@
     "playlist.confirm.delete_all.title": "Are you sure you want to delete all songs?",
     "playlist.confirm.delete_all.content": "This action can't be undone",
     "modal.confirm": "Confirm",
-    "modal.cancel": "Cancel"
+    "modal.cancel": "Cancel",
+    "settings.title": "Settings",
+    "settings.minimal_hud": "Minimal HUD",
+    "settings.minimal_hud.description": "When you activate it. You can manage the songs in your playlist with the shortcuts even when you close the menu. To learn the shortcuts, move your mouse to the play, forward and back buttons."
 }

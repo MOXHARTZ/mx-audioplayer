@@ -9,9 +9,14 @@ export interface Error {
 export type ReadyListener = {
     languageName: string;
     resources: Record<string, Record<string, string>>;
+    settings: Settings;
 }
 
 export type Player = {
     source: number;
     name: string;
+}
+
+export type Settings = {
+    minimalHud: boolean;
 }

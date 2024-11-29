@@ -2,7 +2,11 @@ function Debug(...)
     if not Config.Debug then return end
     local msg = '^2AUDIOPLAYER DEBUG:^0 '
     for i, v in pairs({ ... }) do
-        msg = msg .. tostring(v) .. '\t'
+        if type(v) == 'table' then
+            msg = msg .. json.encode(v) .. '\t'
+        else
+            msg = msg .. tostring(v) .. '\t'
+        end
     end
     msg = msg
     print(msg)

@@ -1,10 +1,13 @@
-local invokingResource, customId
+InvokingResource = nil
+local currentResourceName = GetCurrentResourceName()
+local UiReady = false
+ShortDisplayData = {} --[[@as ShortDisplay]]
+CustomId = nil
 local playlist, currentSounds, audioplayerHandlers = {}, {}, {}
 Surround = exports['mx-surround']
 ---@type number -- Audio Player's custom volume
 AudioVolume = 1
 local playQuietly = false
-PlayerData = nil
 local audioPlayer = {}
 local vehicleEvents = {
     ['enter'] = 'mx-audioplayer:vehicleEntered',
@@ -12,6 +15,7 @@ local vehicleEvents = {
 }
 
 CreateThread(function()
+    while not UiReady do Wait(200) end
     while true do
         PlayerPed = PlayerPedId()
         PlayerCoords = GetEntityCoords(PlayerPed)
@@ -41,25 +45,24 @@ local function initAudioPlayerData(id, data)
     audioPlayer[id] = audioPlayerData
 end
 
----@param data? OpenAudioPlayerData
----@param handlers? OpenAudioPlayerHandlers
-function OpenAudioPlayer(data, handlers)
-    if not data then data = {} end
-    if not handlers then handlers = {} end
-    local silent = data.silent
-    customId = data.customId
-    playQuietly = silent and true or false
-    invokingResource = GetInvokingResource() or ''
-    customId = customId or ''
-    local id = invokingResource .. customId
-    if customId ~= '' then
+---@param data OpenAudioPlayerData
+---@return false | table, string?
+local function getAudioPlayerInfo(data)
+    CustomId = data.customId
+    InvokingResource = GetInvokingResource() or ''
+    InvokingResource = InvokingResource == currentResourceName and '' or InvokingResource
+    CustomId = CustomId or ''
+    local id = InvokingResource .. CustomId
+    if CustomId ~= '' then
         local uiDisabled = lib.callback.await('mx-audioplayer:isUiDisabled', 0, id)
-        if uiDisabled then return Surround:pushNotification(_U('general.ui.disabled')) end
+        if uiDisabled then
+            Surround:pushNotification(_U('general.ui.disabled'))
+            return false
+        end
     else
         Debug('No custom id provided')
     end
     local _playlist = GetResourceKvpString('mx_audioplayer_playlist')
-    SetNuiFocus(true, true)
     _playlist = _playlist and json.decode(_playlist) or {}
     if currentSounds[id] then
         for k, v in pairs(_playlist) do
@@ -70,6 +73,22 @@ function OpenAudioPlayer(data, handlers)
         end
     end
     initAudioPlayerData(id, data)
+    return _playlist, id
+end
+
+
+
+---@param data? OpenAudioPlayerData
+---@param handlers? OpenAudioPlayerHandlers
+function OpenAudioPlayer(data, handlers)
+    data = data or {}
+    local silent = data.silent
+    local _playlist, id = getAudioPlayerInfo(data)
+    Debug('OpenAudioPlayer ::: id', id, 'playlist', _playlist)
+    handlers = handlers or {}
+    if not _playlist or not id then return Debug('Error getting audio player info') end
+    playQuietly = silent and true or false
+    SetNuiFocus(true, true)
     SendNUIMessage({
         action = 'open',
         data = {
@@ -81,6 +100,58 @@ function OpenAudioPlayer(data, handlers)
     TriggerServerEvent('mx-audioplayer:disableUi', id, true)
 end
 
+local function shortDisplayKeyListener()
+    while ShortDisplayData.state do
+        if IsControlPressed(0, 21) and IsControlJustPressed(0, 175) then
+            SendNUIMessage({
+                action = 'nextSong'
+            })
+        end
+        if IsControlPressed(0, 21) and IsControlJustPressed(0, 174) then
+            SendNUIMessage({
+                action = 'previousSong'
+            })
+        end
+        if IsControlPressed(0, 21) and IsControlJustPressed(0, 311) then
+            SendNUIMessage({
+                action = 'togglePlay'
+            })
+        end
+        Wait(0)
+    end
+end
+
+---@param state boolean
+---@param data? ShortDisplay Not necessary if state is false
+function ToggleShortDisplay(state, data)
+    ShortDisplayData = data or {}
+    ShortDisplayData.state = state
+    if not state then
+        SendNUIMessage({
+            action = 'toggleShortDisplay',
+            data = {
+                state = state,
+            }
+        })
+        return
+    end
+    data = data or {}
+    local _playlist, id = getAudioPlayerInfo({ customId = data.customId })
+    if not _playlist or not id then return Debug('ToggleShortDisplay ::: Error getting audio player info') end
+    SendNUIMessage({
+        action = 'toggleShortDisplay',
+        data = {
+            state = state,
+            playlist = _playlist,
+            currentSound = currentSounds[id]
+        }
+    })
+    shortDisplayKeyListener()
+    Debug('Short display toggled', state, 'data', data)
+end
+
+exports('toggleShortDisplay', ToggleShortDisplay)
+
 exports('open', OpenAudioPlayer)
 
 exports('getVolume', function()
@@ -89,7 +160,7 @@ end)
 
 local function onTimeUpdate(soundData)
     if not soundData then return end
-    local id = invokingResource .. customId
+    local id = InvokingResource .. CustomId
     if not currentSounds[id] or currentSounds[id].soundId ~= soundData.soundId then return end
     SendNUIMessage({
         action = 'timeUpdate',
@@ -101,7 +172,7 @@ end
 
 local function onDestroyed(soundData)
     if not soundData then return end
-    local id = invokingResource .. customId
+    local id = InvokingResource .. CustomId
     if not currentSounds[id] or currentSounds[id].soundId ~= soundData.soundId then return end
     if audioplayerHandlers[id].onClose then
         audioplayerHandlers[id].onClose(currentSounds[id])
@@ -118,9 +189,9 @@ RegisterNUICallback('play', function(data, cb)
         return cb(false)
     end
     local url = soundData.url
-    local soundId = soundData.soundId .. customId
+    local soundId = soundData.soundId .. CustomId
     local _volume = data.volume
-    local id = invokingResource .. customId
+    local id = InvokingResource .. CustomId
     if currentSounds[id] and (currentSounds[id].soundId) ~= soundId then
         TriggerServerEvent('mx-audioplayer:destroy', currentSounds[id].soundId)
     end
@@ -134,7 +205,7 @@ RegisterNUICallback('play', function(data, cb)
             errorCode = response.errorCode
         })
     end
-    TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, invokingResource, customId, playQuietly, coords, audioPlayerData)
+    TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, InvokingResource, CustomId, playQuietly, coords, audioPlayerData)
     local loaded = Surround:soundIsLoaded(soundId) -- wait for the sound to load
     if not loaded then return cb(false) end        -- if it doesn't load, return false
     local maxDuration = Surround:getMaxDuration(soundId)
@@ -151,7 +222,7 @@ RegisterNUICallback('play', function(data, cb)
 end)
 
 RegisterNUICallback('togglePlay', function(data, cb)
-    local id = invokingResource .. customId
+    local id = InvokingResource .. CustomId
     if not currentSounds[id] then
         return cb('ok')
     end
@@ -170,8 +241,22 @@ RegisterNUICallback('togglePlay', function(data, cb)
     cb('ok')
 end)
 
+RegisterNUICallback('getCurrentSongDuration', function(data, cb)
+    local id = InvokingResource .. CustomId
+    if not currentSounds[id] then return cb(0) end
+    local maxDuration = Surround:getMaxDuration(currentSounds[id].soundId)
+    cb(maxDuration)
+end)
+
+RegisterNUICallback('getCurrentSongTimeStamp', function(data, cb)
+    local id = InvokingResource .. CustomId
+    if not currentSounds[id] then return cb(0) end
+    local timeStamp = Surround:getTimeStamp(currentSounds[id].soundId)
+    cb(math.floor(timeStamp))
+end)
+
 RegisterNUICallback('setVolume', function(data, cb)
-    local id = invokingResource .. customId
+    local id = InvokingResource .. CustomId
     AudioVolume = data.volume
     if not currentSounds[id] then return cb(0) end
     TriggerServerEvent('mx-audioplayer:setVolume', currentSounds[id].soundId, data.volume)
@@ -182,7 +267,7 @@ RegisterNUICallback('setVolume', function(data, cb)
 end)
 
 RegisterNUICallback('seek', function(data, cb)
-    local id = invokingResource .. customId
+    local id = InvokingResource .. CustomId
     if not currentSounds[id] then return cb(0) end
     TriggerServerEvent('mx-audioplayer:seek', currentSounds[id].soundId, data.position)
     if audioplayerHandlers[id].onSeek then
@@ -215,8 +300,21 @@ RegisterNUICallback('setPlaylist', function(data, cb)
     cb('ok')
 end)
 
+---@param data Settings
+RegisterNUICallback('saveSettings', function(data, cb)
+    SetResourceKvp('mx_audioplayer_settings', json.encode(data))
+    Debug('Settings saved', data)
+    if data.minimalHud then
+        ToggleShortDisplay(true, {
+            customId = ShortDisplayData.customId,
+            vehicle = IsInVehicle and CurrentVehicle or nil
+        })
+    end
+    cb('ok')
+end)
+
 RegisterNUICallback('close', function(data, cb)
-    local id = invokingResource .. customId
+    local id = InvokingResource .. CustomId
     SetNuiFocus(false, false)
     if audioplayerHandlers[id].onClose then
         audioplayerHandlers[id].onClose(currentSounds[id])
@@ -236,13 +334,16 @@ end
 RegisterNUICallback('uiReady', function(data, cb)
     while not _T do Wait(200) end
     local locale, resources = languageToI18Next()
+    local settings = GetResourceKvpString('mx_audioplayer_settings')
     SendNUIMessage({
         action = 'onUiReady',
         data = {
             languageName = locale,
-            resources = resources
+            resources = resources,
+            settings = settings and json.decode(settings) or {}
         }
     })
+    UiReady = true
     cb('ok')
 end)
 

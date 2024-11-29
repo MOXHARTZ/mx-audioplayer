@@ -29,6 +29,10 @@
   @apply outline-1 !outline-pink-800;
 }
 
+.group[data-focus-visible="true"] .group-data-\[focus-visible\=true\]\:ring-2 {
+  @apply ring-2 !ring-pink-800;
+}
+
 body,
 #root {
   background-repeat: no-repeat;

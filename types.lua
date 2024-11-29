@@ -12,3 +12,11 @@
 ---@field onVolumeChange? fun(sound)
 ---@field onSeek? fun(sound)
 ---@field onClose? fun(sound)
+
+---@class Settings
+---@field minimalHud boolean
+
+---@class ShortDisplay
+---@field state? boolean
+---@field vehicle? number
+---@field customId? string

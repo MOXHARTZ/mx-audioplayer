@@ -52,9 +52,7 @@ const Actions = () => {
     }, [currentSongs, editMode])
     return (
         <section className='flex flex-row items-center justify-end mb-5 mt-3'>
-            <aside className='w-[7.5rem]'>
-
-            </aside>
+            <aside className='w-[7.5rem]'></aside>
             <aside className='flex justify-between gap-2 w-full' ref={animationParent}>
                 <div></div>
                 <section>

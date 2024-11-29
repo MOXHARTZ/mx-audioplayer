@@ -32,11 +32,17 @@ end)
 
 local disabledUis = {}
 RegisterNetEvent('mx-audioplayer:disableUi', function(customId, disabled)
-    disabledUis[customId] = disabled
+    local src = source
+    disabledUis[customId] = {
+        src = src,
+        disabled = disabled
+    }
+    TriggerClientEvent('mx-audioplayer:disableUi', -1, src, customId, disabled)
 end)
 
 lib.callback.register('mx-audioplayer:isUiDisabled', function(source, customId)
-    return disabledUis[customId]
+    if not disabledUis[customId] then return false end
+    return disabledUis[customId].src ~= source and disabledUis[customId].disabled
 end)
 
 AddEventHandler('playerDropped', function()

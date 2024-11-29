@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { NOTIFICATION, isEnvBrowser } from '@/utils/misc'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch } from './stores'
+import { useAppDispatch, useAppSelector } from './stores'
 import useNuiEvent from './hooks/useNuiEvent'
 import { useExitListener } from './hooks/useExitListener'
 import { fetchNui } from './utils/fetchNui'
-import { addPlaylist, clearSound, setPlaying, setPlaylist, setPosition } from './stores/Main'
+import { addPlaylist, clearSound, setPlaying, setPlaylist, setPosition, setSettings } from './stores/Main'
 import { Song } from './fake-api/song'
-import classNames from 'classnames'
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { ReadyListener } from './utils/types'
@@ -16,10 +15,15 @@ import router from './routes'
 import { RouterProvider } from 'react-router-dom'
 import { Playlist } from './fake-api/playlist-categories';
 import { NextUIProvider } from '@nextui-org/react';
+import ShortDisplay from './components/shortdisplay';
+import { AnimatePresence, motion } from "motion/react"
+
 
 function App() {
   const [visible, setVisible] = useState(isEnvBrowser());
+  const [shortDisplay, setShortDisplay] = useState(false)
   const dispatch = useAppDispatch()
+  const { settings, playing } = useAppSelector(state => state.Main)
   useEffect(() => {
     fetchNui('uiReady')
     if (!isEnvBrowser()) return;
@@ -29,6 +33,17 @@ function App() {
     setVisible(true)
     dispatch(setPlaylist(data.playlist))
     if (!data.currentSound) return dispatch(clearSound(true));
+    dispatch(setPlaying(data.currentSound.playing ?? false))
+    dispatch(setPosition(data.currentSound.id))
+  })
+  useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound: Song }>('toggleShortDisplay', (data) => {
+    setShortDisplay(data.state)
+    if (!data.state) return;
+    dispatch(setPlaylist(data.playlist))
+    if (!data.currentSound) {
+      dispatch(clearSound(true));
+      return;
+    }
     dispatch(setPlaying(data.currentSound.playing ?? false))
     dispatch(setPosition(data.currentSound.id))
   })
@@ -48,25 +63,42 @@ function App() {
         escapeValue: false
       }
     })
+    dispatch(setSettings(data.settings))
   })
   useNuiEvent<Playlist>('receivePlaylist', (newPlaylist) => {
     if (!visible) return;
     dispatch(addPlaylist(newPlaylist))
   })
-
   return (
     <>
       <ToastContainer {...NOTIFICATION} />
-      <main className={classNames({
-        'flex items-center justify-center w-full h-full transition scale-100 dark': true,
-        'opacity-0 scale-110': !visible
-      })}>
-        <NextUIProvider className='w-full h-full items-center flex justify-center'>
-          <RouterProvider router={router} />
-        </NextUIProvider>
-      </main>
+      <ShortDisplay visible={!visible && settings.minimalHud && shortDisplay && playing} />
+      <AnimatePresence>
+        {visible && (
+          <motion.main
+            animate={{
+              scale: 1,
+              opacity: 1,
+            }}
+            initial={{
+              opacity: 0,
+              scale: 1.10,
+            }}
+            exit={{
+              opacity: 0,
+              scale: 1.10,
+            }}
+            transition={{
+              duration: 0.3
+            }}
+            className='items-center justify-center w-full h-full dark'>
+            <NextUIProvider className='w-full h-full items-center flex justify-center'>
+              <RouterProvider router={router} />
+            </NextUIProvider>
+          </motion.main>
+        )}
+      </AnimatePresence>
     </>
-
   )
 }
 

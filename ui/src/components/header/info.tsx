@@ -3,7 +3,11 @@ import { memo } from 'react'
 import i18next from 'i18next'
 import { Image } from '@nextui-org/react'
 
-const Info = () => {
+type InfoProps = {
+    isShort?: boolean
+}
+
+const Info = ({ isShort }: InfoProps) => {
     const { currentSongData } = useAppSelector(state => state.Main)
     const currentSong = currentSongData?.song
     return (
@@ -16,12 +20,14 @@ const Info = () => {
                     alt='playlist'
                     isBlurred
                 />
-                <article className='flex flex-col'>
-                    <section>
-                        <h2>{currentSong?.title ?? i18next.t('header.title')}</h2>
-                        <p className='text-gray-500'>{currentSong?.artist ?? i18next.t('header.artist')}</p>
-                    </section>
-                </article>
+                {!isShort && (
+                    <article className='flex flex-col'>
+                        <section>
+                            <h2>{currentSong?.title ?? i18next.t('header.title')}</h2>
+                            <p className='text-gray-500'>{currentSong?.artist ?? i18next.t('header.artist')}</p>
+                        </section>
+                    </article>
+                )}
             </aside>
         </article>
     )

@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import i18next from 'i18next'
 import playlist, { Playlist } from "@/fake-api/playlist-categories";
 import { Song } from "@/fake-api/song";
+import { Settings } from "@/utils/types";
 
 export interface StaticType {
     playing: boolean;
@@ -21,6 +22,7 @@ export interface StaticType {
     shuffle: boolean;
     repeat: boolean;
     filterPlaylist: string;
+    settings: Settings;
 }
 
 const Static = createSlice({
@@ -38,7 +40,10 @@ const Static = createSlice({
         waitingForResponse: false,
         shuffle: false,
         repeat: false,
-        filterPlaylist: ''
+        filterPlaylist: '',
+        settings: {
+            minimalHud: false
+        }
     } as StaticType,
     reducers: {
         setPlaying: (state, action: PayloadAction<boolean>) => {
@@ -134,6 +139,17 @@ const Static = createSlice({
         },
         setPosition: (state, action: PayloadAction<string>) => {
             state.position = action.payload;
+            const playlistId = state.currentPlaylistId;
+            for (const playlist of state.playlist) {
+                const song = playlist.songs.find(song => song.id === action.payload);
+                if (!song) continue;
+                fetchNui<number>('getCurrentSongDuration').then(res => {
+                    state.currentSongs = playlist.songs;
+                    song.duration = Math.floor(res);
+                    state.currentSongData = { playlistId: playlistId, song };
+                })
+                break;
+            }
         },
         setShuffle: (state, action: PayloadAction<boolean>) => {
             state.shuffle = action.payload;
@@ -143,6 +159,9 @@ const Static = createSlice({
         },
         setFilterPlaylist: (state, action: PayloadAction<string>) => {
             state.filterPlaylist = action.payload;
+        },
+        setSettings: (state, action: PayloadAction<Settings>) => {
+            state.settings = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -212,7 +231,8 @@ export const {
     setCurrentSongs,
     deletePlaylist,
     addPlaylist,
-    updatePlaylist
+    updatePlaylist,
+    setSettings
 } = Static.actions
 
 export default Static.reducer
