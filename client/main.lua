@@ -101,24 +101,26 @@ function OpenAudioPlayer(data, handlers)
 end
 
 local function shortDisplayKeyListener()
-    while ShortDisplayData.state do
-        if IsControlPressed(0, 21) and IsControlJustPressed(0, 175) then
-            SendNUIMessage({
-                action = 'nextSong'
-            })
+    CreateThread(function()
+        while ShortDisplayData.state do
+            if IsControlPressed(0, 21) and IsControlJustPressed(0, 175) then
+                SendNUIMessage({
+                    action = 'nextSong'
+                })
+            end
+            if IsControlPressed(0, 21) and IsControlJustPressed(0, 174) then
+                SendNUIMessage({
+                    action = 'previousSong'
+                })
+            end
+            if IsControlPressed(0, 21) and IsControlJustPressed(0, 311) then
+                SendNUIMessage({
+                    action = 'togglePlay'
+                })
+            end
+            Wait(0)
         end
-        if IsControlPressed(0, 21) and IsControlJustPressed(0, 174) then
-            SendNUIMessage({
-                action = 'previousSong'
-            })
-        end
-        if IsControlPressed(0, 21) and IsControlJustPressed(0, 311) then
-            SendNUIMessage({
-                action = 'togglePlay'
-            })
-        end
-        Wait(0)
-    end
+    end)
 end
 
 ---@param state boolean
