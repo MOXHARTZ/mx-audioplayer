@@ -13,7 +13,7 @@
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
     "@nextui-org/react": "^2.4.8",
-    "@reduxjs/toolkit": "^2.3.0",
+    "@reduxjs/toolkit": "^2.4.0",
     "array-move": "^4.0.0",
     "classnames": "^2.5.1",
     "fast-memoize": "^2.5.2",
