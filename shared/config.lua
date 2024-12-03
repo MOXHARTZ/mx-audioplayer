@@ -1,7 +1,7 @@
 Config = {}
 
 Config.Debug = false
-Config.Locale = 'en' -- 'en', 'fr', 'de', 'bg', 'es', 'it', 'ltu', 'cn'
+Config.Locale = 'en' -- 'en', 'fr', 'de', 'bg', 'es', 'it', 'ltu', 'cn', 'ro'
 
 Config.Radio = {}
 Config.Radio.Enable = true
