@@ -56,5 +56,8 @@
     "playlist.context.danger": "Verwalten",
     "search_track.add_all": "Alle hinzufügen",
     "playlist.context.actions": "Aktionen",
-    "general.play": "Abspielen"
+    "general.play": "Abspielen",
+    "settings.title": "Einstellungen",
+    "settings.minimal_hud": "Minimales HUD",
+    "settings.minimal_hud.description": "Wenn Sie es aktivieren, können Sie die Songs in Ihrer Playlist mit den Tastenkombinationen verwalten, selbst wenn Sie das Menü schließen. Um die Tastenkombinationen zu lernen, bewegen Sie Ihre Maus über die Wiedergabe-, Vorwärts- und Zurück-Tasten."
 }
