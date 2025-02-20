@@ -8,6 +8,9 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(jobData)
+    if not PlayerData then
+        PlayerData = GetPlayerData()
+    end
     PlayerData.job = jobData
 end)
 
