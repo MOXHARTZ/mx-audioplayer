@@ -14,6 +14,10 @@ local vehicleEvents = {
     ['leave'] = 'mx-audioplayer:vehicleLeft'
 }
 
+PlayerPed = PlayerPedId()
+PlayerCoords = GetEntityCoords(PlayerPed)
+CurrentVehicle = GetVehiclePedIsIn(PlayerPed, false)
+
 CreateThread(function()
     while not UiReady do Wait(200) end
     while true do
