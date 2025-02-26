@@ -1,28 +1,75 @@
+import { MinimalHudPosition } from '@/utils/types';
 import Header from '../header'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, MotionStyle } from 'framer-motion'
+import { useMemo } from 'react';
+import { DefaultMinimalHudPosition } from '@/utils/defaults';
 
 type ShortDisplayProps = Readonly<{
-    visible: boolean
+    visible: boolean;
+    position?: MinimalHudPosition
 }>
 
-export default function ShortDisplay({ visible }: ShortDisplayProps) {
+const positions = new Map<MinimalHudPosition, { initial: any, animate: any }>([
+    ['top-left', {
+        initial: {
+            left: '0',
+            top: '0',
+            y: '-100%'
+        },
+        animate: {
+            x: 0,
+            y: 0
+        }
+    }],
+    ['top-right', {
+        initial: {
+            right: '0',
+            top: '0',
+            y: '-100%'
+        },
+        animate: {
+            x: 0,
+            y: 0
+        }
+    }],
+    ['bottom-left', {
+        initial: {
+            left: '0',
+            bottom: '0',
+            y: '100%'
+        },
+        animate: {
+            x: 0,
+            y: 0
+        }
+    }],
+    ['bottom-right', {
+        initial: {
+            right: '0',
+            bottom: '0',
+            y: '100%'
+        },
+        animate: {
+            x: 0,
+            y: 0
+        }
+    }]
+])
+
+export default function ShortDisplay({ visible, position }: ShortDisplayProps) {
+    const styleProps = useMemo(() => positions.get(position ?? DefaultMinimalHudPosition), [position])
+
     return (
         <AnimatePresence>
             {visible && (
                 <motion.div
-                    initial={{
-                        translateY: '100%',
-                    }}
-                    animate={{
-                        translateY: 0,
-                    }}
+                    initial={styleProps?.initial}
+                    animate={styleProps?.animate}
                     transition={{
                         duration: 0.3
                     }}
-                    exit={{
-                        translateY: '100%',
-                    }}
-                    className='absolute right-0 bottom-0 w-[30vw] z-50'
+                    exit={styleProps?.initial}
+                    className='absolute z-50'
                 >
                     <Header isShort />
                 </motion.div>

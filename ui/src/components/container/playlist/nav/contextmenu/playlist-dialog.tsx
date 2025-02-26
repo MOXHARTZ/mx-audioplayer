@@ -8,7 +8,7 @@ import { addPlaylist, updatePlaylist } from '@/stores/Main';
 import { nanoid } from '@reduxjs/toolkit';
 import { isEmpty } from '@/utils/misc';
 import classNames from 'classnames';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Textarea, Input } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Textarea, Input } from "@heroui/react";
 
 const PlaylistDialog = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (open: boolean) => void, currentPlaylist?: Playlist }) => {
     const dispatch = useAppDispatch()

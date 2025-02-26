@@ -1,4 +1,4 @@
-import { Card, CardHeader, Skeleton } from "@nextui-org/react";
+import { Card, CardHeader, Skeleton } from "@heroui/react";
 
 export default function SearchSkeleton() {
     return (

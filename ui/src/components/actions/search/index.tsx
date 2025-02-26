@@ -12,7 +12,7 @@ import { QueryResult } from '@/utils/types'
 import { BiSearch } from 'react-icons/bi'
 import i18next from 'i18next'
 import classNames from 'classnames'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, ScrollShadow, Tooltip, Input } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, ScrollShadow, Tooltip, Input } from "@heroui/react";
 import TrackCard from './TrackCard'
 import SearchSkeleton from './Skeleton'
 

@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/stores';
 import { setVolume } from '@/stores/Main';
 import { fetchNui } from '@/utils/fetchNui';
-import { Slider } from '@nextui-org/react';
+import { Slider } from '@heroui/react';
 import { memo, useCallback } from 'react'
 import { IoVolumeHigh, IoVolumeLow } from 'react-icons/io5';
 

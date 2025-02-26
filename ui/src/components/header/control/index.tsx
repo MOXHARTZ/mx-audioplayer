@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/stores';
 import { fetchNui } from '@/utils/fetchNui';
 import memoize from "fast-memoize";
 import i18next from 'i18next';
-import { Button, Kbd, Tooltip } from "@nextui-org/react";
+import { Button, Kbd, Tooltip } from "@heroui/react";
 import { IoPauseCircle, IoPlayBack, IoPlayCircle, IoPlayForward, IoRepeat, IoShuffle } from "react-icons/io5";
 import useKeyPress from '@/hooks/useKeyPress';
 

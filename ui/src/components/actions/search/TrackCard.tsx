@@ -1,5 +1,5 @@
 import { Track } from "@/fake-api/search-results";
-import { Card, CardHeader, Image } from "@nextui-org/react";
+import { Card, CardHeader, Image } from "@heroui/react";
 import i18next from "i18next";
 
 type TrackCardProps = {

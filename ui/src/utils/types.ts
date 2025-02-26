@@ -17,6 +17,9 @@ export type Player = {
     name: string;
 }
 
+export type MinimalHudPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+
 export type Settings = {
     minimalHud: boolean;
+    minimalHudPosition?: MinimalHudPosition;
 }

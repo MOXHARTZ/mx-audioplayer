@@ -1,6 +1,6 @@
 import { Playlist } from '@/fake-api/playlist-categories'
 import { isEmpty } from '@/utils/misc'
-import { Image } from '@nextui-org/react'
+import { Image } from '@heroui/react'
 import classNames from 'classnames'
 import { MdAudiotrack } from 'react-icons/md'
 

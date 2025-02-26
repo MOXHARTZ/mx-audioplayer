@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { BiSearch } from 'react-icons/bi'
 import SearchTrack from './search'
 import i18next from 'i18next'
-import { Button, ButtonGroup, Input, useDisclosure } from '@nextui-org/react'
+import { Button, ButtonGroup, Input, useDisclosure } from '@heroui/react'
 import ConfirmModal from '../modals/ConfirmModal'
 
 const Actions = () => {

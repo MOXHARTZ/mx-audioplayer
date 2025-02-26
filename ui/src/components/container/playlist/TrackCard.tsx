@@ -1,5 +1,5 @@
 import { Song } from "@/fake-api/song";
-import { Card, CardHeader, Avatar, Button, Checkbox } from "@nextui-org/react";
+import { Card, CardHeader, Avatar, Button, Checkbox } from "@heroui/react";
 import classNames from "classnames";
 import i18next from "i18next";
 import { useMemo } from "react";

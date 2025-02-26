@@ -8,7 +8,7 @@ import { deletePlaylist } from '@/stores/Main';
 import { toast } from 'react-toastify';
 import i18next from 'i18next';
 import Share from './share';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn, DropdownSection } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn, DropdownSection } from "@heroui/react";
 import { IoMdTrash } from "react-icons/io";
 
 const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";

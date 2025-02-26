@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/stores'
 import { memo } from 'react'
 import i18next from 'i18next'
-import { Image } from '@nextui-org/react'
+import { Image } from '@heroui/react'
 
 type InfoProps = {
     isShort?: boolean

@@ -10,7 +10,7 @@ import SortableList from "react-easy-sort";
 import { arrayMoveImmutable } from 'array-move'
 import TrackCard from './TrackCard'
 import classNames from 'classnames'
-import { Chip } from '@nextui-org/react'
+import { Chip } from '@heroui/react'
 
 const Playlist = () => {
     const { currentSongs, position, editMode, selectedSongs, volume, filterPlaylist } = useAppSelector(state => state.Main)

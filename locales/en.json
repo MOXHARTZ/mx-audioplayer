@@ -59,5 +59,14 @@
     "modal.cancel": "Cancel",
     "settings.title": "Settings",
     "settings.minimal_hud": "Minimal HUD",
-    "settings.minimal_hud.description": "When you activate it. You can manage the songs in your playlist with the shortcuts even when you close the menu. To learn the shortcuts, move your mouse to the play, forward and back buttons."
+    "settings.minimal_hud.description": "When you activate it. You can manage the songs in your playlist with the shortcuts even when you close the menu. To learn the shortcuts, move your mouse to the play, forward and back buttons.",
+    "settings.minimal_hud.position.title": "Minimal Hud Position",
+    "settings.minimal_hud.position.top_left": "Top Left",
+    "settings.minimal_hud.position.top_left_description": "The minimal hud will be placed on the top left corner of your screen",
+    "settings.minimal_hud.position.top_right": "Top Right",
+    "settings.minimal_hud.position.top_right_description": "The minimal hud will be placed on the top right corner of your screen",
+    "settings.minimal_hud.position.bottom_left": "Bottom Left",
+    "settings.minimal_hud.position.bottom_left_description": "The minimal hud will be placed on the bottom left corner of your screen",
+    "settings.minimal_hud.position.bottom_right": "Bottom Right",
+    "settings.minimal_hud.position.bottom_right_description": "The minimal hud will be placed on the bottom right corner of your screen"
 }

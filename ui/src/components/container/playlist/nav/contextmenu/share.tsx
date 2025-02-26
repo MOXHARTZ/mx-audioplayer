@@ -5,7 +5,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import i18next from 'i18next'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { Modal, ModalContent, ModalHeader, ModalBody, Card, User } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Card, User } from "@heroui/react";
 
 const Share = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (open: boolean) => void, currentPlaylist?: Playlist }) => {
     const [players, setPlayers] = useState<Player[]>([])

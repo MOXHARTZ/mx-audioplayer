@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/stores';
 import { fetchNui } from '@/utils/fetchNui';
 import { formatDuration } from '@/utils/misc';
-import { Slider } from '@nextui-org/react';
+import { Slider } from '@heroui/react';
 import { FC, memo, useState } from 'react'
 
 const Timer: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> = ({ timeStamp, setTimeStamp }) => {

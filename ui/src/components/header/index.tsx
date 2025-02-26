@@ -1,6 +1,6 @@
 import { memo, useMemo, useState } from 'react';
 import Info from './info'
-import { Button, Card, useDisclosure } from '@nextui-org/react';
+import { Button, Card, useDisclosure } from '@heroui/react';
 import Control from './control';
 import Timer from './control/timer';
 import Volume from './volume';

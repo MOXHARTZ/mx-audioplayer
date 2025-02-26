@@ -6,7 +6,7 @@ import SortableList, { SortableItem } from "react-easy-sort";
 import { setPlaylist } from '@/stores/Main'
 import classNames from 'classnames'
 import { arrayMoveImmutable } from 'array-move'
-import { Tooltip } from '@nextui-org/react';
+import { Tooltip } from '@heroui/react';
 
 const PlaylistNav = () => {
     const { playlist, editMode } = useAppSelector(state => state.Main)

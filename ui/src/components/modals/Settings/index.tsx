@@ -1,9 +1,11 @@
 import { useAppDispatch, useAppSelector } from "@/stores";
 import { setSettings } from "@/stores/Main";
 import { fetchNui } from "@/utils/fetchNui";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Checkbox, Switch, cn } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Checkbox, Switch, cn } from "@heroui/react";
 import i18next from "i18next";
 import { useCallback } from "react";
+import MinimalHudPositionTabs from "./Positions";
+import { Settings } from "@/utils/types";
 
 type SettingsProps = Readonly<{
     isOpen: boolean;
@@ -16,15 +18,19 @@ export default function SettingsModal({ isOpen, onOpenChange }: SettingsProps) {
     const save = useCallback(() => {
         fetchNui('saveSettings', settings)
     }, [settings])
+    const updateSettings = useCallback((key: keyof Settings, value: any) => {
+        dispatch(setSettings({ ...settings, [key]: value }))
+    }, [settings])
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal isOpen={isOpen} size="xl" onOpenChange={onOpenChange}>
             <ModalContent>
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">{i18next.t('settings.title')}</ModalHeader>
                         <ModalBody>
                             <Switch
-                                onChange={(e) => dispatch(setSettings({ ...settings, minimalHud: e.target.checked }))}
+                                className="max-w-full"
+                                onChange={(e) => updateSettings('minimalHud', e.target.checked)}
                                 isSelected={settings.minimalHud}
                                 color="danger"
                                 classNames={{
@@ -33,7 +39,7 @@ export default function SettingsModal({ isOpen, onOpenChange }: SettingsProps) {
                                         "justify-between cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
                                         "data-[selected=true]:border-danger",
                                     ),
-                                    wrapper: "p-0 h-4 overflow-visible",
+                                    wrapper: "p-0 overflow-visible",
                                     thumb: cn("w-6 h-6 border-2 shadow-lg",
                                         "group-data-[hover=true]:border-danger",
                                         //selected
@@ -49,6 +55,9 @@ export default function SettingsModal({ isOpen, onOpenChange }: SettingsProps) {
                                     <p className="text-tiny text-default-400">{i18next.t('settings.minimal_hud.description')}</p>
                                 </div>
                             </Switch>
+                            {settings.minimalHud && (
+                                <MinimalHudPositionTabs position={settings.minimalHudPosition} updateSettings={updateSettings} />
+                            )}
                         </ModalBody>
                         <ModalFooter>
                             <Button color="default" variant="light" onPress={onClose}>

@@ -14,7 +14,7 @@ import { ReadyListener } from './utils/types'
 import router from './routes'
 import { RouterProvider } from 'react-router-dom'
 import { Playlist } from './fake-api/playlist-categories';
-import { NextUIProvider } from '@nextui-org/react';
+import { HeroUIProvider } from '@heroui/react';
 import ShortDisplay from './components/shortdisplay';
 import { AnimatePresence, motion } from "motion/react"
 
@@ -72,7 +72,10 @@ function App() {
   return (
     <>
       <ToastContainer {...NOTIFICATION} />
-      <ShortDisplay visible={!visible && settings.minimalHud && shortDisplay && playing} />
+      <ShortDisplay
+        position={settings.minimalHudPosition}
+        visible={!visible && settings.minimalHud && shortDisplay && playing}
+      />
       <AnimatePresence>
         {visible && (
           <motion.main
@@ -92,9 +95,9 @@ function App() {
               duration: 0.3
             }}
             className='items-center justify-center w-full h-full dark'>
-            <NextUIProvider className='w-full h-full items-center flex justify-center'>
+            <HeroUIProvider className='w-full h-full items-center flex justify-center'>
               <RouterProvider router={router} />
-            </NextUIProvider>
+            </HeroUIProvider>
           </motion.main>
         )}
       </AnimatePresence>
