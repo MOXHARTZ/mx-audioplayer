@@ -3,10 +3,19 @@ CreateThread(function()
     Info('Radio is enabled')
 end)
 
+-- https://github.com/zaphosting/esx/blob/master/es_extended/common/modules/math.lua
+---@param value string | number
+---@return string | nil
+local function mathTrim(value)
+    value = tostring(value)
+    return (string.gsub(value, '^%s*(.-)%s*$', '%1'))
+end
+
+
 local function openUi()
     if not IsInVehicle then return end
     local _vehicle = CurrentVehicle
-    local plate = GetVehicleNumberPlateText(CurrentVehicle)
+    local plate = mathTrim(GetVehicleNumberPlateText(CurrentVehicle))
     local radioSettings = {
         customId = plate,
         silent = true
@@ -46,7 +55,7 @@ if Config.Radio.DisableDefaultRadio then
 end
 
 AddEventHandler('mx-audioplayer:vehicleEntered', function(vehicle)
-    local plate = GetVehicleNumberPlateText(vehicle)
+    local plate = mathTrim(GetVehicleNumberPlateText(vehicle))
     ToggleShortDisplay(true, {
         vehicle = vehicle,
         customId = plate
