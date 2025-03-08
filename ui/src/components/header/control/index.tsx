@@ -77,18 +77,17 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
     }), [position, currentSongChildren, volume, currentSongData, waitingForResponse])
     useNuiEvent<{ time: number }>('timeUpdate', ({ time }) => {
         setTimeStamp(time)
-        const duration = currentSong?.duration ?? 0
-        if (playing && duration && timeStamp === duration) {
-            if (repeat) {
-                setTimeStamp(0)
-                fetchNui('seek', {
-                    position: 0
-                })
-                return
-            }
-            if (currentSongChildren?.length === 0) return;
-            nextBtn(true)
+    })
+    useNuiEvent('end', () => {
+        if (repeat) {
+            setTimeStamp(0)
+            fetchNui('seek', {
+                position: 0
+            })
+            return
         }
+        if (currentSongChildren?.length === 0) return;
+        nextBtn(true)
     })
     useEffect(() => {
         if (position === -1) setTimeStamp(0);

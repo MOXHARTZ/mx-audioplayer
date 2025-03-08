@@ -189,6 +189,15 @@ local function onDestroyed(soundData)
     })
 end
 
+local function onEnd(soundData)
+    if not soundData then return end
+    local id = InvokingResource .. CustomId
+    if not currentSounds[id] or currentSounds[id].soundId ~= soundData.soundId then return end
+    SendNUIMessage({
+        action = 'end'
+    })
+end
+
 RegisterNUICallback('play', function(data, cb)
     local soundData = data.soundData
     if not soundData then
@@ -216,6 +225,7 @@ RegisterNUICallback('play', function(data, cb)
     end
     Surround:onTimeUpdate(soundId, onTimeUpdate)
     Surround:onDestroy(soundId, onDestroyed)
+    Surround:onPlayEnd(soundId, onEnd)
     cb(maxDuration)
 end)
 
