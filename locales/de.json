@@ -59,5 +59,14 @@
     "general.play": "Abspielen",
     "settings.title": "Einstellungen",
     "settings.minimal_hud": "Minimales HUD",
-    "settings.minimal_hud.description": "Wenn Sie es aktivieren, können Sie die Songs in Ihrer Playlist mit den Tastenkombinationen verwalten, selbst wenn Sie das Menü schließen. Um die Tastenkombinationen zu lernen, bewegen Sie Ihre Maus über die Wiedergabe-, Vorwärts- und Zurück-Tasten."
+    "settings.minimal_hud.description": "Wenn Sie es aktivieren, können Sie die Songs in Ihrer Playlist mit den Tastenkombinationen verwalten, selbst wenn Sie das Menü schließen. Um die Tastenkombinationen zu lernen, bewegen Sie Ihre Maus über die Wiedergabe-, Vorwärts- und Zurück-Tasten.",
+    "settings.minimal_hud.position.title": "Minimale HUD-Position",
+    "settings.minimal_hud.position.top_left": "Oben Links",
+    "settings.minimal_hud.position.top_left_description": "Das minimale HUD wird in der oberen linken Ecke deines Bildschirms platziert",
+    "settings.minimal_hud.position.top_right": "Oben Rechts",
+    "settings.minimal_hud.position.top_right_description": "Das minimale HUD wird in der oberen rechten Ecke deines Bildschirms platziert",
+    "settings.minimal_hud.position.bottom_left": "Unten Links",
+    "settings.minimal_hud.position.bottom_left_description": "Das minimale HUD wird in der unteren linken Ecke deines Bildschirms platziert",
+    "settings.minimal_hud.position.bottom_right": "Unten Rechts",
+    "settings.minimal_hud.position.bottom_right_description": "Das minimale HUD wird in der unteren rechten Ecke deines Bildschirms platziert"
 }
