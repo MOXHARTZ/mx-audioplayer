@@ -203,17 +203,9 @@ RegisterNUICallback('play', function(data, cb)
     end
     local audioPlayerData = audioPlayer[id]
     local coords = audioPlayerData.coords or GetEntityCoords(PlayerPed) -- need instant coords
-    local response = Surround:Prepare(url)
-    if not response.success then
-        Error('Error: ' .. response.error, 'Code:', response.errorCode)
-        return cb({
-            error = response.error,
-            errorCode = response.errorCode
-        })
-    end
     TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, InvokingResource, CustomId, playQuietly, coords, audioPlayerData)
-    local loaded = Surround:soundIsLoaded(soundId) -- wait for the sound to load
-    if not loaded then return cb(false) end        -- if it doesn't load, return false
+    local loaded = Surround:soundIsLoaded(soundId)                      -- wait for the sound to load
+    if not loaded then return cb(false) end                             -- if it doesn't load, return false
     local maxDuration = Surround:getMaxDuration(soundId)
     soundData.duration = maxDuration
     soundData.playing = true
@@ -242,7 +234,7 @@ RegisterNUICallback('togglePlay', function(data, cb)
         if audioplayerHandlers[id].onPause then
             audioplayerHandlers[id].onPause(currentSounds[id])
         end
-        TriggerServerEvent('mx-audioplayer:stop', currentSounds[id].soundId)
+        TriggerServerEvent('mx-audioplayer:pause', currentSounds[id].soundId)
     end
     cb('ok')
 end)

@@ -16,7 +16,6 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Scrol
 import TrackCard from './TrackCard'
 import SearchSkeleton from './Skeleton'
 
-
 const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) => {
     const { waitingForResponse, currentSongs } = useAppSelector(state => state.Main)
     const [query, setQuery] = useState('')
@@ -61,7 +60,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
 
     const processUrl = useCallback(async (url: string) => {
         dispatch(setWaitingForResponse(true))
-        const response = await fetchNui<{ title: string; artist: string; thumbnail: string }>('getSoundData', { url: url })
+        const response = await fetchNui<{ title: string; artist: string; thumbnail: string; videoId?: string }>('getSoundData', { url: url })
         if (!response) {
             dispatch(setWaitingForResponse(false))
             return toast.error(i18next.t('search_track.invalid_url'))
@@ -71,7 +70,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
             artists: [{ name: response.artist, artistId: 'unknown' }],
             name: response.title,
             thumbnails: [{ url: response.thumbnail, width: 90, height: 90 }],
-            videoId: url,
+            videoId: response.videoId ?? url,
         }
         setTrackList([_data])
         dispatch(setWaitingForResponse(false))

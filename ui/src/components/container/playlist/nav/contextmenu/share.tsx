@@ -41,7 +41,7 @@ const Share = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (op
                                         isHoverable
                                         isPressable
                                         className='flex gap-2 cursor-pointer hover:bg-zinc-700 p-2 rounded-lg'
-                                        onClick={() => handleShare(player)}
+                                        onPress={() => handleShare(player)}
                                     >
                                         <User
                                             name={player.name ?? i18next.t('general.unknown')}

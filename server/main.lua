@@ -70,8 +70,8 @@ RegisterNetEvent('mx-audioplayer:resume', function(soundId)
     Surround:Resume(-1, soundId)
 end)
 
-RegisterNetEvent('mx-audioplayer:stop', function(soundId)
-    Surround:Stop(-1, soundId)
+RegisterNetEvent('mx-audioplayer:pause', function(soundId)
+    Surround:Pause(-1, soundId)
 end)
 
 RegisterNetEvent('mx-audioplayer:destroy', function(soundId)
