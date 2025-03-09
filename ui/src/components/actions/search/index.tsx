@@ -36,7 +36,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
             title: track.name ?? i18next.t('general.unknown'),
             artist: track?.artist ? track?.artist?.name : track?.artists?.[0]?.name ?? i18next.t('general.unknown'),
             cover: track.thumbnails[track.thumbnails.length - 1].url,
-            url: track.videoId,
+            url: track.url,
             duration: 0,
         }))
         dispatch(setCurrentSongs([...currentSongs, ..._trackListData]))
@@ -52,7 +52,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
             title: track?.name ?? i18next.t('general.unknown'),
             artist,
             cover: track.thumbnails[track.thumbnails.length - 1].url,
-            url: track.videoId,
+            url: track.url,
             duration: 0,
         }
         dispatch(setCurrentSongs([...currentSongs, soundData]))
