@@ -43,15 +43,15 @@ const Header = ({ isShort }: HeaderProps) => {
                     <CardFooter className='gap-2 items-center justify-center'>
                         <div className='flex gap-1 text-sm items-center'>
                             <Kbd keys={["shift"]}>K</Kbd>
-                            Play Pause
+                            {i18next.t('keyboard.shortcut.toggle')}
                         </div>
                         <div className='flex gap-1 text-sm items-center'>
                             <Kbd keys={["shift"]}>Arrow Up/Down</Kbd>
-                            Volume Up/Down
+                            {i18next.t('keyboard.shortcut.volume')}
                         </div>
                         <div className='flex gap-1 text-sm items-center'>
                             <Kbd keys={["shift"]}>Arrow Left/Right</Kbd>
-                            Previous/Next
+                            {i18next.t('keyboard.shortcut.forward')}
                         </div>
                         {!isShort && (
                             <Button

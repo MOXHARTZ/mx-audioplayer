@@ -68,5 +68,8 @@
     "settings.minimal_hud.position.bottom_left": "Bottom Left",
     "settings.minimal_hud.position.bottom_left_description": "The minimal hud will be placed on the bottom left corner of your screen",
     "settings.minimal_hud.position.bottom_right": "Bottom Right",
-    "settings.minimal_hud.position.bottom_right_description": "The minimal hud will be placed on the bottom right corner of your screen"
+    "settings.minimal_hud.position.bottom_right_description": "The minimal hud will be placed on the bottom right corner of your screen",
+    "keyboard.shortcut.toggle": "Play/Pause",
+    "keyboard.shortcut.volume": "Volume Up/Down",
+    "keyboard.shortcut.forward": "Previous/Next"
 }
