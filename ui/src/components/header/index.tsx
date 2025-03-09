@@ -1,6 +1,6 @@
 import { memo, useMemo, useState } from 'react';
 import Info from './info'
-import { Button, Card, useDisclosure } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, Kbd, useDisclosure } from '@heroui/react';
 import Control from './control';
 import Timer from './control/timer';
 import Volume from './volume';
@@ -25,32 +25,48 @@ const Header = ({ isShort }: HeaderProps) => {
         <>
             <SettingsModal isOpen={isOpen} onOpenChange={onOpenChange} />
             <header className='flex justify-center w-full items-center gap-24'>
-                <Card className={classNames({
-                    'p-4 grid grid-cols-3': true,
-                    'gap-4 flex flex-row grid-cols-2': isShort
-                })}>
-                    <Info isShort={isShort} />
-                    <article className='w-full flex flex-col'>
-                        <h1 className='text-2xl truncate m-auto mb-5'>{currentPlaylistName ?? i18next.t('header.playlist')}</h1>
-                        <Control timeStamp={timeStamp} setTimeStamp={setTimeStamp} />
-                        <Timer timeStamp={timeStamp} setTimeStamp={setTimeStamp} />
-                    </article>
-                    {!isShort && (
-                        <>
+                <Card className='w-full h-full'>
+                    <CardBody className={classNames({
+                        'px-4 pt-2 pb-0 grid grid-cols-3': true,
+                        'gap-4 flex flex-row grid-cols-2': isShort
+                    })}>
+                        <Info isShort={isShort} />
+                        <article className='w-full flex flex-col'>
+                            <h1 className='text-2xl truncate m-auto mb-5'>{currentPlaylistName ?? i18next.t('header.playlist')}</h1>
+                            <Control timeStamp={timeStamp} setTimeStamp={setTimeStamp} />
+                            <Timer timeStamp={timeStamp} setTimeStamp={setTimeStamp} />
+                        </article>
+                        {!isShort && (
                             <Volume />
+                        )}
+                    </CardBody>
+                    <CardFooter className='gap-2 items-center justify-center'>
+                        <div className='flex gap-1 text-sm items-center'>
+                            <Kbd keys={["shift"]}>K</Kbd>
+                            Play Pause
+                        </div>
+                        <div className='flex gap-1 text-sm items-center'>
+                            <Kbd keys={["shift"]}>Arrow Up/Down</Kbd>
+                            Volume Up/Down
+                        </div>
+                        <div className='flex gap-1 text-sm items-center'>
+                            <Kbd keys={["shift"]}>Arrow Left/Right</Kbd>
+                            Previous/Next
+                        </div>
+                        {!isShort && (
                             <Button
                                 className='absolute right-2 bottom-2'
                                 isIconOnly
                                 size='sm'
                                 color='default'
-                                onClick={onOpen}
+                                onPress={onOpen}
                             >
                                 <IoSettings size={18} />
                             </Button >
-                        </>
-                    )}
+                        )}
+                    </CardFooter>
                 </Card>
-            </header>
+            </header >
         </>
 
     )

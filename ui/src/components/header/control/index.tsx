@@ -1,6 +1,6 @@
 import { FC, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import useNuiEvent from '@/hooks/useNuiEvent';
-import { setPlaying, setRepeat, setShuffle } from '@/stores/Main';
+import { setPlaying, setRepeat, setShuffle, setVolume } from '@/stores/Main';
 import { handlePlay } from '@/thunks/handlePlay';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '@/stores';
@@ -89,15 +89,24 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
         if (currentSongChildren?.length === 0) return;
         nextBtn(true)
     })
+    const updateVolume = useCallback((newValue: number) => {
+        if (newValue < 0 || newValue > 1) return;
+        dispatch(setVolume(newValue as number));
+        fetchNui('setVolume', { volume: newValue as number })
+    }, []);
     useEffect(() => {
         if (position === -1) setTimeStamp(0);
     }, [position])
     useKeyPress('ArrowLeft', true, previousBtnHandler)
     useKeyPress('ArrowRight', true, nextBtnHandler)
+    useKeyPress('ArrowUp', true, () => updateVolume(volume - 0.1))
+    useKeyPress('ArrowDown', true, () => updateVolume(volume - 0.1))
     useKeyPress('K', true, playBtnHandler)
     useNuiEvent('nextSong', nextBtnHandler)
     useNuiEvent('previousSong', previousBtnHandler)
     useNuiEvent('togglePlay', playBtnHandler)
+    useNuiEvent('volumeUp', () => updateVolume(volume + 0.1))
+    useNuiEvent('volumeDown', () => updateVolume(volume - 0.1))
     return (
         <div className="flex gap-6 md:gap-4 items-center justify-center w-full mb-3">
             <div className="flex w-full items-center justify-center gap-1">

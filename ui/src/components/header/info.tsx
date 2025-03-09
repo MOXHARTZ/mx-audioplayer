@@ -1,17 +1,36 @@
 import { useAppSelector } from '@/stores'
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import i18next from 'i18next'
 import { Image } from '@heroui/react'
+import Volume from './volume'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 type InfoProps = {
     isShort?: boolean
 }
 
 const Info = ({ isShort }: InfoProps) => {
-    const { currentSongData } = useAppSelector(state => state.Main)
+    const { currentSongData, volume } = useAppSelector(state => state.Main)
     const currentSong = currentSongData?.song
+    const [showVolume, setShowVolume] = useState(false)
+    const [animationParent] = useAutoAnimate()
+
+    useEffect(() => {
+        if (!isShort) return
+        setShowVolume(true)
+        const timeout = setTimeout(() => {
+            setShowVolume(false)
+        }, 2000)
+        return () => {
+            clearTimeout(timeout)
+            setShowVolume(false)
+        }
+    }, [volume])
     return (
-        <article className='flex justify-between items-center w-full'>
+        <article className='flex justify-between items-center w-full' ref={animationParent}>
+            {(isShort && showVolume) ? (
+                <Volume isShort />
+            ) : null}
             <aside className='flex gap-4 items-center'>
                 <Image
                     src={currentSong?.cover ?? 'https://nextui.org/images/album-cover.png'}
