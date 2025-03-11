@@ -56,5 +56,20 @@
     "playlist.confirm.delete_all.title": "¿Estás seguro de que quieres eliminar todas las canciones?",
     "playlist.confirm.delete_all.content": "Esta acción no se puede deshacer",
     "modal.confirm": "Confirmar",
-    "modal.cancel": "Cancelar"
+    "modal.cancel": "Cancelar",
+    "settings.title": "Ajustes",
+    "settings.minimal_hud": "HUD Minimalista",
+    "settings.minimal_hud.description": "Cuando lo actives, podrás gestionar las canciones de tu lista de reproducción con los atajos incluso cuando cierres el menú. Para conocer los atajos, mueve el ratón hacia los botones de reproducción, avance y retroceso.",
+    "settings.minimal_hud.position.title": "Posición del HUD minimalista",
+    "settings.minimal_hud.position.top_left": "Arriba a la izquierda",
+    "settings.minimal_hud.position.top_left_description": "El HUD minimalista se colocará en la esquina superior izquierda de la pantalla",
+    "settings.minimal_hud.position.top_right": "Arriba a la derecha",
+    "settings.minimal_hud.position.top_right_description": "El HUD minimalista se colocará en la esquina superior derecha de la pantalla",
+    "settings.minimal_hud.position.bottom_left": "Abajo a la izquierda",
+    "settings.minimal_hud.position.bottom_left_description": "El HUD minimalista se colocará en la esquina inferior izquierda de la pantalla",
+    "settings.minimal_hud.position.bottom_right": "Abajo a la derecha",
+    "settings.minimal_hud.position.bottom_right_description": "El HUD minimalista se colocará en la esquina inferior derecha de la pantalla.",
+    "keyboard.shortcut.toggle": "Reproducir/Pausar",
+    "keyboard.shortcut.volume": "Subir/Bajar volumen",
+    "keyboard.shortcut.forward": "Anterior/Siguiente"
 }
