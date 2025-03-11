@@ -68,5 +68,8 @@
     "settings.minimal_hud.position.bottom_left": "Unten Links",
     "settings.minimal_hud.position.bottom_left_description": "Das minimale HUD wird in der unteren linken Ecke deines Bildschirms platziert",
     "settings.minimal_hud.position.bottom_right": "Unten Rechts",
-    "settings.minimal_hud.position.bottom_right_description": "Das minimale HUD wird in der unteren rechten Ecke deines Bildschirms platziert"
+    "settings.minimal_hud.position.bottom_right_description": "Das minimale HUD wird in der unteren rechten Ecke deines Bildschirms platziert",
+    "keyboard.shortcut.toggle": "Wiedergabe/Pause",
+    "keyboard.shortcut.volume": "Lautstärke Lauter/Leiser",
+    "keyboard.shortcut.forward": "Vorheriger/Nächster Titel"
 }
