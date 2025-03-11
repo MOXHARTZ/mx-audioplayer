@@ -71,6 +71,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
             name: response.title,
             thumbnails: [{ url: response.thumbnail, width: 90, height: 90 }],
             videoId: response.videoId ?? url,
+            url
         }
         setTrackList([_data])
         dispatch(setWaitingForResponse(false))
