@@ -1,5 +1,5 @@
 while not Version do Wait(0) end
-local success = Version.checkScriptVersion('mx-surround', '2.4.1')
+local success = Version.checkScriptVersion('mx-surround', '2.4.8')
 if not success then return end
 
 local Surround = exports['mx-surround']
