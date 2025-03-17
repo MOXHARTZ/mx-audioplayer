@@ -43,7 +43,7 @@ const Static = createSlice({
         filterPlaylist: '',
         settings: {
             minimalHud: false
-        }
+        },
     } as StaticType,
     reducers: {
         setPlaying: (state, action: PayloadAction<boolean>) => {
@@ -162,7 +162,7 @@ const Static = createSlice({
         },
         setSettings: (state, action: PayloadAction<Settings>) => {
             state.settings = action.payload;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(handlePlay.fulfilled, (state, { payload }) => {

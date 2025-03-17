@@ -1,15 +1,15 @@
-import { FC, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { FC, memo, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import useNuiEvent from '@/hooks/useNuiEvent';
 import { setPlaying, setRepeat, setShuffle, setVolume } from '@/stores/Main';
 import { handlePlay } from '@/thunks/handlePlay';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '@/stores';
 import { fetchNui } from '@/utils/fetchNui';
-import memoize from "fast-memoize";
 import i18next from 'i18next';
 import { Button, Kbd, Tooltip } from "@heroui/react";
 import { IoPauseCircle, IoPlayBack, IoPlayCircle, IoPlayForward, IoRepeat, IoShuffle } from "react-icons/io5";
 import useKeyPress from '@/hooks/useKeyPress';
+import { nextSongThunk } from '@/thunks/nextSong';
 
 const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> = ({ timeStamp, setTimeStamp }) => {
     const dispatch = useAppDispatch()
@@ -53,41 +53,8 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
             playlistId: currentSongData?.playlistId
         }))
     }, [position, currentSongChildren, volume, currentSongData, waitingForResponse])
-    const nextBtn = useMemo(() => memoize((checkShuffle) => {
-        if (waitingForResponse) return;
-        if (!currentSongChildren) return toast.error(i18next.t('playlist.empty'));
-        const index = currentSongChildren.findIndex(song => song.id === currentSong?.id)
-        let newPos = index === currentSongChildren.length - 1 ? 0 : index + 1
-        if (checkShuffle && shuffle && currentSongChildren.length > 2) {
-            newPos = Math.floor(Math.random() * currentSongChildren.length)
-            while (newPos === index) {
-                newPos = Math.floor(Math.random() * currentSongChildren.length)
-            }
-        }
-        if (currentSongChildren.length === 0) return toast.error(i18next.t('playlist.empty'))
-        const newSoundData = currentSongChildren[newPos]
-        if (newSoundData.id === currentSong?.id) return toast.error(i18next.t('playlist.no_more_songs'))
-        dispatch(setPlaying(false))
-        dispatch(handlePlay({
-            position: newSoundData.id,
-            soundData: newSoundData,
-            volume: volume,
-            playlistId: currentSongData?.playlistId
-        }))
-    }), [position, currentSongChildren, volume, currentSongData, waitingForResponse])
     useNuiEvent<{ time: number }>('timeUpdate', ({ time }) => {
         setTimeStamp(time)
-    })
-    useNuiEvent('end', () => {
-        if (repeat) {
-            setTimeStamp(0)
-            fetchNui('seek', {
-                position: 0
-            })
-            return
-        }
-        if (currentSongChildren?.length === 0) return;
-        nextBtn(true)
     })
     const updateVolume = useCallback((newValue: number) => {
         if (newValue < 0 || newValue > 1) return;
@@ -155,7 +122,7 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
                         className="data-[hover]:bg-foreground/10"
                         radius="full"
                         variant="light"
-                        onPress={() => nextBtn(true)}
+                        onPress={() => dispatch(nextSongThunk(true))}
                         isDisabled={waitingForResponse}
                         ref={nextBtnEl}
                     >

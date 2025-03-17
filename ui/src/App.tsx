@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { NOTIFICATION, isEnvBrowser } from '@/utils/misc'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,13 +17,15 @@ import { Playlist } from './fake-api/playlist-categories';
 import { HeroUIProvider } from '@heroui/react';
 import ShortDisplay from './components/shortdisplay';
 import { AnimatePresence, motion } from "motion/react"
+import { nextSongThunk } from './thunks/nextSong';
 
 
 function App() {
   const [visible, setVisible] = useState(isEnvBrowser());
   const [shortDisplay, setShortDisplay] = useState(false)
   const dispatch = useAppDispatch()
-  const { settings, playing } = useAppSelector(state => state.Main)
+  const { settings, playing, repeat, playlist, currentSongData } = useAppSelector(state => state.Main)
+  const currentSongChildren = useMemo(() => playlist.find(playlist => playlist.id === currentSongData?.playlistId)?.songs, [playlist, currentSongData])
   useEffect(() => {
     fetchNui('uiReady')
     if (!isEnvBrowser()) return;
@@ -68,6 +70,16 @@ function App() {
   useNuiEvent<Playlist>('receivePlaylist', (newPlaylist) => {
     if (!visible) return;
     dispatch(addPlaylist(newPlaylist))
+  })
+  useNuiEvent('end', () => {
+    if (repeat) {
+      fetchNui('seek', {
+        position: 0
+      })
+      return
+    }
+    if (currentSongChildren?.length === 0) return;
+    dispatch(nextSongThunk(true))
   })
   return (
     <>
