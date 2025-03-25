@@ -2,8 +2,17 @@ while not Version do Wait(0) end
 local success = Version.checkScriptVersion('mx-surround', '2.4.8')
 if not success then return end
 
+-- Audioplayer list for each id
+AudioPlayerAccounts = {} ---@type AudioplayerAccount[]
+
 local Surround = exports['mx-surround']
 local sounds = {}
+
+---@param src number
+---@param msg string
+function Notification(src, msg)
+    TriggerClientEvent('mx-audioplayer:notification', src, msg)
+end
 
 local function checkCustomIdExist(customId)
     for k, v in pairs(sounds) do
@@ -136,4 +145,54 @@ RegisterNetEvent('mx-audioplayer:sharePlaylist', function(playlist, player)
     senderName = senderName .. ' ' .. senderLastname
     Debug('Received playlist from', senderName, 'to', player)
     TriggerClientEvent('mx-audioplayer:receivePlaylist', player, playlist, senderName)
+end)
+
+---@param source number
+---@param id string Audioplayer identifier, so we can sync the same audioplayer between clients
+---@param username string
+---@param password string
+---@return boolean
+lib.callback.register('mx-audioplayer:login', function(source, id, username, password)
+    local src = source
+    local userId = db.getUserId(username, joaat(password))
+    if not userId then
+        Notification(src, 'There is no account with this username and password.')
+        return false
+    end
+    AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = userId }
+    Debug('Account', userId, 'logged in')
+    return true
+end)
+
+---@param source number
+---@param id string Audioplayer identifier, so we can sync the same audioplayer between clients
+---@param username string
+---@param password string
+---@return boolean
+lib.callback.register('mx-audioplayer:register', function(source, id, username, password)
+    local src = source
+    local identifier = GetIdentifier(src)
+    if not identifier then
+        Error('Failed to get identifier')
+        return false
+    end
+    local userId = db.insertUser(username, joaat(password), identifier)
+    if not userId then
+        Notification(src, 'We could not create an account with this username and password.')
+        return false
+    end
+    AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = userId }
+    Debug('Account', userId, 'registered')
+    return true
+end)
+
+---@param source number
+---@param id string
+---@return nil | Playlist[] If returns nil then the account is not logged in
+lib.callback.register('mx-audioplayer:getPlaylist', function(source, id)
+    local src = source
+    local accountId = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not accountId then return end
+    local playlist = db.getPlaylist(accountId)
+    return playlist or {}
 end)

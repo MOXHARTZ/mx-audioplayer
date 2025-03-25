@@ -20,3 +20,17 @@
 ---@field state? boolean
 ---@field vehicle? number
 ---@field customId? string
+
+---@class Account
+---@field id number
+---@field username string
+---@field password string
+
+---@class AudioplayerAccount
+---@field id string
+---@field accountId number
+
+---@class Playlist
+---@field id number
+---@field userId number
+---@field data table

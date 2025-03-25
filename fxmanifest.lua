@@ -15,17 +15,19 @@ client_scripts {
     '@mx-surround/client/callback.lua',
     'client/framework/*.lua',
     'client/*.lua',
-    'client/addons/*.lua'
+    'client/addons/*.lua',
+    'client/modules/*.lua'
 }
 server_scripts {
+    '@oxmysql/lib/MySQL.lua',
     -- copy of ox_lib's callback
     '@mx-surround/server/callback.lua',
     'server/framework/*.lua',
     'server/*.lua'
 }
 
-ui_page 'ui/build/index.html'
--- ui_page 'http://localhost:5173/' -- dev
+-- ui_page 'ui/build/index.html'
+ui_page 'http://localhost:5173/' -- dev
 
 files({
     'locales/*.json',
@@ -35,5 +37,6 @@ files({
 
 dependencies {
     '/onesync',
-    'mx-surround'
+    'mx-surround',
+    'oxmysql'
 }

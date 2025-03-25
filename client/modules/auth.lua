@@ -1,0 +1,11 @@
+RegisterNUICallback('login', function(data, cb)
+    local id = GetAudioplayerId()
+    local success = lib.callback.await('mx-audioplayer:login', 0, id, data.username, data.password)
+    cb('ok')
+end)
+
+RegisterNUICallback('register', function(data, cb)
+    local id = GetAudioplayerId()
+    local success = lib.callback.await('mx-audioplayer:register', 0, id, data.username, data.password)
+    cb('ok')
+end)

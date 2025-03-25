@@ -12,12 +12,13 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { ReadyListener } from './utils/types'
 import router from './routes'
-import { RouterProvider } from 'react-router-dom'
+import { RouterProvider, useNavigate } from 'react-router-dom'
 import { Playlist } from './fake-api/playlist-categories';
 import { HeroUIProvider } from '@heroui/react';
 import ShortDisplay from './components/shortdisplay';
 import { AnimatePresence, motion } from "motion/react"
 import { nextSongThunk } from './thunks/nextSong';
+import LoginPage from './components/login';
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
   const [shortDisplay, setShortDisplay] = useState(false)
   const dispatch = useAppDispatch()
   const { settings, playing, repeat, playlist, currentSongData } = useAppSelector(state => state.Main)
-  const currentSongChildren = useMemo(() => playlist.find(playlist => playlist.id === currentSongData?.playlistId)?.songs, [playlist, currentSongData])
+  const currentSongChildren = useMemo(() => playlist?.find(playlist => playlist.id === currentSongData?.playlistId)?.songs, [playlist, currentSongData])
   useEffect(() => {
     fetchNui('uiReady')
     if (!isEnvBrowser()) return;
@@ -88,6 +89,7 @@ function App() {
         position={settings.minimalHudPosition}
         visible={!visible && settings.minimalHud && shortDisplay && playing}
       />
+      {/* <LoginPage /> */}
       <AnimatePresence>
         {visible && (
           <motion.main
