@@ -21,10 +21,15 @@
 ---@field vehicle? number
 ---@field customId? string
 
----@class Account
----@field id number
+---@class CreateAccount
 ---@field username string
+---@field firstname string
+---@field lastname string
 ---@field password string
+
+---@class Account : CreateAccount
+---@field id number
+---@field creator string
 
 ---@class AudioplayerAccount
 ---@field id string

@@ -7,6 +7,14 @@ function GetPlayerFromId(source)
     return QBCore.Functions.GetPlayer(source)
 end
 
+function GetIdentifier(source)
+    local player = GetPlayerFromId(source)
+    if player and player.PlayerData and player.PlayerData.citizenid then
+        return player.PlayerData.citizenid
+    end
+    return nil
+end
+
 function RegisterUsableItem(name, cb)
     QBCore.Functions.CreateUseableItem(name, cb)
 end

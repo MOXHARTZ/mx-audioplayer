@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import i18next from 'i18next'
 import playlist, { Playlist } from "@/fake-api/playlist-categories";
 import { Song } from "@/fake-api/song";
-import { Settings } from "@/utils/types";
+import { Account, Settings } from "@/utils/types";
 
 export interface StaticType {
     playing: boolean;
@@ -23,6 +23,7 @@ export interface StaticType {
     repeat: boolean;
     filterPlaylist: string;
     settings: Settings;
+    userData?: Account | undefined;
 }
 
 const Static = createSlice({
@@ -43,7 +44,7 @@ const Static = createSlice({
         filterPlaylist: '',
         settings: {
             minimalHud: false
-        },
+        }
     } as StaticType,
     reducers: {
         setPlaying: (state, action: PayloadAction<boolean>) => {
@@ -57,9 +58,9 @@ const Static = createSlice({
             if (!action.payload) return;
             state.currentSongs = state.playlist.find(playlist => playlist.id === state.currentPlaylistId)?.songs ?? undefined;
             if (state.editMode) return; // Block to save ui for not farewell to ui
-            fetchNui('setPlaylist', {
-                playlist: action.payload
-            })
+            // fetchNui('setPlaylist', {
+            //     playlist: action.payload
+            // })
         },
         setCurrentPlaylistId: (state, action: PayloadAction<string | number>) => {
             state.currentPlaylistId = action.payload;
@@ -164,6 +165,9 @@ const Static = createSlice({
         setSettings: (state, action: PayloadAction<Settings>) => {
             state.settings = action.payload;
         },
+        setUserData: (state, action: PayloadAction<Account | undefined>) => {
+            state.userData = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(handlePlay.fulfilled, (state, { payload }) => {
@@ -233,7 +237,8 @@ export const {
     deletePlaylist,
     addPlaylist,
     updatePlaylist,
-    setSettings
+    setSettings,
+    setUserData
 } = Static.actions
 
 export default Static.reducer

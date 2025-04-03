@@ -10,6 +10,14 @@ function GetPlayerFromId(source)
     return ESX.GetPlayerFromId(source)
 end
 
+function GetIdentifier(source)
+    local player = GetPlayerFromId(source)
+    if player and player.identifier then
+        return player.identifier
+    end
+    return nil
+end
+
 function GetCharacterName(source)
     local xPlayer = GetPlayerFromId(source)
     local firstName, lastName

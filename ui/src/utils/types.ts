@@ -23,3 +23,11 @@ export type Settings = {
     minimalHud: boolean;
     minimalHudPosition?: MinimalHudPosition;
 }
+
+export type Account = {
+    id?: number; // You can't access if you are not owner of the account
+    username: string;
+    password?: string; // You can't access if you are not owner of the account
+    firstname: string;
+    lastname: string;
+}

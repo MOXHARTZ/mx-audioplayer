@@ -1,20 +1,35 @@
 "use client";
 
-import { Button, Input, Checkbox, Link, Form, Divider } from "@heroui/react";
+import { Button, Input, Form, Divider } from "@heroui/react";
 import { IoEyeOff, IoEyeOutline } from "react-icons/io5";
-import { useState, useActionState } from "react";
+import { useState, useEffect } from "react";
 import { fetchNui } from "@/utils/fetchNui";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
+import { useAppSelector } from "@/stores";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
+    const { playlist } = useAppSelector(state => state.Main)
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    const handleSubmit = (formData: FormData) => {
+    const handleSubmit = async (formData: FormData) => {
         const username = formData.get("username");
         const password = formData.get("password");
-        fetchNui("login", { username, password });
+        const success = await fetchNui("login", { username, password });
+        if (!success) {
+            toast.error("Invalid username or password");
+            return;
+        }
+        toast.success("Login successful");
     };
+
+    useEffect(() => {
+        if (playlist) return;
+        fetchNui('handleChangePage', { page: 'login' })
+    }, []);
+
+    if (playlist) return <Navigate to="/" />;
 
     return (
         <div className="flex h-full w-full items-center justify-center">

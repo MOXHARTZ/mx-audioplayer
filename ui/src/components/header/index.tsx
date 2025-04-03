@@ -1,6 +1,6 @@
 import { memo, useMemo, useState } from 'react';
 import Info from './info'
-import { Button, Card, CardBody, CardFooter, Kbd, useDisclosure } from '@heroui/react';
+import { Avatar, Button, Card, CardBody, CardFooter, Kbd, useDisclosure } from '@heroui/react';
 import Control from './control';
 import Timer from './control/timer';
 import Volume from './volume';
@@ -15,7 +15,7 @@ type HeaderProps = {
 }
 
 const Header = ({ isShort }: HeaderProps) => {
-    const { playlist, currentSongData } = useAppSelector(state => state.Main)
+    const { playlist, currentSongData, userData } = useAppSelector(state => state.Main)
     const currentPlaylistName = useMemo(() => {
         return playlist.find(playlist => playlist.id === currentSongData?.playlistId)?.name
     }, [playlist, currentSongData])
@@ -54,15 +54,27 @@ const Header = ({ isShort }: HeaderProps) => {
                             {i18next.t('keyboard.shortcut.forward')}
                         </div>
                         {!isShort && (
-                            <Button
-                                className='absolute right-2 bottom-2'
-                                isIconOnly
-                                size='sm'
-                                color='default'
-                                onPress={onOpen}
-                            >
-                                <IoSettings size={18} />
-                            </Button >
+                            <div className='absolute right-2 bottom-2 flex gap-2'>
+                                <Button
+                                    className='relative'
+                                    isIconOnly
+                                    size='sm'
+                                    color='default'
+                                    onPress={onOpen}
+                                >
+                                    <IoSettings size={18} />
+                                </Button>
+                                <Button
+                                    className='relative bg-transparent'
+                                    isIconOnly
+                                    size='sm'
+                                    color='default'
+                                    onPress={onOpen}
+                                >
+                                    <Avatar size='sm' className='w-full h-full' name={userData?.firstname?.charAt(0)?.toUpperCase()} />
+                                </Button>
+                            </div>
+
                         )}
                     </CardFooter>
                 </Card>

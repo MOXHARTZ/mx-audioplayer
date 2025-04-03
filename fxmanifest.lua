@@ -23,6 +23,7 @@ server_scripts {
     -- copy of ox_lib's callback
     '@mx-surround/server/callback.lua',
     'server/framework/*.lua',
+    'server/modules/*.lua',
     'server/*.lua'
 }
 

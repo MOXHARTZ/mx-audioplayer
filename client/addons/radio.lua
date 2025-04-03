@@ -11,7 +11,6 @@ local function mathTrim(value)
     return (string.gsub(value, '^%s*(.-)%s*$', '%1'))
 end
 
-
 local function openUi()
     if not IsInVehicle then return end
     local _vehicle = CurrentVehicle
@@ -28,7 +27,26 @@ local function openUi()
             end
             local volume = AudioVolume
             TriggerServerEvent('mx-audioplayer:attach', sound.soundId, NetworkGetNetworkIdFromEntity(_vehicle), volume, IsInVehicle)
-        end
+        end,
+        onLogin = function(soundId, username, password)
+            Debug('Login', soundId, username, password)
+            if not IsInVehicle then return end
+            Entity(CurrentVehicle).state:set('audioplayer_account', {
+                username = username,
+                password = password,
+            }, true)
+        end,
+        handleChangePage = function(soundId, page)
+            Debug('handleChangePage', soundId, page)
+            if page ~= 'login' then return end
+            if not IsInVehicle then return end
+            if not Entity(CurrentVehicle).state.audioplayer_account then
+                return Debug('Auto login: No account found')
+            end
+            local account = Entity(CurrentVehicle).state.audioplayer_account
+            local success = Login(account.username, account.password)
+            Debug('Auto Login: success state', success)
+        end,
     })
 end
 

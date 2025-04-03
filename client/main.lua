@@ -60,13 +60,14 @@ local function initAudioPlayerData(id, data)
 end
 
 ---@param data OpenAudioPlayerData
----@return false | table, string?
+---@return false | {playlist: table, user: Account | nil}, string?
 function GetAudioPlayerInfo(data)
     CustomId = data.customId
     InvokingResource = GetInvokingResource() or ''
     InvokingResource = InvokingResource == currentResourceName and '' or InvokingResource
     CustomId = CustomId or ''
     local id = GetAudioplayerId()
+
     if CustomId ~= '' then
         local uiDisabled = lib.callback.await('mx-audioplayer:isUiDisabled', 0, id)
         if uiDisabled then
@@ -76,17 +77,19 @@ function GetAudioPlayerInfo(data)
     else
         Debug('No custom id provided')
     end
-    local _playlist = lib.callback.await('mx-audioplayer:getPlaylist', 0, id)
-    if CurrentSounds[id] and _playlist then
-        for k, v in pairs(_playlist) do
+
+    local playerData = lib.callback.await('mx-audioplayer:getData', 0, id) --[[@as {playlist: table, user: Account | nil}]]
+    if CurrentSounds[id] and playerData.playlist then
+        for k, v in pairs(playerData.playlist) do
             if v.id == CurrentSounds[id].id and CurrentSounds[id].duration then
-                _playlist[k].duration = math.floor(CurrentSounds[id].duration)
+                playerData.playlist[k].duration = math.floor(CurrentSounds[id].duration)
                 break
             end
         end
     end
+
     initAudioPlayerData(id, data)
-    return _playlist, id
+    return playerData, id
 end
 
 ---@param data? OpenAudioPlayerData
@@ -94,30 +97,39 @@ end
 function OpenAudioPlayer(data, handlers)
     data = data or {}
     local silent = data.silent
-    local _playlist, id = GetAudioPlayerInfo(data)
-    Debug('OpenAudioPlayer ::: id', id, 'playlist', _playlist)
+    local playerData, id = GetAudioPlayerInfo(data)
+    if not playerData then return Error('Error getting audio player info') end
+    Debug('OpenAudioPlayer ::: id', id, 'playlist', playerData.playlist)
     handlers = handlers or {}
     if not id then
         return Error('Error getting audio player info')
     end
     playQuietly = silent and true or false
+    audioplayerHandlers[id] = handlers
+    Debug('playerdata', playerData)
     SendNUIMessage({
         action = 'open',
         data = {
-            playlist = _playlist,
-            currentSound = CurrentSounds[id]
+            playlist = playerData.playlist,
+            currentSound = CurrentSounds[id],
+            user = playerData.user,
         }
     })
-    audioplayerHandlers[id] = handlers
+    TriggerListener(id, 'onOpen')
     SetNuiFocus(true, true)
     TriggerServerEvent('mx-audioplayer:disableUi', id, true)
 end
 
+RegisterNUICallback('handleChangePage', function(data, cb)
+    local id = GetAudioplayerId()
+    TriggerListener(id, 'handleChangePage', data.page)
+end)
+
 ---@param id string
 ---@param listenerName string
-function TriggerListener(id, listenerName)
+function TriggerListener(id, listenerName, ...)
     if audioplayerHandlers[id][listenerName] then
-        audioplayerHandlers[id][listenerName](CurrentSounds[id])
+        audioplayerHandlers[id][listenerName](CurrentSounds[id], ...)
     end
 end
 
@@ -255,7 +267,8 @@ end)
 
 RegisterNUICallback('setPlaylist', function(data, cb)
     playlist = data.playlist
-    SetResourceKvp('mx_audioplayer_playlist', json.encode(playlist))
+    local id = GetAudioplayerId()
+    TriggerServerEvent('mx-audioplayer:setPlaylist', id, playlist)
     cb('ok')
 end)
 
