@@ -9,6 +9,7 @@ import i18next from 'i18next';
 import classNames from 'classnames';
 import { IoSettings } from 'react-icons/io5';
 import SettingsModal from '../modals/Settings';
+import ProfileModal from '../modals/Profile';
 
 type HeaderProps = {
     isShort?: boolean
@@ -20,10 +21,12 @@ const Header = ({ isShort }: HeaderProps) => {
         return playlist.find(playlist => playlist.id === currentSongData?.playlistId)?.name
     }, [playlist, currentSongData])
     const [timeStamp, setTimeStamp] = useState(0)
-    const { isOpen, onOpenChange, onOpen } = useDisclosure();
+    const { isOpen: isSettingsModalOpen, onOpenChange: isSettingsModalOnOpenChange, onOpen: settingsModalOnOpen } = useDisclosure();
+    const { isOpen: isProfileModalOpen, onOpenChange: isProfileModalOnOpenChange, onOpen: profileModalOnOpen } = useDisclosure();
     return (
         <>
-            <SettingsModal isOpen={isOpen} onOpenChange={onOpenChange} />
+            <SettingsModal isOpen={isSettingsModalOpen} onOpenChange={isSettingsModalOnOpenChange} />
+            <ProfileModal isOpen={isProfileModalOpen} onOpenChange={isProfileModalOnOpenChange} userData={userData} />
             <header className='flex justify-center w-full items-center gap-24'>
                 <Card className='w-full h-full'>
                     <CardBody className={classNames({
@@ -60,7 +63,7 @@ const Header = ({ isShort }: HeaderProps) => {
                                     isIconOnly
                                     size='sm'
                                     color='default'
-                                    onPress={onOpen}
+                                    onPress={settingsModalOnOpen}
                                 >
                                     <IoSettings size={18} />
                                 </Button>
@@ -69,7 +72,7 @@ const Header = ({ isShort }: HeaderProps) => {
                                     isIconOnly
                                     size='sm'
                                     color='default'
-                                    onPress={onOpen}
+                                    onPress={profileModalOnOpen}
                                 >
                                     <Avatar size='sm' className='w-full h-full' name={userData?.firstname?.charAt(0)?.toUpperCase()} />
                                 </Button>

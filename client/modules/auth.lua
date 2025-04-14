@@ -28,6 +28,16 @@ RegisterNUICallback('register', function(data, cb)
     cb('ok')
 end)
 
+---@param data UpdateProfile
+RegisterNUICallback('updateProfile', function(data, cb)
+    Debug('updateProfile', data)
+    local id = GetAudioplayerId()
+    local success = lib.callback.await('mx-audioplayer:updateProfile', 0, id, data)
+    Debug('updateProfile success', success)
+    CloseUI()
+    cb('ok')
+end)
+
 RegisterNetEvent('mx-audioplayer:login', function(playlist, user)
     local id = GetAudioplayerId()
     SendNUIMessage({

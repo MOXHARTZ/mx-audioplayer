@@ -30,6 +30,12 @@
 ---@class Account : CreateAccount
 ---@field id number
 ---@field creator string
+---@field avatar? string
+
+---@class UpdateProfile
+---@field username string
+---@field password string | number
+---@field avatar? string
 
 ---@class AudioplayerAccount
 ---@field id string

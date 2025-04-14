@@ -30,4 +30,5 @@ export type Account = {
     password?: string; // You can't access if you are not owner of the account
     firstname: string;
     lastname: string;
+    avatar?: string;
 }

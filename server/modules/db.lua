@@ -142,3 +142,40 @@ function db.insertUser(username, password, firstname, lastname, identifier)
     Debug('db.insertUser:', username, password, firstname, lastname, identifier, insert)
     return insert
 end
+
+---@param identifier string
+---@param user AudioplayerAccount
+---@param data UpdateProfile
+function db.updateUser(identifier, user, data)
+    local userData = db.getUserById(user.accountId)
+    if not userData then
+        Debug('db.updateUser ::: User not found', user.accountId)
+        return false
+    end
+    if userData.creator ~= identifier then
+        Error('db.updateUser ::: User trying to exploit update profile event', id, identifier)
+        return false
+    end
+    if not data then
+        Debug('db.updateUser', 'No data to update')
+        return false
+    end
+    if data.password ~= userData.password then
+        AudioPlayerUsers = table.filter(AudioPlayerUsers, function(v) return v.id ~= user.id end)
+        Debug('db.updateUser', userData.username, 'changed password. Removing from AudioPlayerUsers')
+    end
+    Debug('db.updateUser', data)
+    local str = 'UPDATE audioplayer_users SET'
+    local params = {}
+    for k, v in pairs(data) do
+        str = str .. (' `%s` = :%s,'):format(k, k)
+        params[k] = v
+    end
+    str = str:sub(1, -2) -- Remove last comma
+    str = str .. ' WHERE id = :id'
+    params.id = user.accountId
+    Debug('params', params)
+    DeleteTemp('user', userData.username .. userData.password)
+    DeleteTemp('user_by_id', user.accountId)
+    return MySQL.update.await(str, params)
+end

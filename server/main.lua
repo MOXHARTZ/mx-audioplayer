@@ -1,6 +1,6 @@
 while not Version do Wait(0) end
-local success = Version.checkScriptVersion('mx-surround', '2.4.8')
-if not success then return end
+local versionCheck = Version.checkScriptVersion('mx-surround', '2.4.8')
+if not versionCheck then return end
 
 -- Audioplayer list for each id
 AudioPlayerUsers = {} ---@type AudioplayerAccount[]
@@ -203,6 +203,50 @@ lib.callback.register('mx-audioplayer:register', function(source, id, username, 
     AudioPlayerUsers[#AudioPlayerUsers + 1] = { id = id, accountId = userId }
     Debug('Account', userId, 'registered')
     return true
+end)
+
+local profileSecuredParams = {
+    username = true,
+    password = true,
+    avatar = true,
+}
+
+---@param source number
+---@param id string Audioplayer identifier, so we can sync the same audioplayer between clients
+---@param data UpdateProfile
+---@return boolean
+lib.callback.register('mx-audioplayer:updateProfile', function(source, id, data)
+    local src = source
+    if not data then
+        Debug('mx-audioplayer:updateProfile :: data is nil')
+        return false
+    end
+    if not data.username or not data.password then
+        Debug('mx-audioplayer:updateProfile :: data is empty', data)
+        return false
+    end
+    local identifier = GetIdentifier(src)
+    if not identifier then
+        Error('Failed to get identifier')
+        return false
+    end
+    local unsecured = table.find(data, function(k, v)
+        return not profileSecuredParams[v]
+    end)
+    if unsecured then
+        Notification(src, 'You are trying to exploit update profile event.')
+        Debug('mx-audioplayer:updateProfile', 'User trying to exploit update profile event', src, data)
+        return false
+    end
+    local user = table.find(AudioPlayerUsers, function(v) return v.id == id end)
+    if not user then
+        Debug('mx-audioplayer:updateProfile ::: User not found', id)
+        return false
+    end
+    data.password = joaat(data.password)
+    local success = db.updateUser(identifier, user, data)
+    Debug('mx-audioplayer:updateProfile', user.accountId, data)
+    return success and true or false
 end)
 
 ---@param source number

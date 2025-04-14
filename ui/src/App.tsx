@@ -26,6 +26,10 @@ function App() {
   const dispatch = useAppDispatch()
   const { settings, playing, repeat, playlist, currentSongData } = useAppSelector(state => state.Main)
   const currentSongChildren = useMemo(() => playlist?.find(playlist => playlist.id === currentSongData?.playlistId)?.songs, [playlist, currentSongData])
+  const closeUI = () => {
+    setVisible(false)
+    fetchNui('close')
+  }
   useEffect(() => {
     fetchNui('uiReady')
     if (!isEnvBrowser()) return;
@@ -35,6 +39,7 @@ function App() {
     setVisible(true)
     dispatch(setPlaylist(data.playlist))
     dispatch(setUserData(data.user))
+    console.log('open data', data)
     if (!data.currentSound) return dispatch(clearSound(true));
     dispatch(setPlaying(data.currentSound.playing ?? false))
     dispatch(setPosition(data.currentSound.id))
@@ -54,10 +59,7 @@ function App() {
   useNuiEvent('destroyed', () => {
     dispatch(clearSound(true));
   })
-  useExitListener(() => {
-    setVisible(false)
-    fetchNui('close')
-  })
+  useExitListener(() => closeUI())
   useNuiEvent<ReadyListener>('onUiReady', (data) => {
     i18n.use(initReactI18next).init({
       lng: data.languageName,
@@ -73,6 +75,7 @@ function App() {
     if (!visible) return;
     dispatch(addPlaylist(newPlaylist))
   })
+  useNuiEvent('close', closeUI)
   useNuiEvent('end', () => {
     if (repeat) {
       fetchNui('seek', {
