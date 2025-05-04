@@ -170,7 +170,6 @@ lib.callback.register('mx-audioplayer:login', function(source, id, username, pas
     assert(type(password) == 'number', 'Password need to be number but its not a number, probably this player trying to avoid hash. Source: ' .. src)
     local user = db.getUser(username, password)
     if not user then
-        Notification(src, 'There is no account with this username and password.')
         return false
     end
     AudioPlayerUsers[#AudioPlayerUsers + 1] = { id = id, accountId = user.id }

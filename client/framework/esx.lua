@@ -8,6 +8,9 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 end)
 
 RegisterNetEvent('esx:setJob', function(jobData)
+    if not PlayerData then
+        PlayerData = GetPlayerData()
+    end
     PlayerData.job = jobData
 end)
 

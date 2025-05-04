@@ -45,6 +45,10 @@ local function openUi()
             end
             local account = Entity(CurrentVehicle).state.audioplayer_account
             local success = Login(account.username, account.password)
+            if not success then
+                Surround:pushNotification('This user credentials has been modified. Please log in again.')
+                Entity(CurrentVehicle).state:set('audioplayer_account', nil, true)
+            end
             Debug('Auto Login: success state', success)
         end,
     })

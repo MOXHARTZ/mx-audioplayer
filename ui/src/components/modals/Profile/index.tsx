@@ -83,10 +83,15 @@ export default function ProfileModal({ isOpen, onOpenChange, userData }: Profile
                                         variant="faded"
                                     />
                                 </div>
+                                <footer className="flex flex-row w-full gap-3">
+                                    <Button className="w-full mb-3" color="danger">
+                                        Delete Account
+                                    </Button>
+                                    <Button className="w-full mb-3" color="primary" type="submit">
+                                        Update Account
+                                    </Button>
+                                </footer>
 
-                                <Button className="w-full mb-3" color="danger" type="submit">
-                                    Update Account
-                                </Button>
                             </Form>
                         </ModalBody>
                     </>
