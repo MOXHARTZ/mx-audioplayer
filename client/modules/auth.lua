@@ -19,6 +19,17 @@ RegisterNUICallback('login', function(data, cb)
     cb(success)
 end)
 
+RegisterNUICallback('logout', function(data, cb)
+    Debug('logout')
+    local id = GetAudioplayerId()
+    local success = lib.callback.await('mx-audioplayer:logout', 0, id)
+    Debug('logout success', success)
+    TriggerListener(id, 'onLogout')
+    CloseUI()
+    Surround:pushNotification('You have logged out of your account.')
+    cb('ok')
+end)
+
 ---@param data CreateAccount
 RegisterNUICallback('register', function(data, cb)
     Debug('Register', data)

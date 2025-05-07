@@ -3,10 +3,9 @@ local versionCheck = Version.checkScriptVersion('mx-surround', '2.4.8')
 if not versionCheck then return end
 
 -- Audioplayer list for each id
-AudioPlayerUsers = {} ---@type AudioplayerAccount[]
+AudioPlayerAccounts = {} ---@type AudioplayerAccount[]
 
 local Surround = exports['mx-surround']
-local sounds = {}
 
 ---@param src number
 ---@param msg string
@@ -14,29 +13,28 @@ function Notification(src, msg)
     TriggerClientEvent('mx-audioplayer:notification', src, msg)
 end
 
-local function checkCustomIdExist(customId)
-    for k, v in pairs(sounds) do
-        local id, res, custom = k:match('(.*):(.*):(.*)')
-        if custom == customId then return k end
-    end
-    return false
-end
-
-RegisterNetEvent('mx-audioplayer:play', function(url, soundId, volume, invokingResource, customId, playQuietly, coords, customData)
+RegisterNetEvent('mx-audioplayer:play', function(id, url, soundId, soundData, volume, playQuietly, coords, customData)
     local src = source
-    local id = src
-    if invokingResource then id = id .. ':' .. invokingResource end
-    if customId then id = id .. ':' .. customId end
-    local currentSound = checkCustomIdExist(customId)
-    if currentSound then
-        Surround:Destroy(-1, sounds[currentSound])
-        sounds[currentSound] = nil
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        Error('mx-audioplayer:play ::: User not found', id)
+        return
+    end
+    if user.player?.soundId then
+        Surround:Destroy(-1, user.player.soundId)
+        user.player.soundId = nil
+        Debug('mx-audioplayer:play ::: Destroying previous sound', user.player.soundId)
     end
     volume = playQuietly and 0.0 or volume
     Surround:Play(-1, soundId, url, coords, false, volume, customData.panner)
     if not soundId then return print('Failed to play sound') end
     Surround:setDestroyOnFinish(-1, soundId, false)
-    sounds[id] = soundId
+    user.player = {
+        id = id,
+        soundId = soundId,
+        source = src,
+        soundData = soundData
+    }
 end)
 
 local disabledUis = {}
@@ -56,14 +54,14 @@ end)
 
 AddEventHandler('playerDropped', function()
     local src = source
-    for k, v in pairs(sounds) do
-        local id, res, custom = k:match('(.*):(.*):(.*)')
-        id = tonumber(id)
-        src = tonumber(src)
-        if id == src then
+    for k, v in pairs(AudioPlayerAccounts) do
+        if not v.player then goto continue end
+        if v.player.source == src then
             Surround:Destroy(-1, v)
-            sounds[k] = nil
+            v.player = nil
+            Debug('Player dropped', src, v.player.soundId)
         end
+        ::continue::
     end
 end)
 
@@ -152,10 +150,12 @@ end)
 local function userDboToDto(src, user)
     if not user then return end
     local identifier = GetIdentifier(src)
+    user.isOwner = true
     if identifier ~= user.creator then
         user.creator = nil
         user.password = nil
         user.id = nil
+        user.isOwner = false
     end
     return user
 end
@@ -172,11 +172,23 @@ lib.callback.register('mx-audioplayer:login', function(source, id, username, pas
     if not user then
         return false
     end
-    AudioPlayerUsers[#AudioPlayerUsers + 1] = { id = id, accountId = user.id }
+    AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = user.id }
     local playlist = db.getPlaylist(user.id)
     user = userDboToDto(src, user)
     TriggerClientEvent('mx-audioplayer:login', src, playlist, user)
     Debug('mx-audioplayer:login', user)
+    return true
+end)
+
+lib.callback.register('mx-audioplayer:logout', function(source, id)
+    local src = source
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        Debug('mx-audioplayer:logout ::: User not found', id)
+        return false
+    end
+    AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= id end)
+    Debug('mx-audioplayer:logout', user.accountId)
     return true
 end)
 
@@ -199,7 +211,7 @@ lib.callback.register('mx-audioplayer:register', function(source, id, username, 
         Notification(src, 'We could not create an account with this username and password.')
         return false
     end
-    AudioPlayerUsers[#AudioPlayerUsers + 1] = { id = id, accountId = userId }
+    AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = userId }
     Debug('Account', userId, 'registered')
     return true
 end)
@@ -237,7 +249,7 @@ lib.callback.register('mx-audioplayer:updateProfile', function(source, id, data)
         Debug('mx-audioplayer:updateProfile', 'User trying to exploit update profile event', src, data)
         return false
     end
-    local user = table.find(AudioPlayerUsers, function(v) return v.id == id end)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
         Debug('mx-audioplayer:updateProfile ::: User not found', id)
         return false
@@ -250,10 +262,10 @@ end)
 
 ---@param source number
 ---@param id string
----@return {playlist?: table, user?: Account}
+---@return {playlist?: table, user?: Account, player: Player}
 lib.callback.register('mx-audioplayer:getData', function(source, id)
     local src = source
-    local user = table.find(AudioPlayerUsers, function(v) return v.id == id end)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
         Debug('mx-audioplayer:getData ::: User not found', id)
         return { playlist = nil, user = nil }
@@ -261,7 +273,7 @@ lib.callback.register('mx-audioplayer:getData', function(source, id)
     local userData = db.getUserById(user.accountId)
     userData = userDboToDto(src, userData)
     local playlist = db.getPlaylist(user.accountId)
-    Debug('mx-audioplayer:getData', user.accountId, userData, playlist)
+    Debug('mx-audioplayer:getData', user.accountId, userData)
     return {
         playlist = playlist,
         user = userData
@@ -272,7 +284,7 @@ end)
 ---@param playlist table
 RegisterNetEvent('mx-audioplayer:setPlaylist', function(id, playlist)
     local src = source
-    local user = table.find(AudioPlayerUsers, function(v) return v.id == id end)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
         Debug('mx-audioplayer:setPlaylist ::: User not found', id)
         return

@@ -108,14 +108,14 @@ function db.getUserById(id)
 end
 
 ---@param userId number
----@return table
+---@return Playlist[] | nil
 function db.getPlaylist(userId)
     local cache = UseTemp('playlist', userId) ---@type Playlist[] | nil
     if cache then
         return cache
     end
     local data = MySQL.prepare.await(Query.SELECT_PLAYLIST, { userId })
-    Debug('db.getPlaylist', userId, data)
+    Debug('db.getPlaylist', userId)
     data = data and json.decode(data) or {}
     SaveTemp('playlist', data, userId)
     return data
@@ -161,7 +161,7 @@ function db.updateUser(identifier, user, data)
         return false
     end
     if data.password ~= userData.password then
-        AudioPlayerUsers = table.filter(AudioPlayerUsers, function(v) return v.id ~= user.id end)
+        AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= user.id end)
         Debug('db.updateUser', userData.username, 'changed password. Removing from AudioPlayerUsers')
     end
     Debug('db.updateUser', data)

@@ -1,6 +1,6 @@
-import { memo, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import Info from './info'
-import { Avatar, Button, Card, CardBody, CardFooter, Kbd, useDisclosure } from '@heroui/react';
+import { Avatar, Button, Card, CardBody, CardFooter, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Kbd, useDisclosure } from '@heroui/react';
 import Control from './control';
 import Timer from './control/timer';
 import Volume from './volume';
@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import { IoSettings } from 'react-icons/io5';
 import SettingsModal from '../modals/Settings';
 import ProfileModal from '../modals/Profile';
+import { fetchNui } from '@/utils/fetchNui';
 
 type HeaderProps = {
     isShort?: boolean
@@ -23,6 +24,9 @@ const Header = ({ isShort }: HeaderProps) => {
     const [timeStamp, setTimeStamp] = useState(0)
     const { isOpen: isSettingsModalOpen, onOpenChange: isSettingsModalOnOpenChange, onOpen: settingsModalOnOpen } = useDisclosure();
     const { isOpen: isProfileModalOpen, onOpenChange: isProfileModalOnOpenChange, onOpen: profileModalOnOpen } = useDisclosure();
+    const logout = useCallback(async () => {
+        fetchNui('logout')
+    }, [])
     return (
         <>
             <SettingsModal isOpen={isSettingsModalOpen} onOpenChange={isSettingsModalOnOpenChange} />
@@ -67,15 +71,27 @@ const Header = ({ isShort }: HeaderProps) => {
                                 >
                                     <IoSettings size={18} />
                                 </Button>
-                                <Button
-                                    className='relative bg-transparent'
-                                    isIconOnly
-                                    size='sm'
-                                    color='default'
-                                    onPress={profileModalOnOpen}
-                                >
-                                    <Avatar size='sm' className='w-full h-full' name={userData?.firstname?.charAt(0)?.toUpperCase()} />
-                                </Button>
+                                <Dropdown>
+                                    <DropdownTrigger>
+                                        <Button
+                                            className='relative bg-transparent'
+                                            isIconOnly
+                                            size='sm'
+                                            color='default'
+                                        >
+                                            <Avatar size='sm' className='w-full h-full' name={userData?.firstname?.charAt(0)?.toUpperCase()} />
+                                        </Button>
+                                    </DropdownTrigger>
+                                    <DropdownMenu aria-label="Static Actions">
+                                        {userData?.isOwner ? (
+                                            <DropdownItem key="edit" onPress={profileModalOnOpen}>Edit Profile</DropdownItem>
+                                        ) : null}
+                                        <DropdownItem key="delete" className="text-danger" color="danger" onPress={logout}>
+                                            Logout
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+
                             </div>
 
                         )}

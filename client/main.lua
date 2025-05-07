@@ -107,7 +107,6 @@ function OpenAudioPlayer(data, handlers)
     end
     playQuietly = silent and true or false
     audioplayerHandlers[id] = handlers
-    Debug('playerdata', playerData)
     SendNUIMessage({
         action = 'open',
         data = {
@@ -186,10 +185,11 @@ RegisterNUICallback('play', function(data, cb)
     end
     local audioPlayerData = audioPlayer[id]
     local coords = audioPlayerData.coords or GetEntityCoords(PlayerPed) -- need instant coords
-    TriggerServerEvent('mx-audioplayer:play', url, soundId, _volume, InvokingResource, CustomId, playQuietly, coords, audioPlayerData)
+    TriggerServerEvent('mx-audioplayer:play', id, url, soundId, soundData, _volume, playQuietly, coords, audioPlayerData)
     local loaded = Surround:soundIsLoaded(soundId)                      -- wait for the sound to load
     if not loaded then return cb(false) end                             -- if it doesn't load, return false
     local maxDuration = Surround:getMaxDuration(soundId)
+    Debug('soundData', soundData)
     soundData.duration = maxDuration
     soundData.playing = true
     soundData.soundId = soundId

@@ -31,10 +31,16 @@ local function openUi()
         onLogin = function(soundId, username, password)
             Debug('Login', soundId, username, password)
             if not IsInVehicle then return end
+            Debug('account', Entity(CurrentVehicle).state.audioplayer_account)
             Entity(CurrentVehicle).state:set('audioplayer_account', {
                 username = username,
                 password = password,
             }, true)
+        end,
+        onLogout = function(soundId)
+            Debug('Logout', soundId)
+            if not IsInVehicle then return end
+            Entity(CurrentVehicle).state:set('audioplayer_account', nil, true)
         end,
         handleChangePage = function(soundId, page)
             Debug('handleChangePage', soundId, page)

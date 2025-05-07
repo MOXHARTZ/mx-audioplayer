@@ -31,15 +31,23 @@
 ---@field id number
 ---@field creator string
 ---@field avatar? string
+---@field isOwner boolean
 
 ---@class UpdateProfile
 ---@field username string
 ---@field password string | number
 ---@field avatar? string
 
+---@class Player
+---@field id string
+---@field soundId string
+---@field source number
+---@field soundData {id: string, cover: string, duration: number, title: string, soundId: string, url: string, artist: string}
+
 ---@class AudioplayerAccount
 ---@field id string
 ---@field accountId number
+---@field player? Player
 
 ---@class Playlist
 ---@field id number

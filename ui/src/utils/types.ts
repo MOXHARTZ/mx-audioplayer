@@ -31,4 +31,5 @@ export type Account = {
     firstname: string;
     lastname: string;
     avatar?: string;
+    isOwner: boolean
 }
