@@ -33,7 +33,7 @@ const Info = ({ isShort }: InfoProps) => {
             ) : null}
             <aside className='flex gap-4 items-center'>
                 <Image
-                    src={currentSong?.cover ?? 'https://nextui.org/images/album-cover.png'}
+                    src={currentSong?.cover ?? 'https://heroui.com/images/album-cover.png'}
                     className='rounded-lg object-cover'
                     width={120}
                     alt='playlist'

@@ -55,7 +55,7 @@ const Static = createSlice({
         },
         setPlaylist: (state, action: PayloadAction<typeof playlist>) => {
             state.playlist = action.payload;
-            if (!action.payload) return;
+            if (!action.payload || !state.playlist) return;
             state.currentSongs = state.playlist.find(playlist => playlist.id === state.currentPlaylistId)?.songs ?? undefined;
             if (state.editMode) return; // Block to save ui for not farewell to ui
             // fetchNui('setPlaylist', {
@@ -124,6 +124,9 @@ const Static = createSlice({
         setSelectedSongs: (state, action: PayloadAction<string[]>) => {
             state.selectedSongs = action.payload;
         },
+        setCurrentSongData: (state, action: PayloadAction<{ playlistId: string | number, song: Song } | undefined>) => {
+            state.currentSongData = action.payload;
+        },
         clearSound: (state, action: PayloadAction<true | undefined>) => {
             state.playing = false;
             state.position = -1;
@@ -141,17 +144,6 @@ const Static = createSlice({
         },
         setPosition: (state, action: PayloadAction<string>) => {
             state.position = action.payload;
-            const playlistId = state.currentPlaylistId;
-            for (const playlist of state.playlist) {
-                const song = playlist.songs.find(song => song.id === action.payload);
-                if (!song) continue;
-                fetchNui<number>('getCurrentSongDuration').then(res => {
-                    state.currentSongs = playlist.songs;
-                    song.duration = Math.floor(res);
-                    state.currentSongData = { playlistId: playlistId, song };
-                })
-                break;
-            }
         },
         setShuffle: (state, action: PayloadAction<boolean>) => {
             state.shuffle = action.payload;
@@ -238,7 +230,8 @@ export const {
     addPlaylist,
     updatePlaylist,
     setSettings,
-    setUserData
+    setUserData,
+    setCurrentSongData
 } = Static.actions
 
 export default Static.reducer

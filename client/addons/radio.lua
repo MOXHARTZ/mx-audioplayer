@@ -96,6 +96,9 @@ AddEventHandler('mx-audioplayer:vehicleEntered', function(vehicle)
 end)
 
 AddEventHandler('mx-audioplayer:vehicleLeft', function(vehicle)
+    SendNUIMessage({
+        action = 'clearSound'
+    })
     ToggleShortDisplay(false)
 end)
 

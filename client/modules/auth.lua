@@ -55,8 +55,9 @@ RegisterNetEvent('mx-audioplayer:login', function(playlist, user)
         action = 'open',
         data = {
             playlist = playlist,
-            currentSound = CurrentSounds[id],
-            user = user
+            currentSound = CurrentSoundData,
+            user = user,
+            volume = CurrentSoundData and CurrentSoundData.volume or AudioVolume,
         }
     })
 end)

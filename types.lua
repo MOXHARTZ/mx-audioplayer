@@ -38,11 +38,22 @@
 ---@field password string | number
 ---@field avatar? string
 
+---@class PlayerSoundData
+---@field id string
+---@field cover string
+---@field duration number
+---@field title string
+---@field soundId string
+---@field url string
+---@field artist string
+---@field playing boolean
+---@field volume number
+
 ---@class Player
 ---@field id string
 ---@field soundId string
 ---@field source number
----@field soundData {id: string, cover: string, duration: number, title: string, soundId: string, url: string, artist: string}
+---@field soundData PlayerSoundData
 
 ---@class AudioplayerAccount
 ---@field id string

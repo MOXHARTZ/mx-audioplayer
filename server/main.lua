@@ -65,7 +65,14 @@ AddEventHandler('playerDropped', function()
     end
 end)
 
-RegisterNetEvent('mx-audioplayer:setVolume', function(soundId, volume)
+RegisterNetEvent('mx-audioplayer:setVolume', function(id, soundId, volume)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        Error('mx-audioplayer:setVolume ::: User not found', id)
+        return
+    end
+    user.player.soundData.volume = volume
+    Debug('mx-audioplayer:setVolume', soundId, volume)
     Surround:setVolumeMax(-1, soundId, volume)
 end)
 
@@ -73,16 +80,39 @@ RegisterNetEvent('mx-audioplayer:seek', function(soundId, position)
     Surround:setTimeStamp(-1, soundId, position)
 end)
 
-RegisterNetEvent('mx-audioplayer:resume', function(soundId)
+RegisterNetEvent('mx-audioplayer:resume', function(id, soundId)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        Error('mx-audioplayer:resume ::: User not found', id)
+        return
+    end
     Surround:Resume(-1, soundId)
+    user.player.soundData.playing = true
 end)
 
-RegisterNetEvent('mx-audioplayer:pause', function(soundId)
+RegisterNetEvent('mx-audioplayer:pause', function(id, soundId)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        Error('mx-audioplayer:pause ::: User not found', id)
+        return
+    end
+    user.player.soundData.playing = false
     Surround:Pause(-1, soundId)
 end)
 
-RegisterNetEvent('mx-audioplayer:destroy', function(soundId)
+RegisterNetEvent('mx-audioplayer:destroy', function(id, soundId)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        Error('mx-audioplayer:destroy ::: User not found', id)
+        return
+    end
+    if user.player.soundId ~= soundId then
+        Debug('mx-audioplayer:destroy ::: SoundId not found', soundId, user.player.soundId)
+        return
+    end
+    user.player = nil
     Surround:Destroy(-1, soundId)
+    Debug('mx-audioplayer:destroy', soundId, user.player.soundId)
 end)
 
 RegisterNetEvent('mx-audioplayer:attach', function(soundId, netId, volume, isInVehicle)
@@ -276,7 +306,8 @@ lib.callback.register('mx-audioplayer:getData', function(source, id)
     Debug('mx-audioplayer:getData', user.accountId, userData)
     return {
         playlist = playlist,
-        user = userData
+        user = userData,
+        player = user.player
     }
 end)
 

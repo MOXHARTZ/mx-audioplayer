@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from './stores'
 import useNuiEvent from './hooks/useNuiEvent'
 import { useExitListener } from './hooks/useExitListener'
 import { fetchNui } from './utils/fetchNui'
-import { addPlaylist, clearSound, setPlaying, setPlaylist, setPosition, setSettings, setUserData } from './stores/Main'
+import { addPlaylist, clearSound, setPlaying, setPlaylist, setSettings, setUserData, setVolume } from './stores/Main'
 import { Song } from './fake-api/song'
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
@@ -18,6 +18,7 @@ import { HeroUIProvider } from '@heroui/react';
 import ShortDisplay from './components/shortdisplay';
 import { AnimatePresence, motion } from "motion/react"
 import { nextSongThunk } from './thunks/nextSong';
+import { setPositionThunk } from './thunks/setPosition';
 
 
 function App() {
@@ -35,15 +36,16 @@ function App() {
     if (!isEnvBrowser()) return;
     document.body.style.backgroundImage = 'url(https://wallpaperaccess.com/full/707055.jpg)'
   }, [])
-  useNuiEvent<{ playlist: Playlist[]; currentSound: Song; user?: Account }>('open', (data) => {
+  useNuiEvent<{ playlist: Playlist[]; currentSound: Song; user?: Account; volume: number }>('open', (data) => {
     setVisible(true)
+    dispatch(setVolume(data.volume))
     dispatch(setPlaylist(data.playlist))
     dispatch(setUserData(data.user))
-    console.log('open data', data)
-    if (!data.currentSound) return dispatch(clearSound(true));
+    if (!data.currentSound) {
+      return dispatch(clearSound(true));
+    }
     dispatch(setPlaying(data.currentSound.playing ?? false))
-    dispatch(setPosition(data.currentSound.id))
-
+    dispatch(setPositionThunk(data.currentSound))
   })
   useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound: Song }>('toggleShortDisplay', (data) => {
     setShortDisplay(data.state)
@@ -54,10 +56,14 @@ function App() {
       return;
     }
     dispatch(setPlaying(data.currentSound.playing ?? false))
-    dispatch(setPosition(data.currentSound.id))
+    dispatch(setPositionThunk(data.currentSound))
   })
   useNuiEvent('destroyed', () => {
     dispatch(clearSound(true));
+  })
+  useNuiEvent('clearSound', () => {
+    dispatch(clearSound(true))
+    dispatch(setPlaylist([]))
   })
   useExitListener(() => closeUI())
   useNuiEvent<ReadyListener>('onUiReady', (data) => {
