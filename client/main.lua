@@ -46,6 +46,9 @@ local function initAudioPlayerData(id, data)
     if data.panner then
         audioPlayerData.panner = data.panner
     end
+    if data.maxDistance then
+        audioPlayerData.maxDistance = data.maxDistance
+    end
     audioPlayer[id] = audioPlayerData
 end
 
