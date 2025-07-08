@@ -15,8 +15,8 @@ client_scripts {
     '@mx-surround/client/callback.lua',
     'client/framework/*.lua',
     'client/*.lua',
+    'client/modules/*.lua',
     'client/addons/*.lua',
-    'client/modules/*.lua'
 }
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
