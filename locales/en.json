@@ -1,4 +1,5 @@
 {
+    "or": "OR",
     "header.title": "Title",
     "header.artist": "Artist",
     "header.playlist": "Playlist",
@@ -28,6 +29,7 @@
     "edit.cancel": "Cancel",
     "search_track.content": "You can add a song to the playlist by entering a track name or you can pass here by a spotify, youtube or soundcloud url. For now, soundcloud playlists are not supported.",
     "search_track.title": "Add a song to the playlist",
+    "search_track.subtitle": "Search and discover new music",
     "search_track.placeholder": "Track name or url (supports playlist and album)",
     "search_track.invalid_url": "Invalid url",
     "search_track.knowledge": "You can't play songs with a song duration of more than 15 minutes (for performance reasons)",
@@ -71,5 +73,50 @@
     "settings.minimal_hud.position.bottom_right_description": "The minimal hud will be placed on the bottom right corner of your screen",
     "keyboard.shortcut.toggle": "Play/Pause",
     "keyboard.shortcut.volume": "Volume Up/Down",
-    "keyboard.shortcut.forward": "Previous/Next"
+    "keyboard.shortcut.forward": "Previous/Next",
+    "settings.subtitle": "Customize your audio experience",
+    "playlist": {
+        "no_songs": "No songs available",
+        "ready_to_play": "Ready to play",
+        "song": "Song",
+        "songs": "Songs",
+        "selected": "Selected",
+        "loading": "Loading playlist...",
+        "no_results": "No results",
+        "empty": "Empty Playlist",
+        "no_song_match": "No songs match your search",
+        "add_some_songs": "Add some songs to get started"
+    },
+    "login": {
+        "title": "Welcome Back",
+        "subtitle": "Sign in to your audio paradise",
+        "username": "Username",
+        "password": "Password",
+        "username_placeholder": "Enter your username",
+        "password_placeholder": "Enter your password",
+        "sign_in": "Sign In",
+        "sign_in_loading": "Signing In...",
+        "need_to_create_account": "Need to create an account?",
+        "sign_up": "Sign Up",
+        "login_successful": "Login successful",
+        "invalid_username_or_password": "Invalid username or password"
+    },
+    "register": {
+        "title": "Join the Audio Player",
+        "subtitle": "Create your account and start your journey",
+        "firstname": "First Name",
+        "lastname": "Last Name",
+        "firstname_placeholder": "Enter your first name",
+        "lastname_placeholder": "Enter your last name",
+        "username": "Username",
+        "username_placeholder": "Choose a unique username",
+        "password": "Password",
+        "password_placeholder": "Create a strong password",
+        "sign_up_loading": "Creating Account...",
+        "already_have_account": "Already have an account?",
+        "sign_in": "Sign In",
+        "sign_up": "Sign Up",
+        "registration_successful": "Registration successful",
+        "registration_failed": "Registration failed"
+    }
 }

@@ -99,7 +99,6 @@ function App() {
         position={settings.minimalHudPosition}
         visible={!visible && settings.minimalHud && shortDisplay && playing}
       />
-      {/* <LoginPage /> */}
       <AnimatePresence>
         {visible && (
           <motion.main

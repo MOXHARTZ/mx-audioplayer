@@ -60,18 +60,15 @@ export default function ShortDisplay({ visible, position }: ShortDisplayProps) {
     const styleProps = useMemo(() => positions.get(position ?? DefaultMinimalHudPosition), [position])
 
     return (
-        <AnimatePresence>
+        <AnimatePresence mode='wait'>
             {visible && (
                 <motion.div
                     initial={styleProps?.initial}
                     animate={styleProps?.animate}
-                    transition={{
-                        duration: 0.3
-                    }}
                     exit={styleProps?.initial}
                     className='absolute z-50'
                 >
-                    <Header isShort />
+                    <Header key={'short-display-header'} isShort />
                 </motion.div>
             )}
         </AnimatePresence>

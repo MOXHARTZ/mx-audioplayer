@@ -53,7 +53,6 @@ export default function MinimalHudPositionTabs({ position, updateSettings }: Min
                 </h3>
             </motion.div>
 
-            {/* Radio Group */}
             <RadioGroup
                 value={position}
                 onValueChange={(value) => updateSettings('minimalHudPosition', value as MinimalHudPosition)}

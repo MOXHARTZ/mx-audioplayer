@@ -1,9 +1,11 @@
 import { Song } from "@/fake-api/song";
-import { Card, CardHeader, Avatar, Button, Checkbox } from "@heroui/react";
+import { Avatar, Button, Checkbox, Chip } from "@heroui/react";
 import classNames from "classnames";
 import i18next from "i18next";
 import { useMemo } from "react";
 import { SortableItem } from "react-easy-sort";
+import { motion } from "framer-motion";
+import { IoPlayOutline, IoPauseOutline, IoHeartOutline, IoHeart } from "react-icons/io5";
 
 type TrackCardProps = {
     song: Song;
@@ -14,58 +16,172 @@ type TrackCardProps = {
     toggleSelectedSong: (id: string) => void;
 }
 
-export default function TrackCard({ song, onClick, position, editMode, selected, toggleSelectedSong }: TrackCardProps) {
+export default function TrackCard({
+    song,
+    onClick,
+    position,
+    editMode,
+    selected,
+    toggleSelectedSong
+}: TrackCardProps) {
     const currentlyPlaying = useMemo(() => position && position === song.id, [position, song.id]);
+
     return (
         <SortableItem>
-            <div>
-                <Card
-                    isPressable={!editMode}
-                    onPress={onClick}
+            <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative group"
+            >
+                <motion.div
                     className={classNames({
-                        "shadow-lg bg-default-200/50 cursor-pointer hover:bg-default-300 w-full text-left": true,
-                        "bg-default-300 ring-pink-700 ring-2": currentlyPlaying,
-                        'transition-all': !editMode,
-                        'cursor-none select-none': editMode
-                    })}>
-                    <CardHeader className="gap-2">
-                        {editMode &&
-                            <aside>
-                                <Checkbox
-                                    onChange={() => toggleSelectedSong(song.id)}
-                                    isSelected={selected}
-                                    color="primary"
-                                />
-                            </aside>
-                        }
-                        <aside className="flex flex-row w-full justify-between items-center">
-                            <div className="flex gap-5">
-                                <Avatar isBordered radius="full" size="lg" src={song.cover} className={classNames({
-                                    'animate-spin-slow': currentlyPlaying
-                                })} />
-                                <div className={classNames({
-                                    'flex flex-col gap-1 items-start justify-center': true,
-                                    'max-w-[80%]': !editMode,
-                                    'max-w-[78%]': editMode
-                                })}>
-                                    <h4 className="text-small font-semibold leading-none text-default-600">{song.title}</h4>
-                                    <h5 className="text-small tracking-tight text-default-400">{song.artist}</h5>
-                                </div>
+                        "relative overflow-hidden rounded-xl transition-all duration-300 cursor-pointer": true,
+                        "bg-black/20 border border-rose-500/20 hover:bg-black/30 hover:border-rose-400/40": !currentlyPlaying,
+                        "bg-rose-500/20 border-rose-400/50 ring-2 ring-rose-400/30 shadow-lg shadow-rose-500/25": currentlyPlaying,
+                        "cursor-none select-none": editMode
+                    })}
+                    onClick={!editMode ? onClick : undefined}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                >
+                    <motion.div
+                        className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        animate={currentlyPlaying ? { opacity: 0.1 } : { opacity: 0 }}
+                    />
+
+                    <div className="relative p-4">
+                        <div className="flex items-center gap-4">
+                            <div className="relative">
+                                <motion.div
+                                    animate={currentlyPlaying ? { rotate: 360 } : { rotate: 0 }}
+                                    transition={{
+                                        duration: 3,
+                                        repeat: currentlyPlaying ? Infinity : 0,
+                                        ease: "linear"
+                                    }}
+                                    className="relative"
+                                >
+                                    <Avatar
+                                        isBordered
+                                        radius="full"
+                                        size="lg"
+                                        src={song.cover}
+                                        className={classNames(
+                                            "border-2 transition-all duration-300",
+                                            currentlyPlaying
+                                                ? "border-rose-400 shadow-lg shadow-rose-500/25"
+                                                : "border-rose-500/30 group-hover:border-rose-400/50"
+                                        )}
+                                    />
+
+                                    {currentlyPlaying && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"
+                                        >
+                                            <IoPauseOutline size={20} className="text-white" />
+                                        </motion.div>
+                                    )}
+                                </motion.div>
+
+                                {currentlyPlaying && (
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="absolute -top-1 -right-1 w-4 h-4 bg-rose-400 rounded-full flex items-center justify-center"
+                                    >
+                                        <div className="w-2 h-2 bg-white rounded-full" />
+                                    </motion.div>
+                                )}
                             </div>
-                            <Button
-                                className={currentlyPlaying ? "bg-transparent text-foreground border-pink-700" : ""}
-                                color={currentlyPlaying ? "primary" : "danger"}
-                                radius="full"
-                                size="sm"
-                                variant={currentlyPlaying ? "bordered" : "solid"}
-                                onPress={onClick}
+
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                    {editMode && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                        >
+                                            <Checkbox
+                                                onChange={() => toggleSelectedSong(song.id)}
+                                                isSelected={selected}
+                                                color="danger"
+                                                classNames={{
+                                                    base: "bg-black/20 border-rose-500/30",
+                                                    icon: "text-rose-400"
+                                                }}
+                                            />
+                                        </motion.div>
+                                    )}
+
+                                    <h4 className="text-sm font-semibold text-white truncate">
+                                        {song.title}
+                                    </h4>
+
+                                    {currentlyPlaying && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                        >
+                                            <Chip
+                                                size="sm"
+                                                color="danger"
+                                                variant="flat"
+                                                className="bg-rose-500/20 text-rose-400 border border-rose-400/30"
+                                            >
+                                                Playing
+                                            </Chip>
+                                        </motion.div>
+                                    )}
+                                </div>
+
+                                <p className="text-xs text-gray-400 truncate">
+                                    {song.artist}
+                                </p>
+                            </div>
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
-                                {currentlyPlaying ? i18next.t('general.currently_playing') : i18next.t('general.play')}
-                            </Button>
-                        </aside>
-                    </CardHeader>
-                </Card>
-            </div>
+                                <Button
+                                    className={classNames({
+                                        "bg-gradient-to-r from-rose-500 via-red-500 to-red-600 text-white shadow-lg shadow-rose-500/25 hover:shadow-rose-500/40": !currentlyPlaying,
+                                        "bg-black/20 border border-rose-400/50 text-rose-400 hover:bg-black/30": currentlyPlaying
+                                    })}
+                                    radius="full"
+                                    size="sm"
+                                    variant={currentlyPlaying ? "bordered" : "solid"}
+                                    onPress={onClick}
+                                    isIconOnly
+                                >
+                                    {currentlyPlaying ? (
+                                        <IoPauseOutline size={16} />
+                                    ) : (
+                                        <IoPlayOutline size={16} />
+                                    )}
+                                </Button>
+                            </motion.div>
+                        </div>
+                    </div>
+
+                    {editMode && selected && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="absolute inset-0 bg-rose-500/10 border-2 border-rose-400/50 rounded-xl"
+                        />
+                    )}
+                </motion.div>
+
+                <motion.div
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-rose-400/20 to-red-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                    animate={currentlyPlaying ? { opacity: 0.1 } : { opacity: 0 }}
+                />
+            </motion.div>
         </SortableItem>
     );
 }

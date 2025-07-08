@@ -8,6 +8,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { AnimatedBackground, GradientButton, StyledInput } from "@/components/common";
+import i18next from "i18next";
 
 export default function RegisterPage() {
     const [isVisible, setIsVisible] = useState(false);
@@ -23,11 +24,11 @@ export default function RegisterPage() {
         const lastname = formData.get("lastname");
         const success = await fetchNui("register", { username, password, firstname, lastname });
         if (!success) {
-            toast.error("Registration failed");
+            toast.error(i18next.t('register.registration_failed'));
             setIsLoading(false);
             return;
         }
-        toast.success("Registration successful");
+        toast.success(i18next.t('register.registration_successful'));
         setIsLoading(false);
         navigate("/login")
     };
@@ -36,8 +37,8 @@ export default function RegisterPage() {
         <AnimatedBackground
             showLogo={true}
             logoSize="lg"
-            title="Join the Music"
-            subtitle="Create your account and start your journey"
+            title={i18next.t('register.title')}
+            subtitle={i18next.t('register.subtitle')}
             icon={<IoMusicalNotesOutline className="text-rose-400" />}
         >
             <motion.div
@@ -54,18 +55,18 @@ export default function RegisterPage() {
                     <div className="flex flex-col gap-4">
                         <StyledInput
                             isRequired
-                            label="First Name"
+                            label={i18next.t('register.firstname')}
                             name="firstname"
-                            placeholder="Enter your first name"
+                            placeholder={i18next.t('register.firstname_placeholder')}
                             minLength={2}
                             startIcon={<IoPersonOutline className="text-rose-400 text-xl" />}
                         />
 
                         <StyledInput
                             isRequired
-                            label="Last Name"
+                            label={i18next.t('register.lastname')}
                             name="lastname"
-                            placeholder="Enter your last name"
+                            placeholder={i18next.t('register.lastname_placeholder')}
                             minLength={2}
                             startIcon={<IoPersonOutline className="text-rose-400 text-xl" />}
                         />
@@ -74,18 +75,18 @@ export default function RegisterPage() {
                         <StyledInput
                             fullWidth
                             isRequired
-                            label="Username"
+                            label={i18next.t('register.username')}
                             name="username"
-                            placeholder="Choose a unique username"
+                            placeholder={i18next.t('register.username_placeholder')}
                             minLength={2}
                             startIcon={<IoPersonOutline className="text-rose-400 text-xl" />}
                         />
 
                         <StyledInput
                             isRequired
-                            label="Password"
+                            label={i18next.t('register.password')}
                             name="password"
-                            placeholder="Create a strong password"
+                            placeholder={i18next.t('register.password_placeholder')}
                             type={isVisible ? "text" : "password"}
                             minLength={6}
                             startIcon={<IoLockClosedOutline className="text-rose-400 text-xl" />}
@@ -105,10 +106,10 @@ export default function RegisterPage() {
                         <GradientButton
                             type="submit"
                             isLoading={isLoading}
-                            loadingText="Creating Account..."
+                            loadingText={i18next.t('register.sign_up_loading')}
                             className="h-12"
                         >
-                            Create Account
+                            {i18next.t('register.sign_up')}
                         </GradientButton>
                     </div>
                 </Form>
@@ -126,7 +127,7 @@ export default function RegisterPage() {
                 className="flex items-center gap-4 py-2"
             >
                 <Divider className="flex-1 bg-rose-500/30" />
-                <p className="shrink-0 text-tiny text-gray-400">OR</p>
+                <p className="shrink-0 text-tiny text-gray-400">{i18next.t('or')}</p>
                 <Divider className="flex-1 bg-rose-500/30" />
             </motion.div>
 
@@ -142,12 +143,12 @@ export default function RegisterPage() {
                 className="text-center"
             >
                 <p className="text-gray-400 text-sm">
-                    Already have an account?&nbsp;
+                    {i18next.t('register.already_have_account')}&nbsp;
                     <NavLink
                         to="/login"
                         className="text-rose-400 hover:text-rose-300 font-medium transition-colors"
                     >
-                        Log In
+                        {i18next.t('register.sign_in')}
                     </NavLink>
                 </p>
             </motion.div>

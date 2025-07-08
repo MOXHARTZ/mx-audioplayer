@@ -27,7 +27,7 @@ export default function SettingsModal({ isOpen, onOpenChange }: SettingsProps) {
 
     return (
         <Modal isOpen={isOpen} size="2xl" onOpenChange={onOpenChange} classNames={{
-            backdrop: "bg-black/80 backdrop-blur-sm",
+            backdrop: "bg-black/80",
             base: "bg-transparent shadow-none",
             wrapper: "bg-transparent"
         }}>
@@ -59,7 +59,7 @@ export default function SettingsModal({ isOpen, onOpenChange }: SettingsProps) {
                                 stiffness: 100,
                                 damping: 20
                             }}
-                            className="flex w-full flex-col gap-6 rounded-2xl bg-black/40 border border-rose-500/20 p-8 shadow-2xl backdrop-blur-sm"
+                            className="flex w-full flex-col gap-6 rounded-2xl bg-black/40 border border-rose-500/20 p-8 shadow-2xl"
                         >
                             <motion.div
                                 initial={{ opacity: 0, y: -20 }}
@@ -91,7 +91,7 @@ export default function SettingsModal({ isOpen, onOpenChange }: SettingsProps) {
                                         <IoSettingsOutline className="text-rose-400" />
                                         {i18next.t('settings.title')}
                                     </h1>
-                                    <p className="text-gray-400 text-sm mt-1">Customize your audio experience</p>
+                                    <p className="text-gray-400 text-sm mt-1">{i18next.t('settings.subtitle')}</p>
                                 </div>
                             </motion.div>
 

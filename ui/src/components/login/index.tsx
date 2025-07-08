@@ -9,6 +9,7 @@ import { useAppSelector } from "@/stores";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { AnimatedBackground, GradientButton, StyledInput } from "@/components/common";
+import i18next from "i18next";
 
 export default function LoginPage() {
     const { playlist } = useAppSelector(state => state.Main)
@@ -22,11 +23,11 @@ export default function LoginPage() {
         const password = formData.get("password");
         const success = await fetchNui("login", { username, password });
         if (!success) {
-            toast.error("Invalid username or password");
+            toast.error(i18next.t('login.invalid_username_or_password'));
             setIsLoading(false);
             return;
         }
-        toast.success("Login successful");
+        toast.success(i18next.t('login.login_successful'));
         setIsLoading(false);
     };
 
@@ -41,8 +42,8 @@ export default function LoginPage() {
         <AnimatedBackground
             showLogo={true}
             logoSize="lg"
-            title="Welcome Back"
-            subtitle="Sign in to your audio paradise"
+            title={i18next.t('login.title')}
+            subtitle={i18next.t('login.subtitle')}
             icon={<IoMusicalNotesOutline className="text-rose-400" />}
         >
             <motion.div
@@ -58,17 +59,17 @@ export default function LoginPage() {
                 <Form className="grid grid-cols-2 gap-4" validationBehavior="native" action={handleSubmit}>
                     <StyledInput
                         isRequired
-                        label="Username"
+                        label={i18next.t('login.username')}
                         name="username"
-                        placeholder="Enter your username"
+                        placeholder={i18next.t('login.username_placeholder')}
                         startIcon={<IoPersonOutline className="text-rose-400 text-xl" />}
                     />
 
                     <StyledInput
                         isRequired
-                        label="Password"
+                        label={i18next.t('login.password')}
                         name="password"
-                        placeholder="Enter your password"
+                        placeholder={i18next.t('login.password_placeholder')}
                         type={isVisible ? "text" : "password"}
                         startIcon={<IoLockClosedOutline className="text-rose-400 text-xl" />}
                         endIcon={
@@ -86,10 +87,10 @@ export default function LoginPage() {
                         <GradientButton
                             type="submit"
                             isLoading={isLoading}
-                            loadingText="Signing In..."
+                            loadingText={i18next.t('login.sign_in_loading')}
                             className="h-12"
                         >
-                            Sign In
+                            {i18next.t('login.sign_in')}
                         </GradientButton>
                     </div>
                 </Form>
@@ -107,7 +108,7 @@ export default function LoginPage() {
                 className="flex items-center gap-4 py-2"
             >
                 <Divider className="flex-1 bg-rose-500/30" />
-                <p className="shrink-0 text-tiny text-gray-400">OR</p>
+                <p className="shrink-0 text-tiny text-gray-400">{i18next.t('or')}</p>
                 <Divider className="flex-1 bg-rose-500/30" />
             </motion.div>
 
@@ -123,12 +124,12 @@ export default function LoginPage() {
                 className="text-center"
             >
                 <p className="text-gray-400 text-sm">
-                    Need to create an account?&nbsp;
+                    {i18next.t('login.need_to_create_account')}&nbsp;
                     <NavLink
                         to="/register"
                         className="text-rose-400 hover:text-rose-300 font-medium transition-colors"
                     >
-                        Sign Up
+                        {i18next.t('login.sign_up')}
                     </NavLink>
                 </p>
             </motion.div>
