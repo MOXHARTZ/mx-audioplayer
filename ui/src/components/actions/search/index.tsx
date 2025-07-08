@@ -60,7 +60,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
 
     const processUrl = useCallback(async (url: string) => {
         dispatch(setWaitingForResponse(true))
-        const response = await fetchNui<{ title: string; artist: string; thumbnail: string; videoId?: string }>('getSoundData', { url: url })
+        const response = await fetchNui<{ title: string; artist: string; thumbnail: string; videoId?: string; url?: string }>('getSoundData', { url: url })
         if (!response) {
             dispatch(setWaitingForResponse(false))
             return toast.error(i18next.t('search_track.invalid_url'))
@@ -71,7 +71,7 @@ const SearchTrack = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean
             name: response.title,
             thumbnails: [{ url: response.thumbnail, width: 90, height: 90 }],
             videoId: response.videoId ?? url,
-            url
+            url: response?.url ?? url
         }
         setTrackList([_data])
         dispatch(setWaitingForResponse(false))
