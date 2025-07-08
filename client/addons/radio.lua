@@ -28,29 +28,25 @@ local function openUi()
             local volume = AudioVolume
             TriggerServerEvent('mx-audioplayer:attach', sound.soundId, NetworkGetNetworkIdFromEntity(_vehicle), volume, IsInVehicle)
         end,
-        onLogin = function(soundId, username, password)
-            Debug('Login', soundId, username, password)
+        onLogin = function(soundId, token)
+            Debug('Login', soundId, token)
             if not IsInVehicle then return end
-            Debug('account', Entity(CurrentVehicle).state.audioplayer_account)
-            Entity(CurrentVehicle).state:set('audioplayer_account', {
-                username = username,
-                password = password,
-            }, true)
+            Entity(CurrentVehicle).state:set('audioplayer_account', token, true)
         end,
         onLogout = function(soundId)
             Debug('Logout', soundId)
             if not IsInVehicle then return end
             Entity(CurrentVehicle).state:set('audioplayer_account', nil, true)
         end,
-        handleChangePage = function(soundId, page)
-            Debug('handleChangePage', soundId, page)
-            if page ~= 'login' then return end
+        autoLogin = function(soundId)
             if not IsInVehicle then return end
             if not Entity(CurrentVehicle).state.audioplayer_account then
                 return Debug('Auto login: No account found')
             end
             local account = Entity(CurrentVehicle).state.audioplayer_account
-            local success = Login(account.username, account.password)
+            local success = Login({
+                token = account
+            })
             if not success then
                 Surround:pushNotification('This user credentials has been modified. Please log in again.')
                 Entity(CurrentVehicle).state:set('audioplayer_account', nil, true)

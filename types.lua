@@ -65,3 +65,8 @@
 ---@field id number
 ---@field userId number
 ---@field data table
+
+---@class LoginData
+---@field token? string
+---@field username? string
+---@field password? number

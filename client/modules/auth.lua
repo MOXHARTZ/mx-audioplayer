@@ -1,22 +1,24 @@
----@param username string
----@param password number
----@return boolean
-function Login(username, password)
+---@param data LoginData
+---@return false | string
+function Login(data)
     local id = GetAudioplayerId()
-    local success = lib.callback.await('mx-audioplayer:login', 0, id, username, password)
-    return success
+    local token = lib.callback.await('mx-audioplayer:login', 0, id, data)
+    return token
 end
 
 RegisterNUICallback('login', function(data, cb)
     Debug('login', data)
     data.password = joaat(data.password)
-    local success = Login(data.username, data.password)
-    if success then
+    local token = Login({
+        username = data.username,
+        password = data.password
+    })
+    if token then
         local id = GetAudioplayerId()
-        TriggerListener(id, 'onLogin', data.username, data.password)
+        TriggerListener(id, 'onLogin', token)
     end
-    Debug('login success', success)
-    cb(success)
+    Debug('login token', token)
+    cb(token)
 end)
 
 RegisterNUICallback('logout', function(data, cb)

@@ -18,7 +18,7 @@ import { HeroUIProvider } from '@heroui/react';
 import ShortDisplay from './components/shortdisplay';
 import { AnimatePresence, motion } from "motion/react"
 import { nextSongThunk } from './thunks/nextSong';
-import { setPositionThunk } from './thunks/setPosition';
+import { setPositionThunk } from './thunks/setPosition'
 
 
 function App() {
@@ -47,7 +47,7 @@ function App() {
     dispatch(setPlaying(data.currentSound.playing ?? false))
     dispatch(setPositionThunk(data.currentSound))
   })
-  useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound: Song }>('toggleShortDisplay', (data) => {
+  useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound?: Song }>('toggleShortDisplay', (data) => {
     setShortDisplay(data.state)
     if (!data.state) return;
     dispatch(setPlaylist(data.playlist))

@@ -19,7 +19,7 @@ type HeaderProps = {
 const Header = ({ isShort }: HeaderProps) => {
     const { playlist, currentSongData, userData } = useAppSelector(state => state.Main)
     const currentPlaylistName = useMemo(() => {
-        return playlist.find(playlist => playlist.id === currentSongData?.playlistId)?.name
+        return playlist?.find?.(playlist => playlist.id === currentSongData?.playlistId)?.name
     }, [playlist, currentSongData])
     const [timeStamp, setTimeStamp] = useState(0)
     const { isOpen: isSettingsModalOpen, onOpenChange: isSettingsModalOnOpenChange, onOpen: settingsModalOnOpen } = useDisclosure();

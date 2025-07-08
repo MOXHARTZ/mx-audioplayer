@@ -1,9 +1,9 @@
 _G['db'] = {}
 local temp = {}
 local Query <const> = {
-    SELECT_USER = 'SELECT * FROM audioplayer_users WHERE username = ? AND password = ?',
-    SELECT_USER_BY_ID = 'SELECT * FROM audioplayer_users WHERE id = ?',
-    SELECT_USER_ID = 'SELECT id FROM audioplayer_users WHERE username = ? AND password = ?',
+    SELECT_USER = 'SELECT * FROM audioplayer_users WHERE `username` = ? AND `password` = ?',
+    SELECT_USER_BY_ID = 'SELECT * FROM audioplayer_users WHERE `id` = ?',
+    SELECT_USER_ID = 'SELECT `id` FROM audioplayer_users WHERE `username` = ? AND `password` = ?',
     SELECT_PLAYLIST = 'SELECT data FROM audioplayer_playlists WHERE userId = ?',
     UPSERT_PLAYLIST = [[
         INSERT INTO audioplayer_playlists (data, userId)

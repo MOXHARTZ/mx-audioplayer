@@ -1,9 +1,9 @@
 import LoginPage from '@/components/login';
 import RegisterPage from '@/components/register';
 import MainLayout from '@/layouts/main';
-import { createBrowserRouter } from 'react-router-dom'
+import { createHashRouter } from 'react-router-dom'
 
-const routes = createBrowserRouter([
+const routes = createHashRouter([
     {
         path: '*',
         element: <MainLayout />

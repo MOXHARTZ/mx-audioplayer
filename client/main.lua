@@ -84,7 +84,6 @@ function GetAudioPlayerInfo(data)
     end
 
     local playerData = lib.callback.await('mx-audioplayer:getData', 0, id) --[[@as {playlist: table, user: Account | nil, player: Player}]]
-    Debug('playerData', playerData)
     CurrentSoundData = playerData.player and playerData.player.soundData
     if CurrentSoundData and playerData.playlist then
         for k, v in pairs(playerData.playlist) do
@@ -97,6 +96,15 @@ function GetAudioPlayerInfo(data)
 
     initAudioPlayerData(id, data)
     return playerData, id
+end
+
+---@param message string
+---@param data any
+function SendReactMessage(message, data)
+    SendNUIMessage({
+        action = message,
+        data = data
+    })
 end
 
 ---@param data? OpenAudioPlayerData
@@ -113,14 +121,11 @@ function OpenAudioPlayer(data, handlers)
     end
     playQuietly = silent and true or false
     audioplayerHandlers[id] = handlers
-    SendNUIMessage({
-        action = 'open',
-        data = {
-            playlist = playerData.playlist,
-            currentSound = CurrentSoundData,
-            user = playerData.user,
-            volume = CurrentSoundData and CurrentSoundData.volume or AudioVolume,
-        }
+    SendReactMessage('open', {
+        playlist = playerData.playlist,
+        currentSound = CurrentSoundData,
+        user = playerData.user,
+        volume = CurrentSoundData and CurrentSoundData.volume or AudioVolume,
     })
     TriggerListener(id, 'onOpen')
     SetNuiFocus(true, true)
@@ -129,7 +134,9 @@ end
 
 RegisterNUICallback('handleChangePage', function(data, cb)
     local id = GetAudioplayerId()
-    TriggerListener(id, 'handleChangePage', data.page)
+    if data.page == 'login' then
+        TriggerListener(id, 'autoLogin')
+    end
 end)
 
 ---@param id string

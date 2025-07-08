@@ -5,12 +5,29 @@ if not versionCheck then return end
 -- Audioplayer list for each id
 AudioPlayerAccounts = {} ---@type AudioplayerAccount[]
 
+local tokens = {} ---@type table<string, {username: string, password: number}>
+
 local Surround = exports['mx-surround']
 
 ---@param src number
 ---@param msg string
 function Notification(src, msg)
     TriggerClientEvent('mx-audioplayer:notification', src, msg)
+end
+
+---@return string
+local function generateToken()
+    local chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    local token, length, charLength = '', 8, #chars
+    for i = 1, length do
+        local randomIndex = math.random(1, charLength)
+        token = token .. string.sub(chars, randomIndex, randomIndex)
+    end
+    if tokens[token] then
+        Wait(0)
+        return generateToken()
+    end
+    return token
 end
 
 RegisterNetEvent('mx-audioplayer:play', function(id, url, soundId, soundData, volume, playQuietly, coords, customData)
@@ -195,11 +212,21 @@ end
 
 ---@param source number
 ---@param id string Audioplayer identifier, so we can sync the same audioplayer between clients
----@param username string
----@param password number
----@return boolean
-lib.callback.register('mx-audioplayer:login', function(source, id, username, password)
+---@param data LoginData
+---@return false | string
+lib.callback.register('mx-audioplayer:login', function(source, id, data)
     local src = source
+    local username, password = data.username, data.password
+    if data.token then
+        local token = tokens[data.token]
+        if not token then
+            Debug('mx-audioplayer:login ::: Token not found', data.token)
+            return false
+        end
+        username, password = token.username, token.password
+    end
+    assert(username, 'Username is required')
+    assert(password, 'Password is required')
     assert(type(password) == 'number', 'Password need to be number but its not a number, probably this player trying to avoid hash. Source: ' .. src)
     local user = db.getUser(username, password)
     if not user then
@@ -210,7 +237,15 @@ lib.callback.register('mx-audioplayer:login', function(source, id, username, pas
     user = userDboToDto(src, user)
     TriggerClientEvent('mx-audioplayer:login', src, playlist, user)
     Debug('mx-audioplayer:login', user)
-    return true
+    if not data.token then
+        data.token = generateToken()
+        Debug('mx-audioplayer:login ::: Generated token', data.token)
+        tokens[data.token] = {
+            username = username,
+            password = password
+        }
+    end
+    return data.token
 end)
 
 lib.callback.register('mx-audioplayer:logout', function(source, id)
