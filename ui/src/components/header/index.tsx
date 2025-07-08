@@ -32,7 +32,7 @@ const Header = ({ isShort }: HeaderProps) => {
             <SettingsModal isOpen={isSettingsModalOpen} onOpenChange={isSettingsModalOnOpenChange} />
             <ProfileModal isOpen={isProfileModalOpen} onOpenChange={isProfileModalOnOpenChange} userData={userData} />
             <header className='flex justify-center w-full items-center gap-24'>
-                <Card className='w-full h-full'>
+                <Card className='w-full h-full bg-slate-300/50'>
                     <CardBody className={classNames({
                         'px-4 pt-2 pb-0 grid grid-cols-3': true,
                         'gap-4 flex flex-row grid-cols-2': isShort
