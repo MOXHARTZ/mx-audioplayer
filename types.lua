@@ -2,6 +2,7 @@
 ---@field customId? string
 ---@field silent? boolean
 ---@field staySameCoords? boolean
+---@field maxDistance? number
 ---@field panner? {panningModel: string, refDistance: number, rolloffFactor: number, distanceModel: string}
 
 -- Check mx-surround's types.lua for the types of the following functions

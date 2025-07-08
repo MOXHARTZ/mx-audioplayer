@@ -34,8 +34,8 @@ Config.DJ.Locations = {
             refDistance = 15.0,            -- Distance of the volume dropoff start (bigger = more distance)
             rolloffFactor = 1.8,           -- How fast the volume drops off
             distanceModel = 'exponential', -- How the volume drops off (linear, inverse, exponential)
-
-        }
+        },
+        maxDistance = 150.0
     }
 }
 

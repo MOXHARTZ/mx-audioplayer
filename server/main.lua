@@ -27,6 +27,9 @@ RegisterNetEvent('mx-audioplayer:play', function(id, url, soundId, soundData, vo
     end
     volume = playQuietly and 0.0 or volume
     Surround:Play(-1, soundId, url, coords, false, volume, customData.panner)
+    if customData.maxDistance then
+        Surround:setMaxDistance(-1, soundId, customData.maxDistance)
+    end
     if not soundId then return print('Failed to play sound') end
     Surround:setDestroyOnFinish(-1, soundId, false)
     user.player = {
