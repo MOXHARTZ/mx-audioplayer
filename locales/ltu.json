@@ -30,7 +30,6 @@
     "search_track.title": "Įtraukti dainą į grojaraštį",
     "search_track.placeholder": "Dainos pavadinimas arba url",
     "search_track.invalid_url": "Neteisingas url adresas",
-    "search_track.knowledge": "Negalite groti dainų, kurių trukmė ilgesnė nei 15 minučių (dėl našumo priežasčių).",
     "general.unknown": "Nežinoma",
     "general.something_went_wrong": "Kažkas nutiko ne taip, Policija atemė radija??",
     "general.ui.disabled": "Šiuo metu negalite atidaryti radijo, nes jį naudoja kitas žaidėjas.",

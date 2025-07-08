@@ -61,16 +61,24 @@ export default function ShortDisplay({ visible, position }: ShortDisplayProps) {
 
     return (
         <AnimatePresence mode='wait'>
-            {visible && (
-                <motion.div
-                    initial={styleProps?.initial}
-                    animate={styleProps?.animate}
-                    exit={styleProps?.initial}
-                    className='absolute z-50'
-                >
-                    <Header key={'short-display-header'} isShort />
-                </motion.div>
-            )}
+            {
+                visible && (
+                    <motion.div
+                        initial={styleProps?.initial}
+                        animate={styleProps?.animate}
+                        exit={styleProps?.initial}
+                        transition={{
+                            type: 'spring',
+                            stiffness: 200,
+                            damping: 20,
+                            duration: 0.3
+                        }}
+                        className='absolute z-50 w-fit'
+                    >
+                        <Header key={'short-display-header'} isShort />
+                    </motion.div>
+                )
+            }
         </AnimatePresence>
     )
 }

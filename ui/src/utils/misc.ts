@@ -1,4 +1,6 @@
+import { addToast } from "@heroui/react";
 import { useEffect, useState } from "react";
+import { fetchNui } from "./fetchNui";
 
 export const isEnvBrowser = (): boolean => !(window as any).invokeNative;
 export const noop = () => { }
@@ -92,6 +94,37 @@ export const getYoutubePlaylistID = (url: string) => {
     } catch (e) {
         return null;
     }
+}
+
+// yoinked from https://github.com/project-error/npwd/blob/d8dc5b7f47faf5fc581ffee30f31ff61d184cfe7/phone/src/os/phone/hooks/useClipboard.ts#L1
+export const setClipboard = (value: string) => {
+    const clipElem = document.createElement('input');
+    clipElem.value = value;
+    document.body.appendChild(clipElem);
+    clipElem.select();
+    document.execCommand('copy');
+    document.body.removeChild(clipElem);
+};
+
+export const formattedTypes = {
+    info: 'primary',
+    error: 'danger',
+    success: 'success',
+} as const;
+
+export function notification(message: string, type: 'success' | 'error' | 'info' = 'info') {
+    if (isEnvBrowser()) {
+        addToast({
+            title: type.toUpperCase(),
+            description: message,
+            color: formattedTypes[type],
+            shouldShowTimeoutProgress: true,
+            timeout: 3000,
+            variant: 'flat',
+        })
+        return
+    }
+    fetchNui('notification', { message, type });
 }
 
 export const isSpotifyPlaylist = (url: string) => {

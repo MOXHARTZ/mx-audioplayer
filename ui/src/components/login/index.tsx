@@ -6,10 +6,10 @@ import { useState, useEffect } from "react";
 import { fetchNui } from "@/utils/fetchNui";
 import { Navigate, NavLink } from "react-router-dom";
 import { useAppSelector } from "@/stores";
-import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { AnimatedBackground, GradientButton, StyledInput } from "@/components/common";
 import i18next from "i18next";
+import { notification } from "@/utils/misc";
 
 export default function LoginPage() {
     const { playlist } = useAppSelector(state => state.Main)
@@ -23,11 +23,11 @@ export default function LoginPage() {
         const password = formData.get("password");
         const success = await fetchNui("login", { username, password });
         if (!success) {
-            toast.error(i18next.t('login.invalid_username_or_password'));
+            notification(i18next.t('login.invalid_username_or_password'), 'error')
             setIsLoading(false);
             return;
         }
-        toast.success(i18next.t('login.login_successful'));
+        notification(i18next.t('login.login_successful'), 'success')
         setIsLoading(false);
     };
 

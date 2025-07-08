@@ -30,27 +30,13 @@ const Header = ({ isShort }: HeaderProps) => {
     }, [])
     return (
         <>
-            <SettingsModal isOpen={isSettingsModalOpen} onOpenChange={isSettingsModalOnOpenChange} />
-            <ProfileModal isOpen={isProfileModalOpen} onOpenChange={isProfileModalOnOpenChange} userData={userData} />
+            {!isShort && (
+                <>
+                    <SettingsModal isOpen={isSettingsModalOpen} onOpenChange={isSettingsModalOnOpenChange} />
+                    <ProfileModal isOpen={isProfileModalOpen} onOpenChange={isProfileModalOnOpenChange} userData={userData} />
+                </>
+            )}
             <header className='flex justify-center w-full items-center gap-24'>
-                {isShort && (
-                    <motion.div
-                        className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-rose-900/20"
-                        animate={{
-                            background: [
-                                "radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.3) 0%, transparent 50%)",
-                                "radial-gradient(circle at 20% 80%, rgba(244, 63, 94, 0.3) 0%, transparent 50%)",
-                                "radial-gradient(circle at 60% 60%, rgba(244, 63, 94, 0.3) 0%, transparent 50%)",
-                                "radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.3) 0%, transparent 50%)",
-                            ]
-                        }}
-                        transition={{
-                            duration: 10,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
-                    />
-                )}
                 <motion.div
                     transition={{ type: "spring", stiffness: 250, damping: 15 }}
                     className="w-full h-full"
@@ -69,7 +55,7 @@ const Header = ({ isShort }: HeaderProps) => {
                                     className='text-2xl truncate m-auto mb-5 bg-gradient-to-r from-rose-400 to-red-400 bg-clip-text text-transparent font-bold'
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                                    transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.4 }}
                                 >
                                     {currentPlaylistName ?? i18next.t('header.playlist')}
                                 </motion.h1>
@@ -85,7 +71,7 @@ const Header = ({ isShort }: HeaderProps) => {
                                 className='flex gap-1 text-sm items-center text-gray-300'
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.1 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
                             >
                                 <Kbd keys={["shift"]} className="bg-rose-500/20 border-rose-500/30 text-rose-400">K</Kbd>
                                 {i18next.t('keyboard.shortcut.toggle')}
@@ -94,7 +80,7 @@ const Header = ({ isShort }: HeaderProps) => {
                                 className='flex gap-1 text-sm items-center text-gray-300'
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
                             >
                                 <Kbd keys={["shift"]} className="bg-rose-500/20 border-rose-500/30 text-rose-400">Arrow Up/Down</Kbd>
                                 {i18next.t('keyboard.shortcut.volume')}
@@ -103,7 +89,7 @@ const Header = ({ isShort }: HeaderProps) => {
                                 className='flex gap-1 text-sm items-center text-gray-300'
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.7 }}
                             >
                                 <Kbd keys={["shift"]} className="bg-rose-500/20 border-rose-500/30 text-rose-400">Arrow Left/Right</Kbd>
                                 {i18next.t('keyboard.shortcut.forward')}

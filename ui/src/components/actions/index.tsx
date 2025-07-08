@@ -3,7 +3,6 @@ import { IoAddOutline } from 'react-icons/io5'
 import { useAppDispatch, useAppSelector } from '@/stores'
 import { clearSound, setCurrentSongs, setEditMode, setFilterPlaylist, setSelectedSongs } from '@/stores/Main'
 import { memo, useCallback, useState } from 'react'
-import { toast } from 'react-toastify';
 import { BiSearch } from 'react-icons/bi'
 import SearchTrack from './search'
 import i18next from 'i18next'
@@ -11,6 +10,7 @@ import { Button, ButtonGroup, Input, useDisclosure } from '@heroui/react'
 import { motion } from 'framer-motion'
 import ConfirmModal from '../modals/ConfirmModal'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { notification } from '@/utils/misc'
 
 const Actions = () => {
     const { editMode, selectedSongs, position, filterPlaylist, currentSongs } = useAppSelector(state => state.Main)
@@ -18,32 +18,32 @@ const Actions = () => {
     const { isOpen: confirmIsOpen, onOpenChange: confirmOnOpenChange, onOpen: onConfirmOpen } = useDisclosure();
     const handleConfirm = useCallback(() => {
         dispatch(setCurrentSongs([]))
-        toast.success(i18next.t('playlist.cleared'))
+        notification(i18next.t('playlist.cleared'), 'success')
         dispatch(clearSound())
         dispatch(setEditMode(false))
     }, [])
     const [open, setOpen] = useState(false);
     const handleClickOpen = useCallback(() => {
-        if (!currentSongs) return toast.error(i18next.t('playlist.select_playlist'))
+        if (!currentSongs) return notification(i18next.t('playlist.select_playlist'), 'error')
         setOpen(true);
     }, [currentSongs]);
     const deleteSelectedSongs = useCallback(() => {
-        if (currentSongs?.length === 0) return toast.error(i18next.t('playlist.empty'));
-        if (selectedSongs.length === 0) return toast.error(i18next.t('playlist.not_selected'))
+        if (currentSongs?.length === 0) return notification(i18next.t('playlist.empty'), 'error');
+        if (selectedSongs.length === 0) return notification(i18next.t('playlist.not_selected'), 'error')
         dispatch(setCurrentSongs(currentSongs?.filter(song => !selectedSongs.includes(song.id.toString())) ?? []))
-        toast.success(i18next.t('playlist.deleted_songs'))
+        notification(i18next.t('playlist.deleted_songs'), 'success')
         if (selectedSongs && position) selectedSongs.includes(position.toString()) && dispatch(clearSound())
         dispatch(setSelectedSongs([]))
         dispatch(setEditMode(false))
     }, [selectedSongs, currentSongs])
     const deleteAll = useCallback(() => {
-        if (currentSongs?.length === 0) return toast.error(i18next.t('playlist.empty'));
+        if (currentSongs?.length === 0) return notification(i18next.t('playlist.empty'), 'error');
         onConfirmOpen()
     }, [currentSongs])
     const toggleEditMode = useCallback(() => {
         const newEditMode = !editMode
         if (newEditMode) {
-            toast.info(i18next.t('general.edit.enabled'))
+            notification(i18next.t('general.edit.enabled'), 'info')
             dispatch(setFilterPlaylist(''))
         }
         dispatch(setEditMode(newEditMode))

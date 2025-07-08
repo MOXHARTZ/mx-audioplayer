@@ -30,7 +30,6 @@
     "search_track.title": "Agregar una canción a la lista de reproducción",
     "search_track.placeholder": "Nombre de la pista o URL",
     "search_track.invalid_url": "URL no válida",
-    "search_track.knowledge": "No puedes reproducir canciones con una duración de más de 15 minutos (por razones de rendimiento)",
     "general.unknown": "Desconocido",
     "general.something_went_wrong": "Algo salió mal",
     "general.ui.disabled": "En este momento no puedes abrir la radio porque está siendo utilizada por otro jugador.",

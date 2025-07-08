@@ -27,7 +27,6 @@
     "search_track.title": "Füge der Playlist ein Lied hinzu",
     "search_track.placeholder": "Liedname oder URL",
     "search_track.invalid_url": "Ungültige URL",
-    "search_track.knowledge": "Sie können keine Lieder mit einer Länge von mehr als 15 Minuten abspielen (aus Leistungsgründen)",
     "general.unknown": "Unbekannt",
     "general.something_went_wrong": "Etwas ist schiefgelaufen",
     "general.ui.disabled": "Momentan können Sie das Radio nicht öffnen, da es von einem anderen Spieler verwendet wird.",

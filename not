@@ -1,1 +1,2 @@
 baska bir aracta yeni playlist ekleyince diger aracta ayni playlist clonelaniyor
+diger oyuncularda zaman senkronizasyonu guzel yapilmiyor. Sarkinin sahipligini ve kontrollerini server side uzerinde yapmak daha iyi gibi.

@@ -30,7 +30,6 @@
     "search_track.title": "Adauga o melodie in playlist",
     "search_track.placeholder": "Nume piesa sau URL (suporta playlist si album)",
     "search_track.invalid_url": "URL invalid",
-    "search_track.knowledge": "Nu poti reda melodii cu o durata mai mare de 15 minute (din motive de performanta)",
     "general.unknown": "Necunoscut",
     "general.something_went_wrong": "Ceva nu a mers bine",
     "general.ui.disabled": "In acest moment nu poti deschide radioul deoarece este folosit de alt jucator.",

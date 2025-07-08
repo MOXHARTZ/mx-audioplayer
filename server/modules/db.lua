@@ -101,6 +101,7 @@ function db.getUserById(id)
     if cache then
         return cache
     end
+    Debug('db.getUserById', id)
     local user = MySQL.prepare.await(Query.SELECT_USER_BY_ID, { id }) --[[@as Account | nil]]
     Debug('db.getUserById', user)
     SaveTemp('user_by_id', user, id)
@@ -114,8 +115,8 @@ function db.getPlaylist(userId)
     if cache then
         return cache
     end
-    local data = MySQL.prepare.await(Query.SELECT_PLAYLIST, { userId })
     Debug('db.getPlaylist', userId)
+    local data = MySQL.prepare.await(Query.SELECT_PLAYLIST, { userId })
     data = data and json.decode(data) or {}
     SaveTemp('playlist', data, userId)
     return data
@@ -129,7 +130,7 @@ function db.setPlaylist(userId, playlist)
         DeleteTemp('playlist', userId)
     end
     MySQL.insert.await(Query.UPSERT_PLAYLIST, { json.encode(playlist), userId })
-    Debug('db.setPlaylist', userId, playlist)
+    Debug('db.setPlaylist', userId)
 end
 
 ---@param username string

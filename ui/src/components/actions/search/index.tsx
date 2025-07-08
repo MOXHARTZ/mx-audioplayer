@@ -7,17 +7,17 @@ import { tracks, Track } from '@/fake-api/search-results'
 import { isEnvBrowser, isSpotifyAlbum, isSpotifyPlaylist, isUrl, getYoutubePlaylistID, YOUTUBE_URL } from '@/utils/misc'
 import { setCurrentSongs, setWaitingForResponse } from '@/stores/Main'
 import { fetchNui } from '@/utils/fetchNui'
-import { toast } from 'react-toastify'
 import { QueryResult } from '@/utils/types'
 import { BiSearch } from 'react-icons/bi'
 import { IoMusicalNotesOutline } from 'react-icons/io5'
+import { FaSpotify, FaYoutube } from 'react-icons/fa'
 import i18next from 'i18next'
-import classNames from 'classnames'
-import { Modal, ModalContent, Button, ScrollShadow, Tooltip, Input } from "@heroui/react";
+import { Modal, ModalContent, Button, ScrollShadow, Input } from "@heroui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import TrackCard from './TrackCard'
 import SearchSkeleton from './Skeleton'
 import MX from "/mx.svg";
+import { notification } from '@/utils/misc'
 
 type SearchTrackProps = {
     open: boolean;
@@ -37,7 +37,7 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
     }, []);
 
     const addAll = useCallback(() => {
-        if (!currentSongs) return toast.error(i18next.t('playlist.select_playlist'))
+        if (!currentSongs) return notification(i18next.t('playlist.select_playlist'), 'error')
         if (trackList.length === 0) return;
         const _trackList = trackList.map(track => ({ ...track, id: nanoid() }))
         const _trackListData = _trackList.map(track => ({
@@ -54,7 +54,7 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
     }, [trackList, currentSongs])
 
     const handlePlay = useMemo(() => memoize(async (track: Track) => {
-        if (!currentSongs) return toast.error(i18next.t('playlist.select_playlist'));
+        if (!currentSongs) return notification(i18next.t('playlist.select_playlist'), 'error');
         handleClose()
         const artist = track?.artist ? track?.artist?.name : track?.artists?.[0]?.name ?? i18next.t('general.unknown')
         const soundData = {
@@ -74,7 +74,7 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
         const response = await fetchNui<{ title: string; artist: string; thumbnail: string; videoId?: string; url?: string }>('getSoundData', { url: url })
         if (!response) {
             dispatch(setWaitingForResponse(false))
-            return toast.error(i18next.t('search_track.invalid_url'))
+            return notification(i18next.t('search_track.invalid_url'), 'error')
         }
         const _data = {
             id: nanoid(),
@@ -99,7 +99,7 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
         let result = await fetchNui<QueryResult>(endPoint, { query: _query })
         dispatch(setWaitingForResponse(false))
         if (!result) return setTrackList([])
-        if (typeof result === 'object' && 'error' in result) return toast.error(result.error)
+        if (typeof result === 'object' && 'error' in result) return notification(result.error, 'error')
         if (!result) return setTrackList([])
         result = result.map(track => ({ ...track, id: nanoid(), videoId: track.videoId && `${YOUTUBE_URL}${track.videoId}` }))
         setTrackList(result)
@@ -192,48 +192,137 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
                                     transition={{ type: "spring", stiffness: 250, damping: 15 }}
                                     className="flex flex-col gap-4"
                                 >
-                                    <p className="text-gray-300 text-center">{i18next.t('search_track.content')}</p>
+                                    <div className="flex flex-col items-center gap-4">
+                                        <p className="text-gray-300 text-center text-sm leading-relaxed">{i18next.t('search_track.content')}</p>
+
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 150,
+                                                damping: 20,
+                                                delay: 0.3
+                                            }}
+                                            className="flex items-center gap-6"
+                                        >
+                                            <motion.div
+                                                whileHover={{
+                                                    scale: 1.05,
+                                                    y: -2,
+                                                    transition: { type: "spring", stiffness: 300, damping: 20 }
+                                                }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/20 hover:border-green-400/30 transition-all duration-300 group"
+                                            >
+                                                <motion.div
+                                                    className="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 p-3 flex items-center justify-center shadow-lg shadow-green-500/25 group-hover:shadow-green-500/40 transition-all duration-300"
+                                                    whileHover={{
+                                                        rotate: 360,
+                                                        transition: { duration: 0.6, ease: "easeInOut" }
+                                                    }}
+                                                >
+                                                    <FaSpotify className="text-white text-xl" />
+                                                </motion.div>
+                                                <div className="text-center">
+                                                    <p className="text-green-400 font-semibold text-sm">Spotify</p>
+                                                    <p className="text-gray-400 text-xs">Albüm & Playlist</p>
+                                                </div>
+                                            </motion.div>
+                                            <motion.div
+                                                whileHover={{
+                                                    scale: 1.05,
+                                                    y: -2,
+                                                    transition: { type: "spring", stiffness: 300, damping: 20 }
+                                                }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-red-500/10 to-red-600/10 border border-red-500/20 hover:border-red-400/30 transition-all duration-300 group"
+                                            >
+                                                <motion.div
+                                                    className="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 p-3 flex items-center justify-center shadow-lg shadow-red-500/25 group-hover:shadow-red-500/40 transition-all duration-300"
+                                                    whileHover={{
+                                                        rotate: 360,
+                                                        transition: { duration: 0.6, ease: "easeInOut" }
+                                                    }}
+                                                >
+                                                    <FaYoutube className="text-white text-xl" />
+                                                </motion.div>
+                                                <div className="text-center">
+                                                    <p className="text-red-400 font-semibold text-sm">YouTube</p>
+                                                    <p className="text-gray-400 text-xs">Video & Playlist</p>
+                                                </div>
+                                            </motion.div>
+                                        </motion.div>
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 150,
+                                                damping: 20,
+                                                delay: 0.4
+                                            }}
+                                            className="flex flex-wrap justify-center gap-2"
+                                        >
+                                            <motion.span
+                                                whileHover={{ scale: 1.05 }}
+                                                className="px-3 py-1 bg-gradient-to-r from-green-500/20 to-green-600/20 border border-green-500/30 rounded-full text-green-400 text-xs font-medium"
+                                            >
+                                                "Shape of You"
+                                            </motion.span>
+                                            <motion.span
+                                                whileHover={{ scale: 1.05 }}
+                                                className="px-3 py-1 bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-500/30 rounded-full text-red-400 text-xs font-medium"
+                                            >
+                                                "https://youtube.com/..."
+                                            </motion.span>
+                                            <motion.span
+                                                whileHover={{ scale: 1.05 }}
+                                                className="px-3 py-1 bg-gradient-to-r from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-full text-purple-400 text-xs font-medium"
+                                            >
+                                                "Spotify Playlist URL"
+                                            </motion.span>
+                                        </motion.div>
+                                    </div>
 
                                     <div className='flex items-center justify-between'>
-                                        <Tooltip size='sm' showArrow={true} color='danger' content={i18next.t('search_track.knowledge')}>
-                                            <Input
-                                                value={query}
-                                                onChange={(e) => setQuery(e.target.value)}
-                                                onKeyDown={e => e.key === 'Enter' && fetchTrackList()}
-                                                disabled={waitingForResponse}
-                                                classNames={{
-                                                    label: "text-white/90",
-                                                    input: [
-                                                        "bg-transparent",
-                                                        "text-white/90",
-                                                        "placeholder:text-white/60",
-                                                        "transition-all duration-300",
-                                                    ],
-                                                    innerWrapper: "bg-transparent",
-                                                    inputWrapper: [
-                                                        "shadow-xl",
-                                                        "bg-black/30",
-                                                        "border-2 border-rose-500/30",
-                                                        "",
-                                                        "",
-                                                        "hover:bg-black/40",
-                                                        "hover:border-rose-400/50",
-                                                        "hover:shadow-rose-500/20",
-                                                        "group-data-[focused=true]:bg-black/40",
-                                                        "group-data-[focused=true]:border-rose-400/50",
-                                                        "group-data-[focused=true]:shadow-rose-500/30",
-                                                        "group-data-[focused=true]:scale-[1.02]",
-                                                        "!cursor-text",
-                                                        "rounded-xl",
-                                                        "transition-all duration-300 ease-out",
-                                                    ],
-                                                }}
-                                                placeholder={i18next.t('search_track.placeholder')}
-                                                startContent={
-                                                    <BiSearch className="text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-                                                }
-                                            />
-                                        </Tooltip>
+                                        <Input
+                                            value={query}
+                                            onChange={(e) => setQuery(e.target.value)}
+                                            onKeyDown={e => e.key === 'Enter' && fetchTrackList()}
+                                            disabled={waitingForResponse}
+                                            classNames={{
+                                                label: "text-white/90",
+                                                input: [
+                                                    "bg-transparent",
+                                                    "text-white/90",
+                                                    "placeholder:text-white/60",
+                                                    "transition-all duration-300",
+                                                ],
+                                                innerWrapper: "bg-transparent",
+                                                inputWrapper: [
+                                                    "shadow-xl",
+                                                    "bg-black/30",
+                                                    "border-2 border-rose-500/30",
+                                                    "",
+                                                    "",
+                                                    "hover:bg-black/40",
+                                                    "hover:border-rose-400/50",
+                                                    "hover:shadow-rose-500/20",
+                                                    "group-data-[focused=true]:bg-black/40",
+                                                    "group-data-[focused=true]:border-rose-400/50",
+                                                    "group-data-[focused=true]:shadow-rose-500/30",
+                                                    "group-data-[focused=true]:scale-[1.02]",
+                                                    "!cursor-text",
+                                                    "rounded-xl",
+                                                    "transition-all duration-300 ease-out",
+                                                ],
+                                            }}
+                                            placeholder={i18next.t('search_track.placeholder')}
+                                            startContent={
+                                                <BiSearch className="text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+                                            }
+                                        />
                                     </div>
                                 </motion.div>
 

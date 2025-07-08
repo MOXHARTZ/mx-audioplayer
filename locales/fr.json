@@ -30,7 +30,6 @@
     "search_track.title": "Ajouter une chanson à la playlist",
     "search_track.placeholder": "Nom de la piste ou URL (prise en charge des playlists et albums)",
     "search_track.invalid_url": "URL invalide",
-    "search_track.knowledge": "Vous ne pouvez pas lire des chansons d'une durée supérieure à 15 minutes (pour des raisons de performance)",
     "general.unknown": "Inconnu",
     "general.something_went_wrong": "Une erreur s'est produite",
     "general.ui.disabled": "Pour le moment, vous ne pouvez pas ouvrir la radio, car elle est utilisée par un autre joueur.",

@@ -7,7 +7,6 @@ function Login(data)
 end
 
 RegisterNUICallback('login', function(data, cb)
-    Debug('login', data)
     data.password = joaat(data.password)
     local token = Login({
         username = data.username,
@@ -17,27 +16,27 @@ RegisterNUICallback('login', function(data, cb)
         local id = GetAudioplayerId()
         TriggerListener(id, 'onLogin', token)
     end
-    Debug('login token', token)
     cb(token)
 end)
 
 RegisterNUICallback('logout', function(data, cb)
-    Debug('logout')
     local id = GetAudioplayerId()
     local success = lib.callback.await('mx-audioplayer:logout', 0, id)
-    Debug('logout success', success)
+    if not success then
+        Error('Failed to logout')
+        return cb('error')
+    end
     TriggerListener(id, 'onLogout')
+    ToggleShortDisplay(false)
     CloseUI()
-    Surround:pushNotification('You have logged out of your account.')
+    Notification(_U('you_have_logged_out'), 'success')
     cb('ok')
 end)
 
 ---@param data CreateAccount
 RegisterNUICallback('register', function(data, cb)
-    Debug('Register', data)
     local id = GetAudioplayerId()
     local success = lib.callback.await('mx-audioplayer:register', 0, id, data.username, data.password, data.firstname, data.lastname)
-    Debug('Register success', success)
     cb('ok')
 end)
 
@@ -46,13 +45,11 @@ RegisterNUICallback('updateProfile', function(data, cb)
     Debug('updateProfile', data)
     local id = GetAudioplayerId()
     local success = lib.callback.await('mx-audioplayer:updateProfile', 0, id, data)
-    Debug('updateProfile success', success)
     CloseUI()
     cb('ok')
 end)
 
 RegisterNetEvent('mx-audioplayer:login', function(playlist, user)
-    local id = GetAudioplayerId()
     SendNUIMessage({
         action = 'open',
         data = {

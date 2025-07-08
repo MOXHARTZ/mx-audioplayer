@@ -6,7 +6,7 @@ import i18next from "i18next";
 import { useCallback, useState } from "react";
 import { Account, Settings } from "@/utils/types";
 import { IoEyeOff, IoEyeOutline } from "react-icons/io5";
-import { toast } from "react-toastify";
+import { notification } from "@/utils/misc";
 
 type ProfileProps = Readonly<{
     isOpen: boolean;
@@ -25,10 +25,10 @@ export default function ProfileModal({ isOpen, onOpenChange, userData }: Profile
         const avatar = formData.get("avatar");
         const success = await fetchNui("updateProfile", { username, password, avatar });
         if (!success) {
-            toast.error("Update failed");
+            notification("Update failed", 'error')
             return;
         }
-        toast.success("Profile updated successfully. Please open the ui again.");
+        notification("Profile updated successfully. Please open the ui again.", 'success')
         onOpenChange(false)
     };
     return (

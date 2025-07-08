@@ -27,7 +27,6 @@
     "search_track.title": "Добавяне на песен в плейлиста",
     "search_track.placeholder": "Име на песента или URL адрес",
     "search_track.invalid_url": "Невалиден URL адрес",
-    "search_track.knowledge": "Не можете да възпроизвеждате песни с продължителност повече от 15 минути (поради причини за производителност)",
     "general.unknown": "Неизвестно",
     "general.something_went_wrong": "Нещо се обърка",
     "general.ui.disabled": "В момента не можете да отворите радиото, защото в момента се използва от някой друг.",

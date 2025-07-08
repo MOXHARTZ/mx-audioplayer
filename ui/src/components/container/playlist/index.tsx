@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '@/stores'
 import { setCurrentPlaylistId, setCurrentSongs, setPlaying, setSelectedSongs } from '@/stores/Main'
 import { Song } from '@/fake-api/song'
 import { handlePlay } from '@/thunks/handlePlay'
-import { toast } from 'react-toastify'
 import i18next from 'i18next'
 import { useParams } from 'react-router-dom'
 import SortableList from "react-easy-sort";
@@ -12,6 +11,7 @@ import TrackCard from './TrackCard'
 import { Chip, Spinner } from '@heroui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IoMusicalNotesOutline, IoPlayOutline } from 'react-icons/io5'
+import { notification } from '@/utils/misc'
 
 const Playlist = () => {
     const { currentSongs, position, editMode, selectedSongs, volume, filterPlaylist, playing } = useAppSelector(state => state.Main)
@@ -28,7 +28,7 @@ const Playlist = () => {
         const soundData = currentSongs?.find(song => song.id === id)
 
         if (!soundData) {
-            toast.error(i18next.t('playlist.song_not_exist'))
+            notification(i18next.t('playlist.song_not_exist'), 'error')
             return
         }
 
@@ -61,7 +61,7 @@ const Playlist = () => {
 
     const onSortEnd = useCallback((oldIndex: number, newIndex: number) => {
         if (!currentSongs) {
-            toast.error(i18next.t('playlist.select_playlist'))
+            notification(i18next.t('playlist.select_playlist'), 'error')
             return
         }
         dispatch(setCurrentSongs(arrayMoveImmutable(currentSongs, oldIndex, newIndex)))

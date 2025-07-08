@@ -30,7 +30,6 @@
     "search_track.title": "Aggiungi una traccia alla playlist",
     "search_track.placeholder": "Nome traccia o URL",
     "search_track.invalid_url": "URL non valido",
-    "search_track.knowledge": "Non puoi riprodurre tracce che durano più di 15 minuti (per ragioni di performance)",
     "general.unknown": "Sconosciuto",
     "general.something_went_wrong": "Qualcosa è andato storto :/",
     "general.ui.disabled": "Al momento non puoi usare la radio perchè la sta utilizzando un altro player.",

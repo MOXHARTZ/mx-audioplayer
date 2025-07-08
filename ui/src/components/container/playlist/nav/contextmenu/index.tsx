@@ -5,7 +5,7 @@ import { useCallback, useRef, useState } from 'react';
 import PlaylistDialog from './playlist-dialog';
 import { useAppDispatch } from '@/stores';
 import { deletePlaylist } from '@/stores/Main';
-import { toast } from 'react-toastify';
+import { notification } from '@/utils/misc';
 import i18next from 'i18next';
 import Share from './share';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn, DropdownSection } from "@heroui/react";
@@ -36,11 +36,11 @@ export default function ContextMenu({ children, disabled, playlist }: { children
     const handleDelete = useCallback(() => {
         if (!clickedDelete) {
             setClickedDelete(true)
-            return toast.info(i18next.t('general.delete.confirm'))
+            return notification(i18next.t('general.delete.confirm'), 'info')
         }
-        if (!playlist) return toast.error('Playlist not found');
+        if (!playlist) return notification('Playlist not found', 'error');
         dispatch(deletePlaylist(playlist?.id ?? 0))
-        toast.success('Playlist deleted')
+        notification('Playlist deleted', 'success')
     }, [playlist, clickedDelete])
 
     return (

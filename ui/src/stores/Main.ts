@@ -1,8 +1,7 @@
 import { handlePlay } from "@/thunks/handlePlay";
 import { fetchNui } from "@/utils/fetchNui";
-import { isEnvBrowser } from "@/utils/misc";
+import { isEnvBrowser, notification } from "@/utils/misc";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 import i18next from 'i18next'
 import playlist, { Playlist } from "@/fake-api/playlist-categories";
 import { Song } from "@/fake-api/song";
@@ -77,6 +76,7 @@ const Static = createSlice({
                 return playlist
             })
             state.currentSongs = action.payload;
+            if (state.editMode) return;
             fetchNui('setPlaylist', {
                 playlist: state.playlist
             })
@@ -203,7 +203,7 @@ const Static = createSlice({
         })
         builder.addCase(handlePlay.rejected, (state, { payload }) => {
             state.waitingForResponse = false;
-            toast.error(payload ?? i18next.t('general.something_went_wrong'))
+            notification((payload ?? i18next.t('general.something_went_wrong') as any), 'error');
         })
         builder.addCase(handlePlay.pending, (state) => {
             state.waitingForResponse = true;

@@ -48,7 +48,7 @@ local function openUi()
                 token = account
             })
             if not success then
-                Surround:pushNotification('This user credentials has been modified. Please log in again.')
+                Notification('This user credentials has been modified. Please log in again.', 'error')
                 Entity(CurrentVehicle).state:set('audioplayer_account', nil, true)
             end
             Debug('Auto Login: success state', success)
@@ -98,20 +98,34 @@ AddEventHandler('mx-audioplayer:vehicleLeft', function(vehicle)
     ToggleShortDisplay(false)
 end)
 
-RegisterNetEvent('mx-audioplayer:disableUi', function(source, id, state)
-    if GetPlayerServerId(PlayerId()) == source then
-        return
-    end
+RegisterNetEvent('mx-audioplayer:playSound', function(id)
     if not InvokingResource or not CustomId then
         return
     end
     local _id = InvokingResource .. CustomId
-    if state and _id == id then
-        ToggleShortDisplay(false, ShortDisplayData)
-    elseif ShortDisplayData.vehicle == CurrentVehicle then
-        ToggleShortDisplay(true, {
-            vehicle = CurrentVehicle,
-            customId = CustomId
-        })
+    if _id ~= id then
+        return Debug('playSound ::: id mismatch', _id, id)
     end
+    ToggleShortDisplay(true, {
+        vehicle = CurrentVehicle,
+        customId = CustomId
+    })
 end)
+
+-- RegisterNetEvent('mx-audioplayer:disableUi', function(source, id, state)
+--     if GetPlayerServerId(PlayerId()) == source then
+--         return
+--     end
+--     if not InvokingResource or not CustomId then
+--         return
+--     end
+--     local _id = InvokingResource .. CustomId
+--     if state and _id == id then
+--         ToggleShortDisplay(false, ShortDisplayData)
+--     elseif ShortDisplayData.vehicle == CurrentVehicle then
+--         ToggleShortDisplay(true, {
+--             vehicle = CurrentVehicle,
+--             customId = CustomId
+--         })
+--     end
+-- end)

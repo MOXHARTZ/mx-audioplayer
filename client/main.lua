@@ -16,10 +16,43 @@ local vehicleEvents = {
     ['leave'] = 'mx-audioplayer:vehicleLeft'
 }
 
-RegisterNetEvent('mx-audioplayer:notification', function(msg)
-    Debug('Notification', msg)
-    Surround:pushNotification(msg)
+RegisterNetEvent('mx-audioplayer:notification', function(msg, type)
+    Notification(msg, type)
 end)
+
+---@param data {message: string, type: 'info' | 'error' | 'success'}
+RegisterNUICallback('notification', function(data, cb)
+    Notification(data.message, data.type)
+    cb('ok')
+end)
+
+---@param msg string
+---@param type 'info' | 'error' | 'success'
+function Notification(msg, type)
+    SendReactMessage('notification', {
+        msg = msg,
+        type = type
+    })
+    -- if type == 'info' then
+    --     lib.notify({
+    --         title = 'AUDIOPLAYER',
+    --         description = msg,
+    --         type = 'info'
+    --     })
+    -- elseif type == 'error' then
+    --     lib.notify({
+    --         title = 'AUDIOPLAYER',
+    --         description = msg,
+    --         type = 'error'
+    --     })
+    -- elseif type == 'success' then
+    --     lib.notify({
+    --         title = 'AUDIOPLAYER',
+    --         description = msg,
+    --         type = 'success'
+    --     })
+    -- end
+end
 
 PlayerPed = PlayerPedId()
 PlayerCoords = GetEntityCoords(PlayerPed)
@@ -76,7 +109,7 @@ function GetAudioPlayerInfo(data)
     if CustomId ~= '' then
         local uiDisabled = lib.callback.await('mx-audioplayer:isUiDisabled', 0, id)
         if uiDisabled then
-            Surround:pushNotification(_U('general.ui.disabled'))
+            Notification(_U('general.ui.disabled'), 'error')
             return false
         end
     else
@@ -117,7 +150,7 @@ function OpenAudioPlayer(data, handlers)
     Debug('OpenAudioPlayer ::: id', id, 'playlist', playerData.playlist)
     handlers = handlers or {}
     if not id then
-        return Error('Error getting audio player info')
+        return Debug('Error getting audio player info')
     end
     playQuietly = silent and true or false
     audioplayerHandlers[id] = handlers
@@ -356,7 +389,7 @@ end
 
 RegisterNetEvent('mx-audioplayer:receivePlaylist', function(playlist, senderName)
     if checkPlaylistAlreadyExist(playlist) then
-        return Surround:pushNotification(_U('playlist.already_exist', senderName, playlist.name))
+        return Notification(_U('playlist.already_exist', senderName, playlist.name), 'error')
     end
     SendNUIMessage({
         action = 'receivePlaylist',
@@ -366,7 +399,7 @@ RegisterNetEvent('mx-audioplayer:receivePlaylist', function(playlist, senderName
     _playlist = _playlist and json.decode(_playlist) or {}
     table.insert(_playlist, playlist)
     SetResourceKvp('mx_audioplayer_playlist', json.encode(_playlist))
-    Surround:pushNotification(_U('playlist.received', senderName, playlist.name))
+    Notification(_U('playlist.received', senderName, playlist.name), 'success')
 end)
 
 function DrawText3D(x, y, z, text)

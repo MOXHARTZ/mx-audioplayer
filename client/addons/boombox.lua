@@ -77,7 +77,7 @@ local function openUi()
                 token = account
             })
             if not success then
-                Surround:pushNotification('This user credentials has been modified. Please log in again.')
+                Notification('This user credentials has been modified. Please log in again.', 'error')
                 entity.state:set('audioplayer_account', nil, true)
             end
             Debug('Auto Login: success state', success)

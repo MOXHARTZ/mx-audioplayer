@@ -2,7 +2,7 @@ import i18next from 'i18next'
 import { useCallback, useState } from 'react';
 import PlaylistImage from '../PlaylistImage';
 import { Playlist } from '@/fake-api/playlist-categories';
-import { toast } from 'react-toastify';
+import { notification } from '@/utils/misc';
 import { useAppDispatch } from '@/stores';
 import { addPlaylist, updatePlaylist } from '@/stores/Main';
 import { nanoid } from '@reduxjs/toolkit';
@@ -30,7 +30,7 @@ const PlaylistDialog = ({ open, setOpen, currentPlaylist }: { open: boolean, set
             }))
             return;
         }
-        toast.success(i18next.t('playlist.dialog.created'))
+        notification(i18next.t('playlist.dialog.created'), 'success')
         dispatch(addPlaylist({
             id: nanoid(),
             name,

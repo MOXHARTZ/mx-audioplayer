@@ -1,9 +1,9 @@
 import { Action, ThunkAction } from '@reduxjs/toolkit';
 import { setPlaying, StaticType } from '@/stores/Main';
-import { toast } from "react-toastify";
 import i18next from "i18next";
 import { handlePlay } from './handlePlay';
 import { RootState } from '@/stores';
+import { notification } from '@/utils/misc';
 
 export const nextSongThunk = (checkShuffle: boolean): AppThunk => (dispatch, getState) => {
     const state: StaticType = getState().Main;
@@ -11,7 +11,7 @@ export const nextSongThunk = (checkShuffle: boolean): AppThunk => (dispatch, get
 
     const currentSongChildren = state.playlist.find(playlist => playlist.id === state.currentSongData?.playlistId)?.songs
     if (!currentSongChildren) {
-        toast.error(i18next.t('playlist.empty'));
+        notification(i18next.t('playlist.empty'), 'error')
         return
     }
     const index = currentSongChildren.findIndex(song => song.id === state.position)
@@ -23,12 +23,12 @@ export const nextSongThunk = (checkShuffle: boolean): AppThunk => (dispatch, get
         }
     }
     if (currentSongChildren.length === 0) {
-        toast.error(i18next.t('playlist.empty'))
+        notification(i18next.t('playlist.empty'), 'error')
         return
     }
     const newSoundData = currentSongChildren[newPos]
     if (newSoundData.id === state.position) {
-        toast.error(i18next.t('playlist.no_more_songs'));
+        notification(i18next.t('playlist.no_more_songs'), 'error')
         return
     }
     dispatch(setPlaying(false))

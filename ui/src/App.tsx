@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { NOTIFICATION, isEnvBrowser } from '@/utils/misc'
+import { NOTIFICATION, formattedTypes, isEnvBrowser, notification } from '@/utils/misc'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './stores'
@@ -14,7 +14,7 @@ import { Account, ReadyListener } from './utils/types'
 import router from './routes'
 import { RouterProvider, useNavigate } from 'react-router-dom'
 import { Playlist } from './fake-api/playlist-categories';
-import { HeroUIProvider } from '@heroui/react';
+import { addToast, HeroUIProvider } from '@heroui/react';
 import ShortDisplay from './components/shortdisplay';
 import { AnimatePresence, motion } from "motion/react"
 import { nextSongThunk } from './thunks/nextSong';
@@ -91,6 +91,17 @@ function App() {
     }
     if (currentSongChildren?.length === 0) return;
     dispatch(nextSongThunk(true))
+  })
+  useNuiEvent<{ msg: string, type: keyof typeof formattedTypes }>('notification', (data) => {
+    console.log(data)
+    addToast({
+      title: data.type.toUpperCase(),
+      description: data.msg,
+      color: formattedTypes[data.type],
+      shouldShowTimeoutProgress: true,
+      timeout: 3000,
+      variant: 'flat',
+    })
   })
   return (
     <>

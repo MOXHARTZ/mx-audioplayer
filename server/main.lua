@@ -6,13 +6,13 @@ if not versionCheck then return end
 AudioPlayerAccounts = {} ---@type AudioplayerAccount[]
 
 local tokens = {} ---@type table<string, {username: string, password: number}>
-
 local Surround = exports['mx-surround']
 
 ---@param src number
 ---@param msg string
-function Notification(src, msg)
-    TriggerClientEvent('mx-audioplayer:notification', src, msg)
+---@param type 'info' | 'error' | 'success'
+function Notification(src, msg, type)
+    TriggerClientEvent('mx-audioplayer:notification', src, msg, type)
 end
 
 ---@return string
@@ -55,6 +55,7 @@ RegisterNetEvent('mx-audioplayer:play', function(id, url, soundId, soundData, vo
         source = src,
         soundData = soundData
     }
+    TriggerClientEvent('mx-audioplayer:playSound', -1, id)
 end)
 
 local disabledUis = {}
@@ -255,8 +256,11 @@ lib.callback.register('mx-audioplayer:logout', function(source, id)
         Debug('mx-audioplayer:logout ::: User not found', id)
         return false
     end
+    if user.player then
+        Surround:Destroy(-1, user.player.soundId)
+        user.player = nil
+    end
     AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= id end)
-    Debug('mx-audioplayer:logout', user.accountId)
     return true
 end)
 
@@ -276,7 +280,7 @@ lib.callback.register('mx-audioplayer:register', function(source, id, username, 
     end
     local userId = db.insertUser(username, joaat(password), firstname, lastname, identifier)
     if not userId then
-        Notification(src, 'We could not create an account with this username and password.')
+        Notification(src, 'We could not create an account with this username and password.', 'error')
         return false
     end
     AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = userId }
@@ -313,7 +317,7 @@ lib.callback.register('mx-audioplayer:updateProfile', function(source, id, data)
         return not profileSecuredParams[v]
     end)
     if unsecured then
-        Notification(src, 'You are trying to exploit update profile event.')
+        Notification(src, 'You are trying to exploit update profile event.', 'error')
         Debug('mx-audioplayer:updateProfile', 'User trying to exploit update profile event', src, data)
         return false
     end
@@ -359,5 +363,4 @@ RegisterNetEvent('mx-audioplayer:setPlaylist', function(id, playlist)
         return
     end
     db.setPlaylist(user.accountId, playlist)
-    Debug('mx-audioplayer:setPlaylist', user.accountId, playlist)
 end)

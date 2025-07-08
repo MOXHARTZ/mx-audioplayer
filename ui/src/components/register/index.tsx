@@ -5,7 +5,7 @@ import { IoEyeOff, IoEyeOutline, IoPersonOutline, IoLockClosedOutline, IoMusical
 import { useState, useActionState } from "react";
 import { fetchNui } from "@/utils/fetchNui";
 import { NavLink, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { notification } from "@/utils/misc";
 import { motion } from "framer-motion";
 import { AnimatedBackground, GradientButton, StyledInput } from "@/components/common";
 import i18next from "i18next";
@@ -24,11 +24,11 @@ export default function RegisterPage() {
         const lastname = formData.get("lastname");
         const success = await fetchNui("register", { username, password, firstname, lastname });
         if (!success) {
-            toast.error(i18next.t('register.registration_failed'));
+            notification(i18next.t('register.registration_failed'), 'error')
             setIsLoading(false);
             return;
         }
-        toast.success(i18next.t('register.registration_successful'));
+        notification(i18next.t('register.registration_successful'), 'success')
         setIsLoading(false);
         navigate("/login")
     };

@@ -4,8 +4,8 @@ import { Player } from '@/utils/types'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import i18next from 'i18next'
 import { useCallback, useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 import { Modal, ModalContent, ModalHeader, ModalBody, Card, User } from "@heroui/react";
+import { notification } from '@/utils/misc'
 
 const Share = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (open: boolean) => void, currentPlaylist?: Playlist }) => {
     const [players, setPlayers] = useState<Player[]>([])
@@ -16,7 +16,7 @@ const Share = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (op
     useEffect(() => {
         fetchNui<Player[]>('getNearbyPlayers').then((players) => {
             if (!players || players.length === 0) {
-                toast.error(i18next.t('shared.no_players'))
+                notification(i18next.t('shared.no_players'), 'error')
                 return setOpen(false)
             }
             setPlayers(players)
@@ -24,7 +24,7 @@ const Share = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (op
     }, [])
     const handleShare = useCallback((player: Player) => {
         setOpen(false)
-        toast.success(i18next.t('shared.success'))
+        notification(i18next.t('shared.success'), 'success')
         fetchNui('sharePlaylist', { player: +player.source, playlist: currentPlaylist })
     }, [])
     return (
