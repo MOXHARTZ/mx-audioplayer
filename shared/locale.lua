@@ -19,10 +19,28 @@ if not _T then
     error(('^3[MX-AUDIOPLAYER]^1 ERROR: ^7Failed to load locale file. Please make sure that the file %s exists and is valid JSON.'):format(('locales/%s.json'):format(Config.Locale)), 2)
 end
 
-function _U(key, ...)
-    if _T[key] then
-        return _T[key]:format(...)
-    else
-        return key
+---@param key string
+---@param params? { [string]: string | number }
+---@return string
+function _L(key, params)
+    local value = _T
+    for k in key:gmatch('[^.]+') do
+        value = value[k]
+        if not value then
+            print('Missing locale for: ' .. key)
+            return 'missing_' .. key
+        end
     end
+    if params then
+        for k, v in pairs(params) do
+            if type(v) == 'string' or type(v) == 'number' then
+                value = value:gsub('{{' .. k .. '}}', v)
+            end
+        end
+    end
+    return value
 end
+
+_G['i18n'] = {
+    t = _L
+}

@@ -1,4 +1,5 @@
 if not Config.Boombox.Enable then return end
+local audioplayer = require 'client.modules.audioplayer'
 CreateThread(function()
     Info('Boombox is enabled')
 end)
@@ -52,7 +53,7 @@ local function openUi()
     local netId = NetworkGetNetworkIdFromEntity(currentBoombox)
     Debug('netId', netId)
     radioSettings.customId = netId
-    OpenAudioPlayer(radioSettings, {
+    audioplayer:open(radioSettings, {
         onPlay = function(sound)
             if not DoesEntityExist(currentBoombox) then
                 TriggerServerEvent('mx-audioplayer:destroy', sound.soundId)
@@ -155,7 +156,7 @@ local function pickup()
     AttachEntityToEntity(boombox, player, GetPedBoneIndex(player, 24817), 0.0, 0.40, -0.0, -180.0, 90.0, 0.0, false, false, false, false, 2, true)
     carrying_boombox = true
     CreateThread(carryAnim)
-    local text = _U('boombox.drop.text')
+    local text = i18n.t('boombox.drop.text')
     while carrying_boombox do
         Wait(0)
         local coords = GetEntityCoords(player)
@@ -202,21 +203,21 @@ if Config.Boombox.Target then
             options = {
                 {
                     icon = 'fas fa-music',
-                    label = _U('boombox.target.open'),
+                    label = i18n.t('boombox.target.open'),
                     action = function()
                         openUi()
                     end
                 },
                 {
                     icon = 'fas fa-music',
-                    label = _U('boombox.target.pickup'),
+                    label = i18n.t('boombox.target.pickup'),
                     action = function()
                         pickup()
                     end
                 },
                 {
                     icon = 'fas fa-music',
-                    label = _U('boombox.target.destroy'),
+                    label = i18n.t('boombox.target.destroy'),
                     action = function()
                         destroy()
                     end

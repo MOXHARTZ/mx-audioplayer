@@ -1,4 +1,5 @@
 if not Config.DJ.Enable then return end
+local audioplayer = require 'client.modules.audioplayer'
 
 local djSettings = {
     silent = false,
@@ -9,12 +10,12 @@ local function openUi(locationData)
     djSettings.customId = locationData.id
     djSettings.panner = locationData.panner
     djSettings.maxDistance = locationData.maxDistance
-    OpenAudioPlayer(djSettings)
+    audioplayer:open(djSettings)
 end
 
 if not Config.DJ.Target then
     CreateThread(function()
-        local openStr = _U('dj.open.menu')
+        local openStr = i18n.t('dj.open.menu')
         while true do
             local sleep = 1250
             for k, v in pairs(Config.DJ.Locations) do
@@ -50,7 +51,7 @@ if Config.DJ.Target then
                 options = {
                     {
                         icon = 'fas fa-music',
-                        label = _U('dj.target.open'),
+                        label = i18n.t('dj.target.open'),
                         action = function()
                             openUi(v)
                         end,

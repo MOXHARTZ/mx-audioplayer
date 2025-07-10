@@ -1,16 +1,15 @@
 InvokingResource = nil
-local currentResourceName = GetCurrentResourceName()
+CurrentResourceName = GetCurrentResourceName()
+local audioplayer = require 'client.modules.audioplayer'
 local UiReady = false
-ShortDisplayData = {} --[[@as ShortDisplay]]
 CustomId = nil
-CurrentSoundData = nil
+audioplayer.soundData = nil
 CurrentSounds = {}
 local playlist, audioplayerHandlers = {}, {}
 Surround = exports['mx-surround']
 ---@type number -- Audio Player's custom volume
 AudioVolume = 1
 local playQuietly = false
-local audioPlayer = {}
 local vehicleEvents = {
     ['enter'] = 'mx-audioplayer:vehicleEntered',
     ['leave'] = 'mx-audioplayer:vehicleLeft'
@@ -73,30 +72,6 @@ CreateThread(function()
     end
 end)
 
----@return string Returns current audioplayer id based on invoking resource and custom id
-function GetAudioplayerId()
-    return InvokingResource .. CustomId
-end
-
----@param data? OpenAudioPlayerData
-local function initAudioPlayerData(id, data)
-    local audioPlayerData = {}
-    if not data then
-        audioPlayer[id] = audioPlayerData
-        return
-    end
-    if data.staySameCoords then
-        audioPlayerData.coords = PlayerCoords
-    end
-    if data.panner then
-        audioPlayerData.panner = data.panner
-    end
-    if data.maxDistance then
-        audioPlayerData.maxDistance = data.maxDistance
-    end
-    audioPlayer[id] = audioPlayerData
-end
-
 ---@param message string
 ---@param data any
 function SendReactMessage(message, data)
@@ -106,121 +81,19 @@ function SendReactMessage(message, data)
     })
 end
 
----@param data? OpenAudioPlayerData
----@param handlers? OpenAudioPlayerHandlers
-function OpenAudioPlayer(data, handlers)
-    data = data or {}
-    local silent = data.silent
-    local playerData, id = GetAudioPlayerInfo(data)
-    if not playerData then return Error('Error getting audio player info') end
-    Debug('OpenAudioPlayer ::: id', id, 'playlist', playerData.playlist)
-    handlers = handlers or {}
-    if not id then
-        return Debug('Error getting audio player info')
-    end
-    playQuietly = silent and true or false
-    audioplayerHandlers[id] = handlers
-    SendReactMessage('open', {
-        playlist = playerData.playlist,
-        currentSound = CurrentSoundData,
-        user = playerData.user,
-        volume = CurrentSoundData and CurrentSoundData.volume or AudioVolume,
-    })
-    TriggerListener(id, 'onOpen')
-    SetNuiFocus(true, true)
-    TriggerServerEvent('mx-audioplayer:disableUi', id, true)
-end
-
 RegisterNUICallback('handleChangePage', function(data, cb)
-    local id = GetAudioplayerId()
     if data.page == 'login' then
-        TriggerListener(id, 'autoLogin')
+        audioplayer:triggerListener('autoLogin')
     end
 end)
 
----@param id string
----@param listenerName string
-function TriggerListener(id, listenerName, ...)
-    if audioplayerHandlers[id][listenerName] then
-        audioplayerHandlers[id][listenerName](CurrentSoundData, ...)
-    end
-end
 
-exports('open', OpenAudioPlayer)
+
+exports('open', audioplayer.open)
 
 exports('getVolume', function()
-    return CurrentSoundData and CurrentSoundData.volume or 1
+    return audioplayer.soundData and audioplayer.soundData.volume or 1
 end)
-
-local function onTimeUpdate(soundData)
-    Debug('onTimeUpdate', soundData)
-    if not soundData then return end
-    if not CurrentSoundData or CurrentSoundData.soundId ~= soundData.soundId then return end
-    SendNUIMessage({
-        action = 'timeUpdate',
-        data = {
-            time = math.floor(soundData.currentTime),
-        }
-    })
-end
-
-local function onDestroyed(soundData)
-    if not soundData then return end
-    local id = GetAudioplayerId()
-    if not CurrentSoundData or CurrentSoundData.soundId ~= soundData.soundId then return end
-    TriggerListener(id, 'onClose')
-    CurrentSoundData = nil
-    SendNUIMessage({
-        action = 'destroyed'
-    })
-end
-
-local function onEnd(soundData)
-    if not soundData then return end
-    local id = GetAudioplayerId()
-    if not CurrentSoundData or CurrentSoundData.soundId ~= soundData.soundId then return end
-    SendNUIMessage({
-        action = 'end'
-    })
-end
-
----@param data OpenAudioPlayerData
----@return false | {playlist: table, user: Account | nil}, string?
-function GetAudioPlayerInfo(data)
-    CustomId = data.customId
-    InvokingResource = GetInvokingResource() or ''
-    InvokingResource = InvokingResource == currentResourceName and '' or InvokingResource
-    CustomId = CustomId or ''
-    local id = GetAudioplayerId()
-
-    if CustomId ~= '' then
-        local uiDisabled = lib.callback.await('mx-audioplayer:isUiDisabled', 0, id)
-        if uiDisabled then
-            Notification(_U('general.ui.disabled'), 'error')
-            return false
-        end
-    else
-        Debug('No custom id provided')
-    end
-
-    local playerData = lib.callback.await('mx-audioplayer:getData', 0, id) --[[@as {playlist: table, user: Account | nil, player: Player}]]
-    if CurrentSoundData then
-        -- Cleanup
-    end
-    CurrentSoundData = playerData.player and playerData.player.soundData
-    if CurrentSoundData and playerData.playlist then
-        for k, v in pairs(playerData.playlist) do
-            if v.id == CurrentSoundData.id then
-                playerData.playlist[k].duration = Surround:getMaxDuration(CurrentSoundData.soundId)
-                break
-            end
-        end
-        Surround:onTimeUpdate(CurrentSoundData.soundId, onTimeUpdate)
-    end
-
-    initAudioPlayerData(id, data)
-    return playerData, id
-end
 
 RegisterNUICallback('play', function(data, cb)
     local soundData = data.soundData
@@ -228,14 +101,11 @@ RegisterNUICallback('play', function(data, cb)
         return cb(false)
     end
     local url = soundData.url
-    local soundId = soundData.soundId .. CustomId
+    local id = audioplayer:getId()
+    local soundId = soundData.soundId .. id
     local _volume = data.volume
-    local id = GetAudioplayerId()
-    -- if CurrentSounds[id] and (CurrentSounds[id].soundId) ~= soundId then
-    --     TriggerServerEvent('mx-audioplayer:destroy', CurrentSounds[id].soundId)
-    -- end
-    local audioPlayerData = audioPlayer[id]
-    local coords = audioPlayerData.coords or GetEntityCoords(PlayerPed) -- need instant coords
+    local audioPlayerData = audioplayer.options
+    local coords = audioPlayerData?.coords or GetEntityCoords(PlayerPed) -- need instant coords
     soundData.soundId = soundId
     soundData.playing = true
     soundData.volume = _volume
@@ -244,59 +114,56 @@ RegisterNUICallback('play', function(data, cb)
     if not loaded then return cb(false) end        -- if it doesn't load, return false
     local maxDuration = Surround:getMaxDuration(soundId)
     soundData.duration = maxDuration
-    CurrentSoundData = soundData
-    TriggerListener(id, 'onPlay')
-    Surround:onTimeUpdate(soundId, onTimeUpdate)
-    Surround:onDestroy(soundId, onDestroyed)
-    Surround:onPlayEnd(soundId, onEnd)
+    audioplayer:setSoundData(soundData)
+    audioplayer:triggerListener('onPlay')
     cb(maxDuration)
 end)
 
 RegisterNUICallback('togglePlay', function(data, cb)
-    local id = GetAudioplayerId()
-    if not CurrentSoundData then
+    local id = audioplayer:getId()
+    if not audioplayer.soundData then
         return cb('ok')
     end
-    CurrentSoundData.playing = data.playing
-    if CurrentSoundData.playing then
-        TriggerListener(id, 'onResume')
-        TriggerServerEvent('mx-audioplayer:resume', id, CurrentSoundData.soundId)
+    audioplayer.soundData.playing = data.playing
+    if audioplayer.soundData.playing then
+        audioplayer:triggerListener('onResume')
+        TriggerServerEvent('mx-audioplayer:resume', id, audioplayer.soundData.soundId)
     else
-        TriggerListener(id, 'onPause')
-        TriggerServerEvent('mx-audioplayer:pause', id, CurrentSoundData.soundId)
+        audioplayer:triggerListener('onPause')
+        TriggerServerEvent('mx-audioplayer:pause', id, audioplayer.soundData.soundId)
     end
     cb('ok')
 end)
 
 RegisterNUICallback('getCurrentSongDuration', function(data, cb)
-    local id = GetAudioplayerId()
-    if not CurrentSoundData then return cb(0) end
-    local maxDuration = Surround:getMaxDuration(CurrentSoundData.soundId)
+    local id = audioplayer:getId()
+    if not audioplayer.soundData then return cb(0) end
+    local maxDuration = Surround:getMaxDuration(audioplayer.soundData.soundId)
     cb(maxDuration)
 end)
 
 RegisterNUICallback('getCurrentSongTimeStamp', function(data, cb)
-    local id = GetAudioplayerId()
-    if not CurrentSoundData then return cb(0) end
-    local timeStamp = Surround:getTimeStamp(CurrentSoundData.soundId)
+    local id = audioplayer:getId()
+    if not audioplayer.soundData then return cb(0) end
+    local timeStamp = Surround:getTimeStamp(audioplayer.soundData.soundId)
     cb(math.floor(timeStamp))
 end)
 
 RegisterNUICallback('setVolume', function(data, cb)
-    local id = GetAudioplayerId()
-    if not CurrentSoundData then return cb(0) end
+    local id = audioplayer:getId()
+    if not audioplayer.soundData then return cb(0) end
     AudioVolume = data.volume
-    CurrentSoundData.volume = data.volume
-    TriggerServerEvent('mx-audioplayer:setVolume', id, CurrentSoundData.soundId, data.volume)
-    TriggerListener(id, 'onVolumeChange')
+    audioplayer.soundData.volume = data.volume
+    TriggerServerEvent('mx-audioplayer:setVolume', id, audioplayer.soundData.soundId, data.volume)
+    audioplayer:triggerListener('onVolumeChange')
     cb('ok')
 end)
 
 RegisterNUICallback('seek', function(data, cb)
-    local id = GetAudioplayerId()
-    if not CurrentSoundData then return cb(0) end
-    TriggerServerEvent('mx-audioplayer:seek', CurrentSoundData.soundId, data.position)
-    TriggerListener(id, 'onSeek')
+    local id = audioplayer:getId()
+    if not audioplayer.soundData then return cb(0) end
+    TriggerServerEvent('mx-audioplayer:seek', audioplayer.soundData.soundId, data.position)
+    audioplayer:triggerListener('onSeek')
     cb('ok')
 end)
 
@@ -320,7 +187,7 @@ end)
 
 RegisterNUICallback('setPlaylist', function(data, cb)
     playlist = data.playlist
-    local id = GetAudioplayerId()
+    local id = audioplayer:getId()
     TriggerServerEvent('mx-audioplayer:setPlaylist', id, playlist)
     cb('ok')
 end)
@@ -330,8 +197,8 @@ RegisterNUICallback('saveSettings', function(data, cb)
     SetResourceKvp('mx_audioplayer_settings', json.encode(data))
     Debug('Settings saved', data)
     if data.minimalHud then
-        ToggleShortDisplay(true, {
-            customId = ShortDisplayData.customId,
+        audioplayer:toggleShortDisplay(true, {
+            customId = audioplayer.shortDisplay.customId,
             vehicle = IsInVehicle and CurrentVehicle or nil
         })
     end
@@ -339,9 +206,9 @@ RegisterNUICallback('saveSettings', function(data, cb)
 end)
 
 RegisterNUICallback('close', function(data, cb)
-    local id = GetAudioplayerId()
+    local id = audioplayer:getId()
     SetNuiFocus(false, false)
-    TriggerListener(id, 'onClose')
+    audioplayer:triggerListener('onClose')
     TriggerServerEvent('mx-audioplayer:disableUi', id, false)
     cb('ok')
 end)
@@ -393,7 +260,7 @@ end
 
 RegisterNetEvent('mx-audioplayer:receivePlaylist', function(playlist, senderName)
     if checkPlaylistAlreadyExist(playlist) then
-        return Notification(_U('playlist.already_exist', senderName, playlist.name), 'error')
+        return Notification(i18n.t('playlist.already_exist', senderName, playlist.name), 'error')
     end
     SendNUIMessage({
         action = 'receivePlaylist',
@@ -403,7 +270,7 @@ RegisterNetEvent('mx-audioplayer:receivePlaylist', function(playlist, senderName
     _playlist = _playlist and json.decode(_playlist) or {}
     table.insert(_playlist, playlist)
     SetResourceKvp('mx_audioplayer_playlist', json.encode(_playlist))
-    Notification(_U('playlist.received', senderName, playlist.name), 'success')
+    Notification(i18n.t('playlist.received', senderName, playlist.name), 'success')
 end)
 
 function DrawText3D(x, y, z, text)

@@ -7,21 +7,18 @@ version '2.8.6'
 lua54 'yes'
 
 shared_scripts {
+    '@ox_lib/init.lua',
     'shared/*.lua'
 }
 
 client_scripts {
-    -- copy of ox_lib's callback
-    '@mx-surround/client/callback.lua',
     'client/framework/*.lua',
     'client/*.lua',
-    'client/modules/*.lua',
+    'client/modules/auth.lua',
     'client/addons/*.lua',
 }
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
-    -- copy of ox_lib's callback
-    '@mx-surround/server/callback.lua',
     'server/framework/*.lua',
     'server/modules/*.lua',
     'server/*.lua'
@@ -34,10 +31,12 @@ files({
     'locales/*.json',
     'ui/build/index.html',
     'ui/build/**/*',
+    'client/modules/audioplayer.lua',
 })
 
 dependencies {
     '/onesync',
     'mx-surround',
-    'oxmysql'
+    'oxmysql',
+    'ox_lib'
 }

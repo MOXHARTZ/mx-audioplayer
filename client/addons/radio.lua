@@ -1,4 +1,5 @@
 if not Config.Radio.Enable then return end
+local audioplayer = require 'client.modules.audioplayer'
 CreateThread(function()
     Info('Radio is enabled')
 end)
@@ -19,7 +20,7 @@ local function openUi()
         customId = plate,
         silent = true
     }
-    OpenAudioPlayer(radioSettings, {
+    audioplayer:open(radioSettings, {
         onPlay = function(sound)
             if not DoesEntityExist(_vehicle) then
                 TriggerServerEvent('mx-audioplayer:destroy', sound.soundId)
@@ -58,7 +59,7 @@ end
 
 RegisterCommand('carRadio', openUi, false)
 if Config.Radio.RadioKey then
-    RegisterKeyMapping('carRadio', _U('radio.command'), 'keyboard', Config.Radio.RadioKey)
+    RegisterKeyMapping('carRadio', i18n.t('radio.command'), 'keyboard', Config.Radio.RadioKey)
 end
 
 if Config.Radio.DisableDefaultRadio then
@@ -80,7 +81,7 @@ end
 
 AddEventHandler('mx-audioplayer:vehicleEntered', function(vehicle)
     local plate = mathTrim(GetVehicleNumberPlateText(vehicle))
-    ToggleShortDisplay(true, {
+    audioplayer:toggleShortDisplay(true, {
         vehicle = vehicle,
         customId = plate
     })
@@ -95,7 +96,7 @@ AddEventHandler('mx-audioplayer:vehicleLeft', function(vehicle)
     SendNUIMessage({
         action = 'clearSound'
     })
-    ToggleShortDisplay(false)
+    audioplayer:toggleShortDisplay(false)
 end)
 
 RegisterNetEvent('mx-audioplayer:playSound', function(id)
@@ -106,7 +107,7 @@ RegisterNetEvent('mx-audioplayer:playSound', function(id)
     if _id ~= id then
         return Debug('playSound ::: id mismatch', _id, id)
     end
-    ToggleShortDisplay(true, {
+    audioplayer:toggleShortDisplay(true, {
         vehicle = CurrentVehicle,
         customId = CustomId
     })

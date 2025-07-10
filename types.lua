@@ -1,9 +1,10 @@
----@class OpenAudioPlayerData
----@field customId? string
+---@class AudioPlayerOptions
+---@field id? string
 ---@field silent? boolean
 ---@field staySameCoords? boolean
 ---@field maxDistance? number
 ---@field panner? {panningModel: string, refDistance: number, rolloffFactor: number, distanceModel: string}
+---@field coords? vector3
 
 -- Check mx-surround's types.lua for the types of the following functions
 ---@class OpenAudioPlayerHandlers

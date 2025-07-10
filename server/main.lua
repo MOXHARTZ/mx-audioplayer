@@ -44,6 +44,16 @@ RegisterNetEvent('mx-audioplayer:play', function(id, url, soundId, soundData, vo
     end
     volume = playQuietly and 0.0 or volume
     Surround:Play(-1, soundId, url, coords, false, volume, customData.panner)
+    Surround:onDestroy(soundId, function()
+        if not DoesPlayerExist(src) then return Debug('mx-audioplayer:destroy ::: Player not found', src) end
+        TriggerClientEvent('mx-audioplayer:destroy', src, id)
+        Debug('mx-audioplayer:play ::: Sound destroyed', soundId)
+    end)
+    Surround:onPlayEnd(soundId, function()
+        if not DoesPlayerExist(src) then return Debug('mx-audioplayer:playEnd ::: Player not found', src) end
+        TriggerClientEvent('mx-audioplayer:playEnd', src, id)
+        Debug('mx-audioplayer:play ::: Sound ended', soundId)
+    end)
     if customData.maxDistance then
         Surround:setMaxDistance(-1, soundId, customData.maxDistance)
     end
