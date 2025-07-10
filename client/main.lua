@@ -97,40 +97,6 @@ local function initAudioPlayerData(id, data)
     audioPlayer[id] = audioPlayerData
 end
 
----@param data OpenAudioPlayerData
----@return false | {playlist: table, user: Account | nil}, string?
-function GetAudioPlayerInfo(data)
-    CustomId = data.customId
-    InvokingResource = GetInvokingResource() or ''
-    InvokingResource = InvokingResource == currentResourceName and '' or InvokingResource
-    CustomId = CustomId or ''
-    local id = GetAudioplayerId()
-
-    if CustomId ~= '' then
-        local uiDisabled = lib.callback.await('mx-audioplayer:isUiDisabled', 0, id)
-        if uiDisabled then
-            Notification(_U('general.ui.disabled'), 'error')
-            return false
-        end
-    else
-        Debug('No custom id provided')
-    end
-
-    local playerData = lib.callback.await('mx-audioplayer:getData', 0, id) --[[@as {playlist: table, user: Account | nil, player: Player}]]
-    CurrentSoundData = playerData.player and playerData.player.soundData
-    if CurrentSoundData and playerData.playlist then
-        for k, v in pairs(playerData.playlist) do
-            if v.id == CurrentSoundData.id then
-                playerData.playlist[k].duration = Surround:getMaxDuration(CurrentSoundData.soundId)
-                break
-            end
-        end
-    end
-
-    initAudioPlayerData(id, data)
-    return playerData, id
-end
-
 ---@param message string
 ---@param data any
 function SendReactMessage(message, data)
@@ -187,8 +153,8 @@ exports('getVolume', function()
 end)
 
 local function onTimeUpdate(soundData)
+    Debug('onTimeUpdate', soundData)
     if not soundData then return end
-    local id = GetAudioplayerId()
     if not CurrentSoundData or CurrentSoundData.soundId ~= soundData.soundId then return end
     SendNUIMessage({
         action = 'timeUpdate',
@@ -216,6 +182,44 @@ local function onEnd(soundData)
     SendNUIMessage({
         action = 'end'
     })
+end
+
+---@param data OpenAudioPlayerData
+---@return false | {playlist: table, user: Account | nil}, string?
+function GetAudioPlayerInfo(data)
+    CustomId = data.customId
+    InvokingResource = GetInvokingResource() or ''
+    InvokingResource = InvokingResource == currentResourceName and '' or InvokingResource
+    CustomId = CustomId or ''
+    local id = GetAudioplayerId()
+
+    if CustomId ~= '' then
+        local uiDisabled = lib.callback.await('mx-audioplayer:isUiDisabled', 0, id)
+        if uiDisabled then
+            Notification(_U('general.ui.disabled'), 'error')
+            return false
+        end
+    else
+        Debug('No custom id provided')
+    end
+
+    local playerData = lib.callback.await('mx-audioplayer:getData', 0, id) --[[@as {playlist: table, user: Account | nil, player: Player}]]
+    if CurrentSoundData then
+        -- Cleanup
+    end
+    CurrentSoundData = playerData.player and playerData.player.soundData
+    if CurrentSoundData and playerData.playlist then
+        for k, v in pairs(playerData.playlist) do
+            if v.id == CurrentSoundData.id then
+                playerData.playlist[k].duration = Surround:getMaxDuration(CurrentSoundData.soundId)
+                break
+            end
+        end
+        Surround:onTimeUpdate(CurrentSoundData.soundId, onTimeUpdate)
+    end
+
+    initAudioPlayerData(id, data)
+    return playerData, id
 end
 
 RegisterNUICallback('play', function(data, cb)

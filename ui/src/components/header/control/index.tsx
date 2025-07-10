@@ -2,7 +2,6 @@ import { FC, memo, useCallback, useEffect, useLayoutEffect, useRef } from 'react
 import useNuiEvent from '@/hooks/useNuiEvent';
 import { setPlaying, setRepeat, setShuffle, setVolume } from '@/stores/Main';
 import { handlePlay } from '@/thunks/handlePlay';
-import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '@/stores';
 import { fetchNui } from '@/utils/fetchNui';
 import i18next from 'i18next';

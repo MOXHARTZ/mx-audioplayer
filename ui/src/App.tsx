@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { NOTIFICATION, formattedTypes, isEnvBrowser, notification } from '@/utils/misc'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './stores'
 import useNuiEvent from './hooks/useNuiEvent'
 import { useExitListener } from './hooks/useExitListener'
@@ -105,7 +103,6 @@ function App() {
   })
   return (
     <>
-      <ToastContainer {...NOTIFICATION} />
       <ShortDisplay
         position={settings.minimalHudPosition}
         visible={!visible && settings.minimalHud && shortDisplay && playing}
