@@ -1,5 +1,5 @@
 fx_version 'cerulean'
-games { 'gta5' }
+game 'gta5'
 author 'https://github.com/MOXHARTZ'
 repository 'https://github.com/MOXHARTZ/mx-audioplayer'
 discord 'https://discord.gg/crbtDw9hT7'

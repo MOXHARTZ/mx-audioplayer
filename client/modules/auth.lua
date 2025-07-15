@@ -5,6 +5,9 @@ local audioplayer = require 'client.modules.audioplayer'
 function Login(data)
     local id = audioplayer:getId()
     local token = lib.callback.await('mx-audioplayer:login', 0, id, data)
+    if token and audioplayer.options then
+        audioplayer:open(audioplayer.options, audioplayer.handlers)
+    end
     return token
 end
 
@@ -48,17 +51,4 @@ RegisterNUICallback('updateProfile', function(data, cb)
     local success = lib.callback.await('mx-audioplayer:updateProfile', 0, id, data)
     CloseUI()
     cb('ok')
-end)
-
-RegisterNetEvent('mx-audioplayer:login', function(playlist, user)
-    audioplayer:getInfo()
-    SendNUIMessage({
-        action = 'open',
-        data = {
-            playlist = playlist,
-            currentSound = user.soundData,
-            user = user,
-            volume = user.soundData and user.soundData.volume or AudioVolume,
-        }
-    })
 end)

@@ -1,6 +1,5 @@
 ---@class AudioPlayer
 ---@field id string
----@field soundId? string | number
 ---@field invokingResource string
 ---@field data {playlist: table, user: Account | nil, player: Player}
 ---@field options? AudioPlayerOptions
@@ -57,11 +56,11 @@ function audioplayer:open(options, handlers)
     end
     local id = self:getId()
     Debug('OpenAudioPlayer ::: id', id, 'playlist', self.data.playlist)
-    handlers = handlers or {}
     if not id then
         return Debug('Error getting audio player info')
     end
-    self.handlers = handlers
+    print('setting handlers', handlers)
+    self.handlers = handlers or {}
     SendReactMessage('open', {
         playlist = self.data.playlist,
         currentSound = soundData,
@@ -73,9 +72,9 @@ function audioplayer:open(options, handlers)
     TriggerServerEvent('mx-audioplayer:disableUi', id, true)
 end
 
-function audioplayer:setSoundData(soundData)
-    Debug('setSoundData ::: self.data', self.data)
-    self.data.player.soundData = soundData
+---@param player Player
+function audioplayer:setPlayerData(player)
+    self.data.player = player
     self:initSoundHandlers()
 end
 
@@ -84,12 +83,14 @@ function audioplayer:setData(data)
 end
 
 function audioplayer:initSoundHandlers()
-    if not self.soundId then
-        return
+    if not self.data.player.soundId then
+        return Debug('initSoundHandlers ::: no soundId')
     end
     -- Surround:onPlayEnd(self.soundId, self.onEnd)
     -- Surround:onDestroy(self.soundId, self.onDestroyed)
-    Surround:onTimeUpdate(self.soundId, self.onTimeUpdate)
+    Surround:onTimeUpdate(self.data.player.soundId, function(soundData)
+        self:onTimeUpdate(soundData)
+    end)
 end
 
 ---@param options? AudioPlayerOptions
@@ -111,8 +112,12 @@ end
 
 ---@param listenerName string
 function audioplayer:triggerListener(listenerName, ...)
+    local soundData = self:getSoundData()
+    Debug('triggerListener ::: listenerName', listenerName, 'soundData', soundData)
     if self.handlers[listenerName] then
-        self.handlers[listenerName](self.soundData, ...)
+        self.handlers[listenerName](soundData, ...)
+    else
+        Error('triggerListener ::: listenerName', listenerName, 'not found')
     end
 end
 
@@ -151,6 +156,13 @@ function audioplayer:getId()
         return ''
     end
     return self.invokingResource .. self.id
+end
+
+function audioplayer:getSoundData()
+    if not self.data?.player?.soundData then
+        return
+    end
+    return self.data.player.soundData or {}
 end
 
 function audioplayer:shortDisplayKeyListener()

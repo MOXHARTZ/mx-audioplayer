@@ -65,7 +65,16 @@
 ---@class Playlist
 ---@field id number
 ---@field userId number
----@field data table
+---@field data {name: string, description: string, id: string, songs: PlaylistSong[]}[]
+
+---@class PlaylistSong
+---@field soundId string
+---@field title string
+---@field url string
+---@field id string
+---@field cover string
+---@field artist string
+---@field duration number
 
 ---@class LoginData
 ---@field token? string

@@ -3,7 +3,6 @@ CurrentResourceName = GetCurrentResourceName()
 local audioplayer = require 'client.modules.audioplayer'
 local UiReady = false
 CustomId = nil
-audioplayer.soundData = nil
 CurrentSounds = {}
 local playlist, audioplayerHandlers = {}, {}
 Surround = exports['mx-surround']
@@ -92,7 +91,8 @@ end)
 exports('open', audioplayer.open)
 
 exports('getVolume', function()
-    return audioplayer.soundData and audioplayer.soundData.volume or 1
+    local soundData = audioplayer:getSoundData()
+    return soundData and soundData.volume or 1
 end)
 
 RegisterNUICallback('play', function(data, cb)
@@ -109,60 +109,63 @@ RegisterNUICallback('play', function(data, cb)
     soundData.soundId = soundId
     soundData.playing = true
     soundData.volume = _volume
-    TriggerServerEvent('mx-audioplayer:play', id, url, soundId, soundData, _volume, playQuietly, coords, audioPlayerData)
-    local loaded = Surround:soundIsLoaded(soundId) -- wait for the sound to load
-    if not loaded then return cb(false) end        -- if it doesn't load, return false
+    local playerData = lib.callback.await('mx-audioplayer:play', 0, id, url, soundId, soundData, _volume, playQuietly, coords, audioPlayerData)
+    if not playerData then
+        return cb(false)
+    end
+    -- local loaded = Surround:soundIsLoaded(soundId) -- wait for the sound to load
+    -- if not loaded then return cb(false) end        -- if it doesn't load, return false
     local maxDuration = Surround:getMaxDuration(soundId)
     soundData.duration = maxDuration
-    audioplayer:setSoundData(soundData)
+    audioplayer:setPlayerData(playerData)
     audioplayer:triggerListener('onPlay')
     cb(maxDuration)
 end)
 
 RegisterNUICallback('togglePlay', function(data, cb)
-    local id = audioplayer:getId()
-    if not audioplayer.soundData then
+    local id, soundData = audioplayer:getId(), audioplayer:getSoundData()
+    if not soundData then
         return cb('ok')
     end
-    audioplayer.soundData.playing = data.playing
-    if audioplayer.soundData.playing then
+    soundData.playing = data.playing
+    if soundData.playing then
         audioplayer:triggerListener('onResume')
-        TriggerServerEvent('mx-audioplayer:resume', id, audioplayer.soundData.soundId)
+        TriggerServerEvent('mx-audioplayer:resume', id, soundData.soundId)
     else
         audioplayer:triggerListener('onPause')
-        TriggerServerEvent('mx-audioplayer:pause', id, audioplayer.soundData.soundId)
+        TriggerServerEvent('mx-audioplayer:pause', id, soundData.soundId)
     end
     cb('ok')
 end)
 
 RegisterNUICallback('getCurrentSongDuration', function(data, cb)
-    local id = audioplayer:getId()
-    if not audioplayer.soundData then return cb(0) end
-    local maxDuration = Surround:getMaxDuration(audioplayer.soundData.soundId)
+    local soundData = audioplayer:getSoundData()
+    if not soundData then return cb(0) end
+    local maxDuration = Surround:getMaxDuration(soundData.soundId)
     cb(maxDuration)
 end)
 
 RegisterNUICallback('getCurrentSongTimeStamp', function(data, cb)
-    local id = audioplayer:getId()
-    if not audioplayer.soundData then return cb(0) end
-    local timeStamp = Surround:getTimeStamp(audioplayer.soundData.soundId)
+    local soundData = audioplayer:getSoundData()
+    if not soundData then return cb(0) end
+    local timeStamp = Surround:getTimeStamp(soundData.soundId)
     cb(math.floor(timeStamp))
 end)
 
 RegisterNUICallback('setVolume', function(data, cb)
-    local id = audioplayer:getId()
-    if not audioplayer.soundData then return cb(0) end
+    local id, soundData = audioplayer:getId(), audioplayer:getSoundData()
+    if not soundData then return cb(0) end
     AudioVolume = data.volume
-    audioplayer.soundData.volume = data.volume
-    TriggerServerEvent('mx-audioplayer:setVolume', id, audioplayer.soundData.soundId, data.volume)
+    soundData.volume = data.volume
+    TriggerServerEvent('mx-audioplayer:setVolume', id, soundData.soundId, data.volume)
     audioplayer:triggerListener('onVolumeChange')
     cb('ok')
 end)
 
 RegisterNUICallback('seek', function(data, cb)
-    local id = audioplayer:getId()
-    if not audioplayer.soundData then return cb(0) end
-    TriggerServerEvent('mx-audioplayer:seek', audioplayer.soundData.soundId, data.position)
+    local soundData = audioplayer:getSoundData()
+    if not soundData then return cb(0) end
+    TriggerServerEvent('mx-audioplayer:seek', soundData.soundId, data.position)
     audioplayer:triggerListener('onSeek')
     cb('ok')
 end)

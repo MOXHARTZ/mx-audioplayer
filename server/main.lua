@@ -30,42 +30,80 @@ local function generateToken()
     return token
 end
 
-RegisterNetEvent('mx-audioplayer:play', function(id, url, soundId, soundData, volume, playQuietly, coords, customData)
-    local src = source
+---@param source number
+---@param id string
+---@param data table
+---@return Player | false
+local function playSound(source, id, data)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
         Error('mx-audioplayer:play ::: User not found', id)
-        return
+        return false
     end
     if user.player?.soundId then
         Surround:Destroy(-1, user.player.soundId)
         user.player.soundId = nil
         Debug('mx-audioplayer:play ::: Destroying previous sound', user.player.soundId)
     end
-    volume = playQuietly and 0.0 or volume
-    Surround:Play(-1, soundId, url, coords, false, volume, customData.panner)
-    Surround:onDestroy(soundId, function()
-        if not DoesPlayerExist(src) then return Debug('mx-audioplayer:destroy ::: Player not found', src) end
-        TriggerClientEvent('mx-audioplayer:destroy', src, id)
-        Debug('mx-audioplayer:play ::: Sound destroyed', soundId)
-    end)
-    Surround:onPlayEnd(soundId, function()
-        if not DoesPlayerExist(src) then return Debug('mx-audioplayer:playEnd ::: Player not found', src) end
-        TriggerClientEvent('mx-audioplayer:playEnd', src, id)
-        Debug('mx-audioplayer:play ::: Sound ended', soundId)
-    end)
-    if customData.maxDistance then
-        Surround:setMaxDistance(-1, soundId, customData.maxDistance)
+    data.volume = data.playQuietly and 0.0 or data.volume
+    local success = Surround:Play(-1, data.soundId, data.url, data.coords, false, data.volume, data.panner)
+    if not success then
+        return false
     end
-    if not soundId then return print('Failed to play sound') end
-    Surround:setDestroyOnFinish(-1, soundId, false)
+    Surround:onDestroy(data.soundId, function()
+        if not DoesPlayerExist(source) then return Debug('mx-audioplayer:destroy ::: Player not found', source) end
+        TriggerClientEvent('mx-audioplayer:destroy', source, id)
+        Debug('mx-audioplayer:play ::: Sound destroyed', data.soundId)
+    end)
+    Surround:onPlayEnd(data.soundId, function()
+        if not DoesPlayerExist(source) then return Debug('mx-audioplayer:playEnd ::: Player not found', source) end
+        local playlist = db.getPlaylist(user.accountId)
+        if not playlist then
+            return Debug('mx-audioplayer:playEnd ::: Playlist not found', user.accountId)
+        end
+        local category = table.find(playlist, function(v) return v.id == id end)
+        if not category then
+            return Debug('mx-audioplayer:playEnd ::: Category not found', id, playlist)
+        end
+        local currentTrack, currentTrackId = table.find(category, function(v) return v.soundId == data.soundId end)
+        if not currentTrack then
+            return Debug('mx-audioplayer:playEnd ::: Sound not found', data.soundId, playlist)
+        end
+        currentSound.playing = false
+        db.setPlaylist(user.accountId, playlist)
+        TriggerClientEvent('mx-audioplayer:playEnd', source, id)
+        Debug('mx-audioplayer:play ::: Sound ended', data.soundId)
+    end)
+    if data.maxDistance then
+        Surround:setMaxDistance(-1, data.soundId, data.maxDistance)
+    end
+    if not data.soundId then
+        return false
+    end
+    Surround:setDestroyOnFinish(-1, data.soundId, false)
     user.player = {
         id = id,
-        soundId = soundId,
-        source = src,
-        soundData = soundData
+        soundId = data.soundId,
+        source = source,
+        soundData = data
     }
     TriggerClientEvent('mx-audioplayer:playSound', -1, id)
+    return user.player
+end
+
+---@param source number
+---@return Player | false
+lib.callback.register('mx-audioplayer:play', function(source, id, url, soundId, soundData, volume, playQuietly, coords, customData)
+    return playSound(source, id, {
+        url = url,
+        soundId = soundId,
+        soundData = soundData,
+        volume = volume,
+        playQuietly = playQuietly,
+        coords = coords,
+        panner = customData.panner,
+        maxDistance = customData.maxDistance,
+    })
 end)
 
 local disabledUis = {}
@@ -246,7 +284,6 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
     AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = user.id }
     local playlist = db.getPlaylist(user.id)
     user = userDboToDto(src, user)
-    TriggerClientEvent('mx-audioplayer:login', src, playlist, user)
     Debug('mx-audioplayer:login', user)
     if not data.token then
         data.token = generateToken()

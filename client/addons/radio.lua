@@ -22,6 +22,7 @@ local function openUi()
     }
     audioplayer:open(radioSettings, {
         onPlay = function(sound)
+            Debug('onPlay ::: sound', sound)
             if not DoesEntityExist(_vehicle) then
                 TriggerServerEvent('mx-audioplayer:destroy', sound.soundId)
                 return

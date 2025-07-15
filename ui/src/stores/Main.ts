@@ -56,10 +56,6 @@ const Static = createSlice({
             state.playlist = action.payload;
             if (!action.payload || !state.playlist) return;
             state.currentSongs = state.playlist.find(playlist => playlist.id === state.currentPlaylistId)?.songs ?? undefined;
-            if (state.editMode) return; // Block to save ui for not farewell to ui
-            // fetchNui('setPlaylist', {
-            //     playlist: action.payload
-            // })
         },
         setCurrentPlaylistId: (state, action: PayloadAction<string | number>) => {
             state.currentPlaylistId = action.payload;
