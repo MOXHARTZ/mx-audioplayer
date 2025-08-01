@@ -1,50 +1,180 @@
 {
-    "header.title": "標題",
-    "header.artist": "藝術家",
-    "playlist.empty": "播放列表中沒有歌曲",
-    "playlist.not_selected": "未選擇歌曲",
-    "playlist.deleted_songs": "歌曲已成功刪除",
-    "playlist.cleared": "播放列表已成功清空",
-    "playlist.no_more_songs": "沒有更多歌曲可以播放",
-    "playlist.song_already_playing": "歌曲已在播放中",
-    "playlist.song_not_exist": "歌曲不存在",
-    "playlist.search": "搜尋...",
-    "playlist.select_playlist": "首先，請選擇播放列表。您可以右鍵單擊左側創建播放列表",
-    "playlist.dialog.created": "播放列表創建成功",
-    "playlist.dialog.name": "名稱",
-    "playlist.dialog.description": "描述",
-    "playlist.dialog.image_url": "圖片網址",
-    "playlist.dialog.create": "創建播放列表",
-    "playlist.dialog.edit": "編輯詳情",
-    "playlist.context.edit": "編輯詳情",
-    "playlist.context.delete": "刪除播放列表",
-    "playlist.context.create": "創建播放列表",
-    "playlist.context.share": "分享播放列表給玩家",
-    "edit.clear": "全部刪除",
-    "edit.delete": "刪除所選歌曲",
-    "edit.cancel": "取消",
-    "search_track.content": "您可以通過輸入歌曲名稱或通過 Spotify、YouTube 或 SoundCloud 鏈接將歌曲添加到播放列表。目前，不支持 SoundCloud 播放列表。",
-    "search_track.title": "將歌曲添加到播放列表",
-    "search_track.placeholder": "歌曲名稱或鏈接（支持播放列表和專輯）",
-    "search_track.invalid_url": "無效的鏈接",
-    "general.unknown": "未知",
-    "general.something_went_wrong": "出現了一些問題",
-    "general.ui.disabled": "目前無法打開收音機，因為它正在被其他玩家使用。",
-    "general.edit.enabled": "編輯模式已啟用。現在您可以通過拖動來排序播放列表和歌曲",
-    "general.cancel": "取消",
-    "general.done": "完成",
-    "general.delete.confirm": "請再次點擊刪除以確認。",
-    "shared.title": "附近的玩家",
-    "shared.no_players": "找不到要分享播放列表的玩家",
-    "shared.success": "播放列表分享成功",
-    "playlist.already_exist": "您收到了來自 %s 的播放列表，但您已經擁有該播放列表。因此，我們不會將其添加到您的播放列表中。播放列表名稱：%s",
-    "playlist.received": "您收到了來自 %s 的播放列表。播放列表名稱：%s",
-    "boombox.target.open": "打開",
-    "boombox.target.destroy": "摧毀音箱",
-    "boombox.target.pickup": "拾起音箱",
-    "boombox.drop.text": "按 [H] 放下音箱",
-    "dj.open.menu": "按 [E] 打開DJ菜單",
-    "dj.target.open": "打開UI",
-    "radio.command": "打開車載收音機",
-    "search_track.add_all": "全部添加到播放列表"
+    "or": "或",
+    "you_have_logged_out": "您已退出账户。",
+    "required": "请填写此字段",
+    "header": {
+        "title": "标题",
+        "artist": "艺术家",
+        "playlist": "播放列表",
+        "edit_profile": "编辑个人资料",
+        "logout": "退出登录"
+    },
+    "profile": {
+        "title": "管理账户",
+        "username": "新用户名",
+        "username_placeholder": "更新您的用户名",
+        "password": "新密码",
+        "password_placeholder": "输入您的密码",
+        "avatar": "头像链接",
+        "avatar_placeholder": "输入您的头像链接",
+        "delete_account": "删除账户",
+        "update_account": "更新账户"
+    },
+    "playlist": {
+        "empty": "播放列表中没有歌曲",
+        "not_selected": "未选择歌曲",
+        "deleted_songs": "歌曲已成功删除",
+        "cleared": "播放列表已成功清空",
+        "no_more_songs": "没有更多歌曲可播放",
+        "song_already_playing": "歌曲已在播放中",
+        "song_not_exist": "歌曲不存在",
+        "search": "搜索…",
+        "select_playlist": "首先，选择一个播放列表。您可以通过右键点击左侧来创建播放列表",
+        "already_exist": "您从{{senderName}}收到了一个播放列表，但您已经有了。所以我们不将其添加到您的播放列表中。播放列表名称：{{playlistName}}",
+        "received": "您从{{senderName}}收到了一个播放列表。播放列表名称：{{playlistName}}",
+        "dialog": {
+            "created": "播放列表创建成功",
+            "name": "名称",
+            "description": "描述",
+            "image_url": "图片链接",
+            "create": "创建播放列表",
+            "edit": "编辑详情"
+        },
+        "context": {
+            "edit": "编辑详情",
+            "delete": "删除播放列表",
+            "create": "创建播放列表",
+            "share": "与玩家分享播放列表",
+            "actions": "操作",
+            "danger": "危险区域"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "您确定要删除所有歌曲吗？",
+                "content": "此操作无法撤销"
+            }
+        },
+        "no_songs": "没有可用的歌曲",
+        "ready_to_play": "准备播放",
+        "song": "歌曲",
+        "songs": "歌曲",
+        "selected": "已选择",
+        "loading": "正在加载播放列表...",
+        "no_results": "没有结果",
+        "no_song_match": "没有歌曲匹配您的搜索",
+        "add_some_songs": "添加一些歌曲开始使用"
+    },
+    "edit": {
+        "clear": "删除全部",
+        "delete": "删除选中的歌曲",
+        "cancel": "取消"
+    },
+    "search_track": {
+        "content": "您可以通过输入曲目名称将歌曲添加到播放列表，或者可以通过spotify、youtube链接",
+        "title": "向播放列表添加歌曲",
+        "subtitle": "搜索并发现新音乐",
+        "placeholder": "曲目名称或链接（支持播放列表和专辑）",
+        "invalid_url": "无效链接",
+        "add_all": "全部添加到播放列表"
+    },
+    "general": {
+        "play": "播放",
+        "unknown": "未知",
+        "something_went_wrong": "出现错误",
+        "ui.disabled": "目前您无法打开收音机，因为它正在被其他玩家使用。",
+        "edit.enabled": "编辑模式已启用。现在您可以通过拖拽来排序播放列表和歌曲",
+        "cancel": "取消",
+        "done": "完成",
+        "delete.confirm": "请再次点击删除以确认。",
+        "currently_playing": "正在播放"
+    },
+    "shared": {
+        "title": "附近玩家",
+        "no_players": "未找到可以分享播放列表的玩家",
+        "success": "播放列表分享成功"
+    },
+    "boombox": {
+        "target": {
+            "open": "打开",
+            "destroy": "销毁音响",
+            "pickup": "拾取音响"
+        },
+        "drop": {
+            "text": "按[H]键放下音响"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "按[E]键打开DJ菜单"
+        },
+        "target": {
+            "open": "打开界面"
+        }
+    },
+    "radio": {
+        "command": "打开车载收音机"
+    },
+    "modal": {
+        "confirm": "确认",
+        "cancel": "取消"
+    },
+    "settings": {
+        "title": "设置",
+        "subtitle": "自定义您的音频体验",
+        "minimal_hud": {
+            "title": "最小化HUD",
+            "description": "当您激活它时。即使关闭菜单，您也可以使用快捷键管理播放列表中的歌曲。要学习快捷键，请将鼠标移动到播放、前进和后退按钮上。",
+            "position": {
+                "title": "最小化HUD位置",
+                "top_left": "左上角",
+                "top_left_description": "最小化HUD将放置在屏幕的左上角",
+                "top_right": "右上角",
+                "top_right_description": "最小化HUD将放置在屏幕的右上角",
+                "bottom_left": "左下角",
+                "bottom_left_description": "最小化HUD将放置在屏幕的左下角",
+                "bottom_right": "右下角",
+                "bottom_right_description": "最小化HUD将放置在屏幕的右下角"
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "播放/暂停",
+            "volume": "音量 +/-",
+            "forward": "上一首/下一首"
+        }
+    },
+    "login": {
+        "title": "欢迎回来",
+        "subtitle": "登录",
+        "username": "用户名",
+        "password": "密码",
+        "username_placeholder": "输入您的用户名",
+        "password_placeholder": "输入您的密码",
+        "sign_in": "登录",
+        "sign_in_loading": "正在登录...",
+        "need_to_create_account": "需要创建账户？",
+        "sign_up": "注册",
+        "login_successful": "登录成功",
+        "invalid_username_or_password": "用户名或密码无效",
+        "this_user_credentials_has_been_modified": "此用户的凭据已被修改。请重新登录。"
+    },
+    "register": {
+        "title": "加入音频播放器",
+        "subtitle": "创建您的账户",
+        "firstname": "名字",
+        "lastname": "姓氏",
+        "firstname_placeholder": "输入您的名字",
+        "lastname_placeholder": "输入您的姓氏",
+        "username": "用户名",
+        "username_placeholder": "选择唯一的用户名",
+        "password": "密码",
+        "password_placeholder": "创建强密码",
+        "sign_up_loading": "正在创建账户...",
+        "already_have_account": "已有账户？",
+        "sign_in": "登录",
+        "sign_up": "注册",
+        "registration_successful": "注册成功",
+        "registration_failed": "注册失败"
+    }
 }

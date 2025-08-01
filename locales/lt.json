@@ -1,0 +1,180 @@
+{
+    "or": "ARBA",
+    "you_have_logged_out": "Atsijungėte iš savo paskyros.",
+    "required": "Prašome užpildyti šį lauką",
+    "header": {
+        "title": "Pavadinimas",
+        "artist": "Atlikėjas",
+        "playlist": "Grojaraštis",
+        "edit_profile": "Redaguoti profilį",
+        "logout": "Atsijungti"
+    },
+    "profile": {
+        "title": "Valdyti paskyrą",
+        "username": "Naujas vartotojo vardas",
+        "username_placeholder": "Atnaujinkite savo vartotojo vardą",
+        "password": "Naujas slaptažodis",
+        "password_placeholder": "Įveskite savo slaptažodį",
+        "avatar": "Avataro URL",
+        "avatar_placeholder": "Įveskite savo avataro URL",
+        "delete_account": "Ištrinti paskyrą",
+        "update_account": "Atnaujinti paskyrą"
+    },
+    "playlist": {
+        "empty": "Grojaraštyje nėra dainų",
+        "not_selected": "Daina nepasirinkta",
+        "deleted_songs": "Dainos sėkmingai ištrintos",
+        "cleared": "Grojaraštis sėkmingai išvalytas",
+        "no_more_songs": "Nėra daugiau dainų groti",
+        "song_already_playing": "Daina jau groja",
+        "song_not_exist": "Daina neegzistuoja",
+        "search": "Ieškoti…",
+        "select_playlist": "Pirmiausia pasirinkite grojaraštį. Galite sukurti grojaraštį dešiniu pelės mygtuku spustelėję kairę pusę",
+        "already_exist": "Gavote grojaraštį iš {{senderName}}, bet jau jį turite. Todėl jo nepridedame prie jūsų grojaraščių. Grojaraščio pavadinimas: {{playlistName}}",
+        "received": "Gavote grojaraštį iš {{senderName}}. Grojaraščio pavadinimas: {{playlistName}}",
+        "dialog": {
+            "created": "Grojaraštis sėkmingai sukurtas",
+            "name": "Pavadinimas",
+            "description": "Aprašymas",
+            "image_url": "Paveikslėlio URL",
+            "create": "Sukurti grojaraštį",
+            "edit": "Redaguoti detales"
+        },
+        "context": {
+            "edit": "Redaguoti detales",
+            "delete": "Ištrinti grojaraštį",
+            "create": "Sukurti grojaraštį",
+            "share": "Pasidalinti grojaraščiu su žaidėju",
+            "actions": "Veiksmai",
+            "danger": "Pavojaus zona"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "Ar tikrai norite ištrinti visas dainas?",
+                "content": "Šio veiksmo negalima atšaukti"
+            }
+        },
+        "no_songs": "Nėra prieinamų dainų",
+        "ready_to_play": "Paruošta groti",
+        "song": "Daina",
+        "songs": "Dainos",
+        "selected": "Pasirinkta",
+        "loading": "Kraunamas grojaraštis...",
+        "no_results": "Nėra rezultatų",
+        "no_song_match": "Nėra dainų, atitinkančių jūsų paiešką",
+        "add_some_songs": "Pridėkite keletą dainų, kad pradėtumėte"
+    },
+    "edit": {
+        "clear": "Ištrinti viską",
+        "delete": "Ištrinti pasirinktas dainas",
+        "cancel": "Atšaukti"
+    },
+    "search_track": {
+        "content": "Galite pridėti dainą prie grojaraščio įvesdami takelio pavadinimą arba galite pereiti čia per spotify, youtube",
+        "title": "Pridėti dainą prie grojaraščio",
+        "subtitle": "Ieškoti ir atrasti naują muziką",
+        "placeholder": "Takelio pavadinimas arba URL (palaiko grojaraščius ir albumus)",
+        "invalid_url": "Neteisingas URL",
+        "add_all": "Pridėti viską prie grojaraščio"
+    },
+    "general": {
+        "play": "Groti",
+        "unknown": "Nežinoma",
+        "something_went_wrong": "Kažkas nutiko negerai",
+        "ui.disabled": "Šiuo metu negalite atidaryti radijo, nes jį naudoja kitas žaidėjas.",
+        "edit.enabled": "Redagavimo režimas įjungtas. Dabar galite rūšiuoti grojaraštį ir dainas vilkdami",
+        "cancel": "Atšaukti",
+        "done": "Atlikta",
+        "delete.confirm": "Prašome dar kartą spustelėti ištrinti, kad patvirtintumėte.",
+        "currently_playing": "Dabar groja"
+    },
+    "shared": {
+        "title": "Artimiausi žaidėjai",
+        "no_players": "Niekas nerastas, kad pasidalintų grojaraščiu",
+        "success": "Grojaraštis sėkmingai pasidalintas"
+    },
+    "boombox": {
+        "target": {
+            "open": "Atidaryti",
+            "destroy": "Sunaikinti boombox",
+            "pickup": "Paimti boombox"
+        },
+        "drop": {
+            "text": "Paspauskite [H], kad numestumėte boombox"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "Paspauskite [E], kad atidarytumėte DJ meniu"
+        },
+        "target": {
+            "open": "Atidaryti sąsają"
+        }
+    },
+    "radio": {
+        "command": "Atidaryti automobilio radiją"
+    },
+    "modal": {
+        "confirm": "Patvirtinti",
+        "cancel": "Atšaukti"
+    },
+    "settings": {
+        "title": "Nustatymai",
+        "subtitle": "Priderinkite savo garso patirtį",
+        "minimal_hud": {
+            "title": "Minimalus HUD",
+            "description": "Kai jį įjungiate. Galite valdyti dainas savo grojaraštyje su trumpiniais, net kai uždarote meniu. Norėdami išmokti trumpinių, perkelkite pelę prie grojimo, pirmyn ir atgal mygtukų.",
+            "position": {
+                "title": "Minimalaus HUD pozicija",
+                "top_left": "Viršuje kairėje",
+                "top_left_description": "Minimalus HUD bus patalpintas viršutiniame kairiajame ekrano kampe",
+                "top_right": "Viršuje dešinėje",
+                "top_right_description": "Minimalus HUD bus patalpintas viršutiniame dešiniajame ekrano kampe",
+                "bottom_left": "Apačioje kairėje",
+                "bottom_left_description": "Minimalus HUD bus patalpintas apatiniame kairiajame ekrano kampe",
+                "bottom_right": "Apačioje dešinėje",
+                "bottom_right_description": "Minimalus HUD bus patalpintas apatiniame dešiniajame ekrano kampe"
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "Groti/Pauzė",
+            "volume": "Garsas +/-",
+            "forward": "Ankstesnis/Kitas"
+        }
+    },
+    "login": {
+        "title": "Sveiki sugrįžę",
+        "subtitle": "Prisijungti",
+        "username": "Vartotojo vardas",
+        "password": "Slaptažodis",
+        "username_placeholder": "Įveskite savo vartotojo vardą",
+        "password_placeholder": "Įveskite savo slaptažodį",
+        "sign_in": "Prisijungti",
+        "sign_in_loading": "Prisijungiama...",
+        "need_to_create_account": "Reikia sukurti paskyrą?",
+        "sign_up": "Registruotis",
+        "login_successful": "Prisijungimas sėkmingas",
+        "invalid_username_or_password": "Neteisingas vartotojo vardas arba slaptažodis",
+        "this_user_credentials_has_been_modified": "Šio vartotojo prisijungimo duomenys buvo pakeisti. Prašome prisijungti iš naujo."
+    },
+    "register": {
+        "title": "Prisijunkite prie Garso Grotuvo",
+        "subtitle": "Sukurkite savo paskyrą",
+        "firstname": "Vardas",
+        "lastname": "Pavardė",
+        "firstname_placeholder": "Įveskite savo vardą",
+        "lastname_placeholder": "Įveskite savo pavardę",
+        "username": "Vartotojo vardas",
+        "username_placeholder": "Pasirinkite unikalų vartotojo vardą",
+        "password": "Slaptažodis",
+        "password_placeholder": "Sukurkite stiprų slaptažodį",
+        "sign_up_loading": "Kuriama paskyra...",
+        "already_have_account": "Jau turite paskyrą?",
+        "sign_in": "Prisijungti",
+        "sign_up": "Registruotis",
+        "registration_successful": "Registracija sėkminga",
+        "registration_failed": "Registracija nepavyko"
+    }
+}

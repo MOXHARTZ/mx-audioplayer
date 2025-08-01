@@ -1,74 +1,180 @@
 {
-    "header.title": "Título",
-    "header.artist": "Artista",
-    "header.playlist": "Lista de reproducción",
-    "playlist.empty": "No hay canciones en la lista de reproducción",
-    "playlist.not_selected": "No hay canción seleccionada",
-    "playlist.deleted_songs": "Las canciones se han eliminado correctamente",
-    "playlist.cleared": "Lista de reproducción borrada correctamente",
-    "playlist.no_more_songs": "No hay más canciones para reproducir",
-    "playlist.song_already_playing": "La canción ya se está reproduciendo",
-    "playlist.song_not_exist": "La canción no existe",
-    "playlist.search": "Buscar…",
-    "playlist.select_playlist": "Primero selecciona una lista de reproducción. Puedes crear una lista de reproducción haciendo clic derecho en el lado izquierdo",
-    "playlist.dialog.created": "Lista de reproducción creada correctamente",
-    "playlist.dialog.name": "Nombre",
-    "playlist.dialog.description": "Descripción",
-    "playlist.dialog.image_url": "URL de la imagen",
-    "playlist.dialog.create": "Crear una lista de reproducción",
-    "playlist.dialog.edit": "Editar detalles",
-    "playlist.context.edit": "Editar Detalles",
-    "playlist.context.delete": "Eliminar Lista de Reproducción",
-    "playlist.context.create": "Crear Lista de Reproducción",
-    "playlist.context.share": "Compartir Lista de Reproducción con un Jugador",
-    "playlist.context.actions": "Acción",
-    "playlist.context.danger": "Zona peligrosa",
-    "edit.clear": "Borrar todo",
-    "edit.delete": "Eliminar Canciones Seleccionadas",
-    "edit.cancel": "Cancelar",
-    "search_track.content": "Puedes agregar una canción a la lista de reproducción ingresando un nombre de pista o puedes pasar aquí por una URL de Spotify, YouTube o SoundCloud",
-    "search_track.title": "Agregar una canción a la lista de reproducción",
-    "search_track.placeholder": "Nombre de la pista o URL",
-    "search_track.invalid_url": "URL no válida",
-    "general.unknown": "Desconocido",
-    "general.something_went_wrong": "Algo salió mal",
-    "general.ui.disabled": "En este momento no puedes abrir la radio porque está siendo utilizada por otro jugador.",
-    "general.edit.enabled": "El modo de edición está habilitado. Ahora puedes ordenar la lista de reproducción y las canciones arrastrándolas",
-    "general.cancel": "Cancelar",
-    "general.done": "Hecho",
-    "general.delete.confirm": "Por favor, haz clic nuevamente en eliminar para confirmar.",
-    "shared.title": "Jugadores Cercanos",
-    "shared.no_players": "No se encontró a nadie para compartir la lista de reproducción",
-    "shared.success": "Lista de reproducción compartida exitosamente",
-    "playlist.already_exist": "Recibiste una lista de reproducción de %s pero ya tienes esa lista de reproducción. Por lo tanto, no la agregamos a tus listas de reproducción. Nombre de la lista de reproducción: %s",
-    "playlist.received": "Recibiste una lista de reproducción de %s. Nombre de la lista de reproducción: %s",
-    "boombox.target.open": "Abrir",
-    "boombox.target.destroy": "Destruir Radiocasete",
-    "boombox.target.pickup": "Recoger Radiocasete",
-    "boombox.drop.text": "Presiona [H] para soltar el radiocasete",
-    "dj.open.menu": "Presiona [E] para abrir el menú de DJ",
-    "dj.target.open": "Abrir Interfaz",
-    "radio.command": "Abrir Radio del Automóvil",
-    "search_track.add_all": "Agregar todo a la lista de reproducción",
-    "general.currently_playing": "Reproducción en curso",
-    "general.play": "Reproducir",
-    "playlist.confirm.delete_all.title": "¿Estás seguro de que quieres eliminar todas las canciones?",
-    "playlist.confirm.delete_all.content": "Esta acción no se puede deshacer",
-    "modal.confirm": "Confirmar",
-    "modal.cancel": "Cancelar",
-    "settings.title": "Ajustes",
-    "settings.minimal_hud": "HUD Minimalista",
-    "settings.minimal_hud.description": "Cuando lo actives, podrás gestionar las canciones de tu lista de reproducción con los atajos incluso cuando cierres el menú. Para conocer los atajos, mueve el ratón hacia los botones de reproducción, avance y retroceso.",
-    "settings.minimal_hud.position.title": "Posición del HUD minimalista",
-    "settings.minimal_hud.position.top_left": "Arriba a la izquierda",
-    "settings.minimal_hud.position.top_left_description": "El HUD minimalista se colocará en la esquina superior izquierda de la pantalla",
-    "settings.minimal_hud.position.top_right": "Arriba a la derecha",
-    "settings.minimal_hud.position.top_right_description": "El HUD minimalista se colocará en la esquina superior derecha de la pantalla",
-    "settings.minimal_hud.position.bottom_left": "Abajo a la izquierda",
-    "settings.minimal_hud.position.bottom_left_description": "El HUD minimalista se colocará en la esquina inferior izquierda de la pantalla",
-    "settings.minimal_hud.position.bottom_right": "Abajo a la derecha",
-    "settings.minimal_hud.position.bottom_right_description": "El HUD minimalista se colocará en la esquina inferior derecha de la pantalla.",
-    "keyboard.shortcut.toggle": "Reproducir/Pausar",
-    "keyboard.shortcut.volume": "Subir/Bajar volumen",
-    "keyboard.shortcut.forward": "Anterior/Siguiente"
+    "or": "O",
+    "you_have_logged_out": "Has cerrado sesión de tu cuenta.",
+    "required": "Por favor completa este campo",
+    "header": {
+        "title": "Título",
+        "artist": "Artista",
+        "playlist": "Lista de reproducción",
+        "edit_profile": "Editar perfil",
+        "logout": "Cerrar sesión"
+    },
+    "profile": {
+        "title": "Gestionar cuenta",
+        "username": "Nuevo nombre de usuario",
+        "username_placeholder": "Actualiza tu nombre de usuario",
+        "password": "Nueva contraseña",
+        "password_placeholder": "Ingresa tu contraseña",
+        "avatar": "URL del avatar",
+        "avatar_placeholder": "Ingresa la URL de tu avatar",
+        "delete_account": "Eliminar cuenta",
+        "update_account": "Actualizar cuenta"
+    },
+    "playlist": {
+        "empty": "No hay canciones en la lista de reproducción",
+        "not_selected": "Ninguna canción seleccionada",
+        "deleted_songs": "Las canciones se eliminaron exitosamente",
+        "cleared": "Lista de reproducción limpiada exitosamente",
+        "no_more_songs": "No hay más canciones para reproducir",
+        "song_already_playing": "La canción ya se está reproduciendo",
+        "song_not_exist": "La canción no existe",
+        "search": "Buscar…",
+        "select_playlist": "Primero, selecciona una lista de reproducción. Puedes crear una lista de reproducción haciendo clic derecho en el lado izquierdo",
+        "already_exist": "Recibiste una lista de reproducción de {{senderName}} pero ya la tienes. Por eso no la agregamos a tus listas de reproducción. Nombre de la lista: {{playlistName}}",
+        "received": "Recibiste una lista de reproducción de {{senderName}}. Nombre de la lista: {{playlistName}}",
+        "dialog": {
+            "created": "Lista de reproducción creada exitosamente",
+            "name": "Nombre",
+            "description": "Descripción",
+            "image_url": "URL de la imagen",
+            "create": "Crear una lista de reproducción",
+            "edit": "Editar detalles"
+        },
+        "context": {
+            "edit": "Editar detalles",
+            "delete": "Eliminar lista de reproducción",
+            "create": "Crear lista de reproducción",
+            "share": "Compartir lista de reproducción con un jugador",
+            "actions": "Acciones",
+            "danger": "Zona de peligro"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "¿Estás seguro de que quieres eliminar todas las canciones?",
+                "content": "Esta acción no se puede deshacer"
+            }
+        },
+        "no_songs": "No hay canciones disponibles",
+        "ready_to_play": "Listo para reproducir",
+        "song": "Canción",
+        "songs": "Canciones",
+        "selected": "Seleccionado",
+        "loading": "Cargando lista de reproducción...",
+        "no_results": "Sin resultados",
+        "no_song_match": "Ninguna canción coincide con tu búsqueda",
+        "add_some_songs": "Agrega algunas canciones para comenzar"
+    },
+    "edit": {
+        "clear": "Eliminar todo",
+        "delete": "Eliminar canciones seleccionadas",
+        "cancel": "Cancelar"
+    },
+    "search_track": {
+        "content": "Puedes agregar una canción a la lista de reproducción ingresando un nombre de pista o puedes pasar aquí por spotify, youtube",
+        "title": "Agregar una canción a la lista de reproducción",
+        "subtitle": "Busca y descubre nueva música",
+        "placeholder": "Nombre de la pista o URL (admite listas de reproducción y álbumes)",
+        "invalid_url": "URL inválida",
+        "add_all": "Agregar todo a la lista de reproducción"
+    },
+    "general": {
+        "play": "Reproducir",
+        "unknown": "Desconocido",
+        "something_went_wrong": "Algo salió mal",
+        "ui.disabled": "En este momento no puedes abrir la radio porque la está usando otro jugador.",
+        "edit.enabled": "El modo de edición está habilitado. Ahora puedes ordenar la lista de reproducción y las canciones arrastrando",
+        "cancel": "Cancelar",
+        "done": "Hecho",
+        "delete.confirm": "Por favor haz clic en eliminar nuevamente para confirmar.",
+        "currently_playing": "Reproduciendo actualmente"
+    },
+    "shared": {
+        "title": "Jugadores cercanos",
+        "no_players": "No se encontró a nadie para compartir la lista de reproducción",
+        "success": "Lista de reproducción compartida exitosamente"
+    },
+    "boombox": {
+        "target": {
+            "open": "Abrir",
+            "destroy": "Destruir boombox",
+            "pickup": "Recoger boombox"
+        },
+        "drop": {
+            "text": "Presiona [H] para soltar el boombox"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "Presiona [E] para abrir el menú DJ"
+        },
+        "target": {
+            "open": "Abrir interfaz"
+        }
+    },
+    "radio": {
+        "command": "Abrir radio del auto"
+    },
+    "modal": {
+        "confirm": "Confirmar",
+        "cancel": "Cancelar"
+    },
+    "settings": {
+        "title": "Configuración",
+        "subtitle": "Personaliza tu experiencia de audio",
+        "minimal_hud": {
+            "title": "HUD mínimo",
+            "description": "Cuando lo actives. Puedes gestionar las canciones en tu lista de reproducción con los atajos incluso cuando cierres el menú. Para aprender los atajos, mueve tu mouse a los botones de reproducción, adelante y atrás.",
+            "position": {
+                "title": "Posición del HUD mínimo",
+                "top_left": "Arriba izquierda",
+                "top_left_description": "El HUD mínimo se colocará en la esquina superior izquierda de tu pantalla",
+                "top_right": "Arriba derecha",
+                "top_right_description": "El HUD mínimo se colocará en la esquina superior derecha de tu pantalla",
+                "bottom_left": "Abajo izquierda",
+                "bottom_left_description": "El HUD mínimo se colocará en la esquina inferior izquierda de tu pantalla",
+                "bottom_right": "Abajo derecha",
+                "bottom_right_description": "El HUD mínimo se colocará en la esquina inferior derecha de tu pantalla"
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "Reproducir/Pausar",
+            "volume": "Volumen +/-",
+            "forward": "Anterior/Siguiente"
+        }
+    },
+    "login": {
+        "title": "Bienvenido de vuelta",
+        "subtitle": "Iniciar sesión",
+        "username": "Nombre de usuario",
+        "password": "Contraseña",
+        "username_placeholder": "Ingresa tu nombre de usuario",
+        "password_placeholder": "Ingresa tu contraseña",
+        "sign_in": "Iniciar sesión",
+        "sign_in_loading": "Iniciando sesión...",
+        "need_to_create_account": "¿Necesitas crear una cuenta?",
+        "sign_up": "Registrarse",
+        "login_successful": "Inicio de sesión exitoso",
+        "invalid_username_or_password": "Nombre de usuario o contraseña inválidos",
+        "this_user_credentials_has_been_modified": "Las credenciales de este usuario han sido modificadas. Por favor inicia sesión nuevamente."
+    },
+    "register": {
+        "title": "Únete al Reproductor de Audio",
+        "subtitle": "Crea tu cuenta",
+        "firstname": "Nombre",
+        "lastname": "Apellido",
+        "firstname_placeholder": "Ingresa tu nombre",
+        "lastname_placeholder": "Ingresa tu apellido",
+        "username": "Nombre de usuario",
+        "username_placeholder": "Elige un nombre de usuario único",
+        "password": "Contraseña",
+        "password_placeholder": "Crea una contraseña segura",
+        "sign_up_loading": "Creando cuenta...",
+        "already_have_account": "¿Ya tienes una cuenta?",
+        "sign_in": "Iniciar sesión",
+        "sign_up": "Registrarse",
+        "registration_successful": "Registro exitoso",
+        "registration_failed": "Registro fallido"
+    }
 }

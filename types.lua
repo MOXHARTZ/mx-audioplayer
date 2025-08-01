@@ -19,7 +19,7 @@
 ---@field minimalHud boolean
 
 ---@class ShortDisplay
----@field state? boolean
+---@field visible? boolean
 ---@field vehicle? number
 ---@field customId? string
 
@@ -40,32 +40,30 @@
 ---@field password string | number
 ---@field avatar? string
 
----@class PlayerSoundData
----@field id string
----@field cover string
----@field duration number
----@field title string
----@field soundId string
----@field url string
----@field artist string
----@field playing boolean
----@field volume number
-
 ---@class Player
----@field id string
----@field soundId string
----@field source number
----@field soundData PlayerSoundData
+---@field id? string
+---@field soundId? string
+---@field source? number
+---@field playing? boolean
+---@field volume? number
+---@field soundData? PlaylistSong
+---@field duration? number
 
 ---@class AudioplayerAccount
 ---@field id string
 ---@field accountId number
 ---@field player? Player
 
+---@class PlaylistData
+---@field name string
+---@field description string
+---@field id string
+---@field songs PlaylistSong[]
+
 ---@class Playlist
 ---@field id number
 ---@field userId number
----@field data {name: string, description: string, id: string, songs: PlaylistSong[]}[]
+---@field data PlaylistData[]
 
 ---@class PlaylistSong
 ---@field soundId string

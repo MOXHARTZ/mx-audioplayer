@@ -1,55 +1,180 @@
 {
-    "header.title": "Titolo",
-    "header.artist": "Artista",
-    "header.playlist": "Playlist",
-    "playlist.empty": "Nessuna traccia nella Playlist",
-    "playlist.not_selected": "Nessuna traccia selezionata",
-    "playlist.deleted_songs": "Traccia eliminata con successo",
-    "playlist.cleared": "Playlist eliminata con successo",
-    "playlist.no_more_songs": "Nessuna altra traccia da riprodurre",
-    "playlist.song_already_playing": "La traccia è gia in riproduzione",
-    "playlist.song_not_exist": "La traccia non esiste",
-    "playlist.search": "Cerca...",
-    "playlist.select_playlist": "Prima seleziona una playlist. Puoi creare una playlist cliccando con il tasto destro",
-    "playlist.dialog.created": "Playlist creata con successo",
-    "playlist.dialog.name": "Nome",
-    "playlist.dialog.description": "Descrizione",
-    "playlist.dialog.image_url": "Url Immagine",
-    "playlist.dialog.create": "Crea una playlist",
-    "playlist.dialog.edit": "Modifica dettagli",
-    "playlist.context.edit": "Modifica Dettagli",
-    "playlist.context.delete": "Elimina Playlist",
-    "playlist.context.create": "Crea Playlist",
-    "playlist.context.share": "Condividi Playlist con un giocatore",
-    "playlist.context.actions": "Azioni",
-    "playlist.context.danger": "Danger Zone",
-    "edit.clear": "Elimina tutto",
-    "edit.delete": "Elimina tracce selezionate",
-    "edit.cancel": "Annulla",
-    "search_track.content": "Puoi aggiungere tracce alla playlist inserendo un nome o puoi inserire il link da Spotify, Youtube o SoundCloud",
-    "search_track.title": "Aggiungi una traccia alla playlist",
-    "search_track.placeholder": "Nome traccia o URL",
-    "search_track.invalid_url": "URL non valido",
-    "general.unknown": "Sconosciuto",
-    "general.something_went_wrong": "Qualcosa è andato storto :/",
-    "general.ui.disabled": "Al momento non puoi usare la radio perchè la sta utilizzando un altro player.",
-    "general.edit.enabled": "Modalità di modifica attivata. Ora puoi trascinare e riordinare tracce e playlist",
-    "general.cancel": "Annulla",
-    "general.done": "Fatto",
-    "general.delete.confirm": "Clicca di nuovo per confermare l'eliminazione.",
-    "shared.title": "Giocatori Vicini",
-    "shared.no_players": "Nessuno vicino per condividere la playlist",
-    "shared.success": "Playlist condivisa con successo",
-    "playlist.already_exist": "Hai ricevuto la playlist da %s ma hai gia questa Playlist. Nome Playlist: %s",
-    "playlist.received": "Hai ricevuto una playlist da %s. Nome Playlist: %s",
-    "boombox.target.open": "Seleziona Musica",
-    "boombox.target.destroy": "Rimuovi Boombox",
-    "boombox.target.pickup": "Prendi Boombox",
-    "boombox.drop.text": "Premi [H] per lasciare il boombox",
-    "dj.open.menu": "Premi [E] per mettere la musica",
-    "dj.target.open": "Seleziona Musica",
-    "radio.command": "Usa Radio del veicolo",
-    "search_track.add_all": "Aggiungi tutto alla playlist",
-    "general.currently_playing": "In riproduzione",
-    "general.play": "Play"
+    "or": "O",
+    "you_have_logged_out": "Hai effettuato il logout dal tuo account.",
+    "required": "Si prega di compilare questo campo",
+    "header": {
+        "title": "Titolo",
+        "artist": "Artista",
+        "playlist": "Playlist",
+        "edit_profile": "Modifica profilo",
+        "logout": "Logout"
+    },
+    "profile": {
+        "title": "Gestisci account",
+        "username": "Nuovo nome utente",
+        "username_placeholder": "Aggiorna il tuo nome utente",
+        "password": "Nuova password",
+        "password_placeholder": "Inserisci la tua password",
+        "avatar": "URL avatar",
+        "avatar_placeholder": "Inserisci l'URL del tuo avatar",
+        "delete_account": "Elimina account",
+        "update_account": "Aggiorna account"
+    },
+    "playlist": {
+        "empty": "Nessuna canzone nella playlist",
+        "not_selected": "Nessuna canzone selezionata",
+        "deleted_songs": "Le canzoni sono state eliminate con successo",
+        "cleared": "Playlist cancellata con successo",
+        "no_more_songs": "Non ci sono più canzoni da riprodurre",
+        "song_already_playing": "La canzone è già in riproduzione",
+        "song_not_exist": "La canzone non esiste",
+        "search": "Cerca…",
+        "select_playlist": "Prima, seleziona una playlist. Puoi creare una playlist facendo clic destro sul lato sinistro",
+        "already_exist": "Hai ricevuto una playlist da {{senderName}} ma la hai già. Quindi non la aggiungiamo alle tue playlist. Nome playlist: {{playlistName}}",
+        "received": "Hai ricevuto una playlist da {{senderName}}. Nome playlist: {{playlistName}}",
+        "dialog": {
+            "created": "Playlist creata con successo",
+            "name": "Nome",
+            "description": "Descrizione",
+            "image_url": "URL immagine",
+            "create": "Crea una playlist",
+            "edit": "Modifica dettagli"
+        },
+        "context": {
+            "edit": "Modifica dettagli",
+            "delete": "Elimina playlist",
+            "create": "Crea playlist",
+            "share": "Condividi playlist con un giocatore",
+            "actions": "Azioni",
+            "danger": "Zona pericolo"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "Sei sicuro di voler eliminare tutte le canzoni?",
+                "content": "Questa azione non può essere annullata"
+            }
+        },
+        "no_songs": "Nessuna canzone disponibile",
+        "ready_to_play": "Pronto per la riproduzione",
+        "song": "Canzone",
+        "songs": "Canzoni",
+        "selected": "Selezionato",
+        "loading": "Caricamento playlist...",
+        "no_results": "Nessun risultato",
+        "no_song_match": "Nessuna canzone corrisponde alla tua ricerca",
+        "add_some_songs": "Aggiungi alcune canzoni per iniziare"
+    },
+    "edit": {
+        "clear": "Elimina tutto",
+        "delete": "Elimina canzoni selezionate",
+        "cancel": "Annulla"
+    },
+    "search_track": {
+        "content": "Puoi aggiungere una canzone alla playlist inserendo un nome traccia o puoi passare qui tramite spotify, youtube",
+        "title": "Aggiungi una canzone alla playlist",
+        "subtitle": "Cerca e scopri nuova musica",
+        "placeholder": "Nome traccia o URL (supporta playlist e album)",
+        "invalid_url": "URL non valida",
+        "add_all": "Aggiungi tutto alla playlist"
+    },
+    "general": {
+        "play": "Riproduci",
+        "unknown": "Sconosciuto",
+        "something_went_wrong": "Qualcosa è andato storto",
+        "ui.disabled": "Al momento non puoi aprire la radio perché è utilizzata da un altro giocatore.",
+        "edit.enabled": "La modalità modifica è abilitata. Ora puoi ordinare la playlist e le canzoni trascinando",
+        "cancel": "Annulla",
+        "done": "Fatto",
+        "delete.confirm": "Si prega di cliccare di nuovo elimina per confermare.",
+        "currently_playing": "In riproduzione"
+    },
+    "shared": {
+        "title": "Giocatori nelle vicinanze",
+        "no_players": "Nessuno è stato trovato per condividere la playlist",
+        "success": "Playlist condivisa con successo"
+    },
+    "boombox": {
+        "target": {
+            "open": "Apri",
+            "destroy": "Distruggi boombox",
+            "pickup": "Raccogli boombox"
+        },
+        "drop": {
+            "text": "Premi [H] per lasciare cadere il boombox"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "Premi [E] per aprire il menu DJ"
+        },
+        "target": {
+            "open": "Apri interfaccia"
+        }
+    },
+    "radio": {
+        "command": "Apri radio auto"
+    },
+    "modal": {
+        "confirm": "Conferma",
+        "cancel": "Annulla"
+    },
+    "settings": {
+        "title": "Impostazioni",
+        "subtitle": "Personalizza la tua esperienza audio",
+        "minimal_hud": {
+            "title": "HUD minimo",
+            "description": "Quando lo attivi. Puoi gestire le canzoni nella tua playlist con le scorciatoie anche quando chiudi il menu. Per imparare le scorciatoie, sposta il mouse sui pulsanti di riproduzione, avanti e indietro.",
+            "position": {
+                "title": "Posizione HUD minimo",
+                "top_left": "In alto a sinistra",
+                "top_left_description": "L'HUD minimo sarà posizionato nell'angolo superiore sinistro del tuo schermo",
+                "top_right": "In alto a destra",
+                "top_right_description": "L'HUD minimo sarà posizionato nell'angolo superiore destro del tuo schermo",
+                "bottom_left": "In basso a sinistra",
+                "bottom_left_description": "L'HUD minimo sarà posizionato nell'angolo inferiore sinistro del tuo schermo",
+                "bottom_right": "In basso a destra",
+                "bottom_right_description": "L'HUD minimo sarà posizionato nell'angolo inferiore destro del tuo schermo"
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "Riproduci/Pausa",
+            "volume": "Volume +/-",
+            "forward": "Precedente/Successivo"
+        }
+    },
+    "login": {
+        "title": "Bentornato",
+        "subtitle": "Accedi",
+        "username": "Nome utente",
+        "password": "Password",
+        "username_placeholder": "Inserisci il tuo nome utente",
+        "password_placeholder": "Inserisci la tua password",
+        "sign_in": "Accedi",
+        "sign_in_loading": "Accesso in corso...",
+        "need_to_create_account": "Devi creare un account?",
+        "sign_up": "Registrati",
+        "login_successful": "Accesso riuscito",
+        "invalid_username_or_password": "Nome utente o password non validi",
+        "this_user_credentials_has_been_modified": "Le credenziali di questo utente sono state modificate. Si prega di accedere di nuovo."
+    },
+    "register": {
+        "title": "Unisciti al Lettore Audio",
+        "subtitle": "Crea il tuo account",
+        "firstname": "Nome",
+        "lastname": "Cognome",
+        "firstname_placeholder": "Inserisci il tuo nome",
+        "lastname_placeholder": "Inserisci il tuo cognome",
+        "username": "Nome utente",
+        "username_placeholder": "Scegli un nome utente unico",
+        "password": "Password",
+        "password_placeholder": "Crea una password sicura",
+        "sign_up_loading": "Creazione account...",
+        "already_have_account": "Hai già un account?",
+        "sign_in": "Accedi",
+        "sign_up": "Registrati",
+        "registration_successful": "Registrazione riuscita",
+        "registration_failed": "Registrazione fallita"
+    }
 }

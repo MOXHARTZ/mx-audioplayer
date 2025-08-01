@@ -1,0 +1,180 @@
+{
+    "or": "VEYA",
+    "you_have_logged_out": "Hesabınızdan çıkış yaptınız.",
+    "required": "Lütfen bu alanı doldurun",
+    "header": {
+        "title": "Başlık",
+        "artist": "Sanatçı",
+        "playlist": "Çalma Listesi",
+        "edit_profile": "Profili Düzenle",
+        "logout": "Çıkış Yap"
+    },
+    "profile": {
+        "title": "Hesabı Yönet",
+        "username": "Yeni Kullanıcı Adı",
+        "username_placeholder": "Kullanıcı adınızı güncelleyin",
+        "password": "Yeni Şifre",
+        "password_placeholder": "Şifrenizi girin",
+        "avatar": "Avatar URL",
+        "avatar_placeholder": "Avatar URL'nizi girin",
+        "delete_account": "Hesabı Sil",
+        "update_account": "Hesabı Güncelle"
+    },
+    "playlist": {
+        "empty": "Çalma listesinde şarkı yok",
+        "not_selected": "Şarkı seçilmedi",
+        "deleted_songs": "Şarkılar başarıyla silindi",
+        "cleared": "Çalma listesi başarıyla temizlendi",
+        "no_more_songs": "Çalacak başka şarkı yok",
+        "song_already_playing": "Şarkı zaten çalıyor",
+        "song_not_exist": "Şarkı mevcut değil",
+        "search": "Ara…",
+        "select_playlist": "Önce bir çalma listesi seçin. Sol tarafa sağ tıklayarak çalma listesi oluşturabilirsiniz",
+        "already_exist": "{{senderName}} kullanıcısından bir çalma listesi aldınız ancak zaten bu çalma listeniz var. Bu yüzden çalma listenize eklemiyoruz. Çalma Listesi Adı: {{playlistName}}",
+        "received": "{{senderName}} kullanıcısından bir çalma listesi aldınız. Çalma Listesi Adı: {{playlistName}}",
+        "dialog": {
+            "created": "Çalma listesi başarıyla oluşturuldu",
+            "name": "Ad",
+            "description": "Açıklama",
+            "image_url": "Resim URL",
+            "create": "Çalma listesi oluştur",
+            "edit": "Detayları düzenle"
+        },
+        "context": {
+            "edit": "Detayları Düzenle",
+            "delete": "Çalma Listesini Sil",
+            "create": "Çalma Listesi Oluştur",
+            "share": "Çalma Listesini Bir Oyuncuyla Paylaş",
+            "actions": "İşlemler",
+            "danger": "Tehlikeli Bölge"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "Tüm şarkıları silmek istediğinizden emin misiniz?",
+                "content": "Bu işlem geri alınamaz"
+            }
+        },
+        "no_songs": "Kullanılabilir şarkı yok",
+        "ready_to_play": "Çalmaya hazır",
+        "song": "Şarkı",
+        "songs": "Şarkılar",
+        "selected": "Seçili",
+        "loading": "Çalma listesi yükleniyor...",
+        "no_results": "Sonuç yok",
+        "no_song_match": "Aramanızla eşleşen şarkı yok",
+        "add_some_songs": "Başlamak için bazı şarkılar ekleyin"
+    },
+    "edit": {
+        "clear": "Tümünü sil",
+        "delete": "Seçili Şarkıları Sil",
+        "cancel": "İptal"
+    },
+    "search_track": {
+        "content": "Şarkı adını girerek çalma listesine şarkı ekleyebilir veya spotify, youtube linki ile geçebilirsiniz",
+        "title": "Çalma listesine şarkı ekle",
+        "subtitle": "Ara ve yeni müzik keşfet",
+        "placeholder": "Şarkı adı veya url (çalma listesi ve albüm destekler)",
+        "invalid_url": "Geçersiz url",
+        "add_all": "Tümünü çalma listesine ekle"
+    },
+    "general": {
+        "play": "Çal",
+        "unknown": "Bilinmiyor",
+        "something_went_wrong": "Bir şeyler yanlış gitti",
+        "ui.disabled": "Şu anda radyoyu açamazsınız çünkü başka bir oyuncu tarafından kullanılıyor.",
+        "edit.enabled": "Düzenleme modu etkin. Artık çalma listesini ve şarkıları sürükleyerek sıralayabilirsiniz",
+        "cancel": "İptal",
+        "done": "Tamam",
+        "delete.confirm": "Onaylamak için tekrar sil'e tıklayın.",
+        "currently_playing": "Şu Anda Çalıyor"
+    },
+    "shared": {
+        "title": "Yakındaki Oyuncular",
+        "no_players": "Çalma listesini paylaşacak kimse bulunamadı",
+        "success": "Çalma listesi başarıyla paylaşıldı"
+    },
+    "boombox": {
+        "target": {
+            "open": "Aç",
+            "destroy": "Boombox'ı Yok Et",
+            "pickup": "Boombox'ı Al"
+        },
+        "drop": {
+            "text": "Boombox'ı bırakmak için [H] tuşuna basın"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "DJ menüsünü açmak için [E] tuşuna basın"
+        },
+        "target": {
+            "open": "Arayüzü Aç"
+        }
+    },
+    "radio": {
+        "command": "Araba Radyosunu Aç"
+    },
+    "modal": {
+        "confirm": "Onayla",
+        "cancel": "İptal"
+    },
+    "settings": {
+        "title": "Ayarlar",
+        "subtitle": "Ses deneyiminizi özelleştirin",
+        "minimal_hud": {
+            "title": "Minimal HUD",
+            "description": "Etkinleştirdiğinizde. Menüyü kapattığınızda bile kısayollar ile çalma listenizdeki şarkıları yönetebilirsiniz. Kısayolları öğrenmek için farenizi çal, ileri ve geri düğmelerine götürün.",
+            "position": {
+                "title": "Minimal HUD Konumu",
+                "top_left": "Sol Üst",
+                "top_left_description": "Minimal hud ekranınızın sol üst köşesine yerleştirilecek",
+                "top_right": "Sağ Üst",
+                "top_right_description": "Minimal hud ekranınızın sağ üst köşesine yerleştirilecek",
+                "bottom_left": "Sol Alt",
+                "bottom_left_description": "Minimal hud ekranınızın sol alt köşesine yerleştirilecek",
+                "bottom_right": "Sağ Alt",
+                "bottom_right_description": "Minimal hud ekranınızın sağ alt köşesine yerleştirilecek"
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "Çal/Duraklat",
+            "volume": "Ses Aç/Kapat",
+            "forward": "Önceki/Sonraki"
+        }
+    },
+    "login": {
+        "title": "Tekrar Hoş Geldiniz",
+        "subtitle": "Giriş yap",
+        "username": "Kullanıcı Adı",
+        "password": "Şifre",
+        "username_placeholder": "Kullanıcı adınızı girin",
+        "password_placeholder": "Şifrenizi girin",
+        "sign_in": "Giriş Yap",
+        "sign_in_loading": "Giriş Yapılıyor...",
+        "need_to_create_account": "Hesap oluşturmanız mı gerekiyor?",
+        "sign_up": "Kayıt Ol",
+        "login_successful": "Giriş başarılı",
+        "invalid_username_or_password": "Geçersiz kullanıcı adı veya şifre",
+        "this_user_credentials_has_been_modified": "Bu kullanıcı bilgileri değiştirildi. Lütfen tekrar giriş yapın."
+    },
+    "register": {
+        "title": "Ses Çalar'a Katılın",
+        "subtitle": "Hesabınızı oluşturun",
+        "firstname": "Ad",
+        "lastname": "Soyad",
+        "firstname_placeholder": "Adınızı girin",
+        "lastname_placeholder": "Soyadınızı girin",
+        "username": "Kullanıcı Adı",
+        "username_placeholder": "Benzersiz bir kullanıcı adı seçin",
+        "password": "Şifre",
+        "password_placeholder": "Güçlü bir şifre oluşturun",
+        "sign_up_loading": "Hesap Oluşturuluyor...",
+        "already_have_account": "Zaten hesabınız var mı?",
+        "sign_in": "Giriş Yap",
+        "sign_up": "Kayıt Ol",
+        "registration_successful": "Kayıt başarılı",
+        "registration_failed": "Kayıt başarısız"
+    }
+}

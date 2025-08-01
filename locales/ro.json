@@ -1,59 +1,180 @@
 {
-    "header.title": "Titlu",
-    "header.artist": "Artist",
-    "header.playlist": "Playlist",
-    "playlist.empty": "Nu exista melodii in playlist",
-    "playlist.not_selected": "Nicio melodie selectata",
-    "playlist.deleted_songs": "Melodiile au fost sterse cu succes",
-    "playlist.cleared": "Playlist golit cu succes",
-    "playlist.no_more_songs": "Nu mai sunt melodii de redat",
-    "playlist.song_already_playing": "Melodia este deja in redare",
-    "playlist.song_not_exist": "Melodia nu exista",
-    "playlist.search": "Cauta...",
-    "playlist.select_playlist": "Mai intai, selecteaza un playlist. Poti crea un playlist facand clic dreapta pe partea stanga",
-    "playlist.dialog.created": "Playlist creat cu succes",
-    "playlist.dialog.name": "Nume",
-    "playlist.dialog.description": "Descriere",
-    "playlist.dialog.image_url": "URL Imagine",
-    "playlist.dialog.create": "Creeaza un playlist",
-    "playlist.dialog.edit": "Editeaza detaliile",
-    "playlist.context.edit": "Editeaza Detalii",
-    "playlist.context.delete": "Sterge Playlist",
-    "playlist.context.create": "Creeaza Playlist",
-    "playlist.context.share": "Partajeaza Playlistul cu un Jucator",
-    "playlist.context.actions": "Actiuni",
-    "playlist.context.danger": "Zona de Pericol",
-    "edit.clear": "Sterge tot",
-    "edit.delete": "Sterge Melodiile Selectate",
-    "edit.cancel": "Anuleaza",
-    "search_track.content": "Poti adauga o melodie in playlist introducand un nume de piesa sau un URL de la Spotify, YouTube sau SoundCloud. In prezent, listele de redare SoundCloud nu sunt suportate.",
-    "search_track.title": "Adauga o melodie in playlist",
-    "search_track.placeholder": "Nume piesa sau URL (suporta playlist si album)",
-    "search_track.invalid_url": "URL invalid",
-    "general.unknown": "Necunoscut",
-    "general.something_went_wrong": "Ceva nu a mers bine",
-    "general.ui.disabled": "In acest moment nu poti deschide radioul deoarece este folosit de alt jucator.",
-    "general.edit.enabled": "Modul de editare este activat. Acum poti sorta playlistul si melodiile prin tragere",
-    "general.cancel": "Anuleaza",
-    "general.done": "Gata",
-    "general.delete.confirm": "Te rog, apasa din nou pe sterge pentru a confirma.",
-    "shared.title": "Jucatori Aproape",
-    "shared.no_players": "Nimeni nu a fost gasit pentru a partaja playlistul",
-    "shared.success": "Playlistul a fost partajat cu succes",
-    "playlist.already_exist": "Ai primit un playlist de la %s, dar deja ai acel playlist. Asadar, nu il adaugam in playlisturile tale. Nume Playlist: %s",
-    "playlist.received": "Ai primit un playlist de la %s. Nume Playlist: %s",
-    "boombox.target.open": "Deschide",
-    "boombox.target.destroy": "Distruge Boombox-ul",
-    "boombox.target.pickup": "Ridica Boombox-ul",
-    "boombox.drop.text": "Apasa [H] pentru a lasa boombox-ul",
-    "dj.open.menu": "Apasa [E] pentru a deschide meniul DJ",
-    "dj.target.open": "Deschide UI",
-    "radio.command": "Deschide Radioul Masinii",
-    "search_track.add_all": "Adauga tot in playlist",
-    "general.currently_playing": "In Redare",
-    "general.play": "Redare",
-    "playlist.confirm.delete_all.title": "Esti sigur ca vrei sa stergi toate melodiile?",
-    "playlist.confirm.delete_all.content": "Aceasta actiune nu poate fi anulata",
-    "modal.confirm": "Confirma",
-    "modal.cancel": "Anuleaza"
+    "or": "SAU",
+    "you_have_logged_out": "V-ați deconectat de la contul dvs.",
+    "required": "Vă rugăm să completați acest câmp",
+    "header": {
+        "title": "Titlu",
+        "artist": "Artist",
+        "playlist": "Listă de redare",
+        "edit_profile": "Editează profilul",
+        "logout": "Deconectare"
+    },
+    "profile": {
+        "title": "Gestionează contul",
+        "username": "Nume de utilizator nou",
+        "username_placeholder": "Actualizează numele de utilizator",
+        "password": "Parolă nouă",
+        "password_placeholder": "Introduceți parola",
+        "avatar": "URL avatar",
+        "avatar_placeholder": "Introduceți URL-ul avatarului dvs.",
+        "delete_account": "Șterge contul",
+        "update_account": "Actualizează contul"
+    },
+    "playlist": {
+        "empty": "Nu există melodii în lista de redare",
+        "not_selected": "Nicio melodie selectată",
+        "deleted_songs": "Melodiile au fost șterse cu succes",
+        "cleared": "Lista de redare a fost golită cu succes",
+        "no_more_songs": "Nu mai sunt melodii de redat",
+        "song_already_playing": "Melodia se redă deja",
+        "song_not_exist": "Melodia nu există",
+        "search": "Caută…",
+        "select_playlist": "Mai întâi, selectați o listă de redare. Puteți crea o listă de redare făcând clic dreapta pe partea stângă",
+        "already_exist": "Ați primit o listă de redare de la {{senderName}} dar o aveți deja. Deci nu o adăugăm la listele dvs. de redare. Numele listei: {{playlistName}}",
+        "received": "Ați primit o listă de redare de la {{senderName}}. Numele listei: {{playlistName}}",
+        "dialog": {
+            "created": "Lista de redare a fost creată cu succes",
+            "name": "Nume",
+            "description": "Descriere",
+            "image_url": "URL imagine",
+            "create": "Creează o listă de redare",
+            "edit": "Editează detaliile"
+        },
+        "context": {
+            "edit": "Editează detaliile",
+            "delete": "Șterge lista de redare",
+            "create": "Creează lista de redare",
+            "share": "Împărtășește lista de redare cu un jucător",
+            "actions": "Acțiuni",
+            "danger": "Zona de pericol"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "Sigur doriți să ștergeți toate melodiile?",
+                "content": "Această acțiune nu poate fi anulată"
+            }
+        },
+        "no_songs": "Nu există melodii disponibile",
+        "ready_to_play": "Gata de redare",
+        "song": "Melodie",
+        "songs": "Melodii",
+        "selected": "Selectat",
+        "loading": "Se încarcă lista de redare...",
+        "no_results": "Nu există rezultate",
+        "no_song_match": "Nicio melodie nu corespunde căutării dvs.",
+        "add_some_songs": "Adăugați câteva melodii pentru a începe"
+    },
+    "edit": {
+        "clear": "Șterge totul",
+        "delete": "Șterge melodiile selectate",
+        "cancel": "Anulează"
+    },
+    "search_track": {
+        "content": "Puteți adăuga o melodie la lista de redare introducând un nume de track sau puteți trece aici prin spotify, youtube",
+        "title": "Adaugă o melodie la lista de redare",
+        "subtitle": "Caută și descoperă muzică nouă",
+        "placeholder": "Numele track-ului sau URL (suportă liste de redare și albume)",
+        "invalid_url": "URL invalid",
+        "add_all": "Adaugă totul la lista de redare"
+    },
+    "general": {
+        "play": "Redă",
+        "unknown": "Necunoscut",
+        "something_went_wrong": "Ceva a mers prost",
+        "ui.disabled": "În acest moment nu puteți deschide radioul deoarece este folosit de alt jucător.",
+        "edit.enabled": "Modul de editare este activat. Acum puteți sorta lista de redare și melodiile prin tragere",
+        "cancel": "Anulează",
+        "done": "Gata",
+        "delete.confirm": "Vă rugăm să faceți clic din nou pe șterge pentru a confirma.",
+        "currently_playing": "Se redă acum"
+    },
+    "shared": {
+        "title": "Jucători din apropiere",
+        "no_players": "Nu s-a găsit nimeni pentru a împărtăși lista de redare",
+        "success": "Lista de redare a fost împărtășită cu succes"
+    },
+    "boombox": {
+        "target": {
+            "open": "Deschide",
+            "destroy": "Distruge boombox",
+            "pickup": "Ridică boombox"
+        },
+        "drop": {
+            "text": "Apăsați [H] pentru a lăsa boombox-ul"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "Apăsați [E] pentru a deschide meniul DJ"
+        },
+        "target": {
+            "open": "Deschide interfața"
+        }
+    },
+    "radio": {
+        "command": "Deschide radio-ul mașinii"
+    },
+    "modal": {
+        "confirm": "Confirmă",
+        "cancel": "Anulează"
+    },
+    "settings": {
+        "title": "Setări",
+        "subtitle": "Personalizează-ți experiența audio",
+        "minimal_hud": {
+            "title": "HUD minimal",
+            "description": "Când îl activați. Puteți gestiona melodiile din lista dvs. de redare cu scurtăturile chiar și când închideți meniul. Pentru a învăța scurtăturile, mutați mouse-ul la butoanele de redare, înainte și înapoi.",
+            "position": {
+                "title": "Poziția HUD minimal",
+                "top_left": "Sus stânga",
+                "top_left_description": "HUD-ul minimal va fi plasat în colțul din stânga sus al ecranului dvs.",
+                "top_right": "Sus dreapta",
+                "top_right_description": "HUD-ul minimal va fi plasat în colțul din dreapta sus al ecranului dvs.",
+                "bottom_left": "Jos stânga",
+                "bottom_left_description": "HUD-ul minimal va fi plasat în colțul din stânga jos al ecranului dvs.",
+                "bottom_right": "Jos dreapta",
+                "bottom_right_description": "HUD-ul minimal va fi plasat în colțul din dreapta jos al ecranului dvs."
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "Redă/Pauză",
+            "volume": "Volum +/-",
+            "forward": "Anterior/Următor"
+        }
+    },
+    "login": {
+        "title": "Bine ați revenit",
+        "subtitle": "Conectare",
+        "username": "Nume de utilizator",
+        "password": "Parolă",
+        "username_placeholder": "Introduceți numele de utilizator",
+        "password_placeholder": "Introduceți parola",
+        "sign_in": "Conectare",
+        "sign_in_loading": "Se conectează...",
+        "need_to_create_account": "Trebuie să creați un cont?",
+        "sign_up": "Înregistrare",
+        "login_successful": "Conectare reușită",
+        "invalid_username_or_password": "Nume de utilizator sau parolă invalidă",
+        "this_user_credentials_has_been_modified": "Credențialele acestui utilizator au fost modificate. Vă rugăm să vă conectați din nou."
+    },
+    "register": {
+        "title": "Alăturați-vă Player-ului Audio",
+        "subtitle": "Creați-vă contul",
+        "firstname": "Prenume",
+        "lastname": "Nume",
+        "firstname_placeholder": "Introduceți prenumele",
+        "lastname_placeholder": "Introduceți numele",
+        "username": "Nume de utilizator",
+        "username_placeholder": "Alegeți un nume de utilizator unic",
+        "password": "Parolă",
+        "password_placeholder": "Creați o parolă puternică",
+        "sign_up_loading": "Se creează contul...",
+        "already_have_account": "Aveți deja un cont?",
+        "sign_in": "Conectare",
+        "sign_up": "Înregistrare",
+        "registration_successful": "Înregistrare reușită",
+        "registration_failed": "Înregistrarea a eșuat"
+    }
 }

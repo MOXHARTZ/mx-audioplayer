@@ -1,5 +1,4 @@
 if not Config.Boombox.Enable then return end
-local audioplayer = require 'client.modules.audioplayer'
 CreateThread(function()
     Info('Boombox is enabled')
 end)
@@ -51,37 +50,35 @@ local function openUi()
     local currentBoombox = boombox
     if not NetworkGetEntityIsNetworked(currentBoombox) then return Warning('Boombox is not networked') end
     local netId = NetworkGetNetworkIdFromEntity(currentBoombox)
-    Debug('netId', netId)
-    radioSettings.customId = netId
+    radioSettings.id = netId
     audioplayer:open(radioSettings, {
-        onPlay = function(sound)
+        onPlay = function(soundId)
             if not DoesEntityExist(currentBoombox) then
-                TriggerServerEvent('mx-audioplayer:destroy', sound.soundId)
+                TriggerServerEvent('mx-audioplayer:destroy', soundId)
                 return
             end
-            local volume = AudioVolume
-            TriggerServerEvent('mx-audioplayer:attach', sound.soundId, NetworkGetNetworkIdFromEntity(currentBoombox), volume)
+            local volume = audioplayer:getPlayer().volume
+            TriggerServerEvent('mx-audioplayer:attach', soundId, NetworkGetNetworkIdFromEntity(currentBoombox), volume)
         end,
-        onLogin = function(soundId, token)
+        onLogin = function(_, _, token)
             Entity(currentBoombox).state:set('audioplayer_account', token, true)
         end,
-        onLogout = function(soundId)
+        onLogout = function(_, _)
             Entity(currentBoombox).state:set('audioplayer_account', nil, true)
         end,
-        autoLogin = function(soundId)
+        autoLogin = function(_, _, token)
             local entity = Entity(currentBoombox)
             if not entity.state.audioplayer_account then
-                return Debug('Auto login: No account found')
+                return
             end
             local account = entity.state.audioplayer_account
             local success = Login({
                 token = account
             })
             if not success then
-                Notification('This user credentials has been modified. Please log in again.', 'error')
+                Notification(i18n.t('login.this_user_credentials_has_been_modified'), 'error')
                 entity.state:set('audioplayer_account', nil, true)
             end
-            Debug('Auto Login: success state', success)
         end
     })
 end

@@ -74,7 +74,6 @@ function db.getUserId(username, password)
         return cache
     end
     local id = MySQL.prepare.await(Query.SELECT_USER_ID, { username, password }) --[[@as number | nil]]
-    Debug('db.getUserId', id)
     SaveTemp('user_id', id, tempId)
     return id
 end
@@ -89,7 +88,6 @@ function db.getUser(username, password)
         return cache
     end
     local user = MySQL.prepare.await(Query.SELECT_USER, { username, password }) --[[@as Account | nil]]
-    Debug('db.getUser', user)
     SaveTemp('user', user, tempId)
     return user
 end
@@ -101,21 +99,18 @@ function db.getUserById(id)
     if cache then
         return cache
     end
-    Debug('db.getUserById', id)
     local user = MySQL.prepare.await(Query.SELECT_USER_BY_ID, { id }) --[[@as Account | nil]]
-    Debug('db.getUserById', user)
     SaveTemp('user_by_id', user, id)
     return user
 end
 
 ---@param userId number
----@return Playlist[] | nil
+---@return PlaylistData[] | nil
 function db.getPlaylist(userId)
-    local cache = UseTemp('playlist', userId) ---@type Playlist[] | nil
+    local cache = UseTemp('playlist', userId) ---@type PlaylistData[] | nil
     if cache then
         return cache
     end
-    Debug('db.getPlaylist', userId)
     local data = MySQL.prepare.await(Query.SELECT_PLAYLIST, { userId })
     data = data and json.decode(data) or {}
     SaveTemp('playlist', data, userId)
@@ -154,7 +149,7 @@ function db.updateUser(identifier, user, data)
         return false
     end
     if userData.creator ~= identifier then
-        Error('db.updateUser ::: User trying to exploit update profile event', id, identifier)
+        Error('db.updateUser ::: User trying to exploit update profile event', identifier)
         return false
     end
     if not data then
@@ -165,7 +160,6 @@ function db.updateUser(identifier, user, data)
         AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= user.id end)
         Debug('db.updateUser', userData.username, 'changed password. Removing from AudioPlayerUsers')
     end
-    Debug('db.updateUser', data)
     local str = 'UPDATE audioplayer_users SET'
     local params = {}
     for k, v in pairs(data) do
@@ -175,8 +169,38 @@ function db.updateUser(identifier, user, data)
     str = str:sub(1, -2) -- Remove last comma
     str = str .. ' WHERE id = :id'
     params.id = user.accountId
-    Debug('params', params)
     DeleteTemp('user', userData.username .. userData.password)
     DeleteTemp('user_by_id', user.accountId)
     return MySQL.update.await(str, params)
 end
+
+CreateThread(function()
+    local hasUsers = pcall(MySQL.scalar.await, 'SELECT 1 FROM audioplayer_users')
+    if not hasUsers then
+        MySQL.query([[
+           CREATE TABLE `audioplayer_users` (
+                `id` INT(11) NOT NULL AUTO_INCREMENT,
+                `username` VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8mb3_general_ci',
+                `password` VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8mb3_general_ci',
+                `creator` VARCHAR(90) NOT NULL DEFAULT '0' COLLATE 'utf8mb3_general_ci',
+                `firstname` VARCHAR(80) NULL DEFAULT '' COLLATE 'utf8mb3_general_ci',
+                `lastname` VARCHAR(80) NULL DEFAULT '' COLLATE 'utf8mb3_general_ci',
+                `avatar` TEXT NULL DEFAULT NULL COLLATE 'utf8mb3_general_ci',
+                PRIMARY KEY (`id`) USING BTREE
+            )
+        ]])
+    end
+
+    local hasPlaylists = pcall(MySQL.scalar.await, 'SELECT 1 FROM audioplayer_playlists')
+    if not hasPlaylists then
+        MySQL.query([[
+            CREATE TABLE `audioplayer_playlists` (
+                `id` INT(11) NOT NULL AUTO_INCREMENT,
+                `userId` INT(11) NOT NULL,
+                `data` TEXT NULL DEFAULT NULL COLLATE 'utf8mb3_general_ci',
+                PRIMARY KEY (`id`) USING BTREE,
+                UNIQUE INDEX `userId` (`userId`) USING BTREE
+            )
+        ]])
+    end
+end)

@@ -1,14 +1,6 @@
-InvokingResource = nil
-CurrentResourceName = GetCurrentResourceName()
-local audioplayer = require 'client.modules.audioplayer'
 local UiReady = false
-CustomId = nil
-CurrentSounds = {}
-local playlist, audioplayerHandlers = {}, {}
+local playlist = {}
 Surround = exports['mx-surround']
----@type number -- Audio Player's custom volume
-AudioVolume = 1
-local playQuietly = false
 local vehicleEvents = {
     ['enter'] = 'mx-audioplayer:vehicleEntered',
     ['leave'] = 'mx-audioplayer:vehicleLeft'
@@ -81,91 +73,95 @@ function SendReactMessage(message, data)
 end
 
 RegisterNUICallback('handleChangePage', function(data, cb)
+    cb('ok')
     if data.page == 'login' then
         audioplayer:triggerListener('autoLogin')
     end
 end)
 
-
-
 exports('open', audioplayer.open)
 
 exports('getVolume', function()
-    local soundData = audioplayer:getSoundData()
-    return soundData and soundData.volume or 1
+    local player = audioplayer:getPlayer()
+    return player.volume or 1
 end)
 
 RegisterNUICallback('play', function(data, cb)
     local soundData = data.soundData
-    if not soundData then
-        return cb(false)
-    end
-    local url = soundData.url
-    local id = audioplayer:getId()
+    if not soundData then return cb(false) end
+
+    local id = audioplayer.id
+    local options = audioplayer.options
     local soundId = soundData.soundId .. id
-    local _volume = data.volume
-    local audioPlayerData = audioplayer.options
-    local coords = audioPlayerData?.coords or GetEntityCoords(PlayerPed) -- need instant coords
-    soundData.soundId = soundId
-    soundData.playing = true
-    soundData.volume = _volume
-    local playerData = lib.callback.await('mx-audioplayer:play', 0, id, url, soundId, soundData, _volume, playQuietly, coords, audioPlayerData)
-    if not playerData then
-        return cb(false)
-    end
-    -- local loaded = Surround:soundIsLoaded(soundId) -- wait for the sound to load
-    -- if not loaded then return cb(false) end        -- if it doesn't load, return false
-    local maxDuration = Surround:getMaxDuration(soundId)
-    soundData.duration = maxDuration
-    audioplayer:setPlayerData(playerData)
-    audioplayer:triggerListener('onPlay')
-    cb(maxDuration)
+    local coords = options?.coords or GetEntityCoords(PlayerPed) -- need instant coords
+
+    local player = lib.callback.await('mx-audioplayer:play', false, id, {
+        soundId = soundId,
+        soundData = soundData,
+        coords = coords,
+        options = options
+    })
+    if not player then return cb(false) end
+    cb(true)
+end)
+
+RegisterNetEvent('mx-audioplayer:setWaitingForResponse', function(id, loading)
+    if audioplayer.id ~= id then return end
+    SendReactMessage('setWaitingForResponse', loading)
+end)
+
+RegisterNetEvent('mx-audioplayer:setPlaylist', function(playlist)
+    audioplayer:setPlaylist(playlist)
 end)
 
 RegisterNUICallback('togglePlay', function(data, cb)
-    local id, soundData = audioplayer:getId(), audioplayer:getSoundData()
-    if not soundData then
+    local id, player = audioplayer.id, audioplayer:getPlayer()
+    if not player then
         return cb('ok')
     end
-    soundData.playing = data.playing
-    if soundData.playing then
+    audioplayer:updatePlayerData({
+        playing = data.playing
+    })
+    local soundId = player.soundId
+    if player.playing then
         audioplayer:triggerListener('onResume')
-        TriggerServerEvent('mx-audioplayer:resume', id, soundData.soundId)
+        TriggerServerEvent('mx-audioplayer:resume', id, soundId)
     else
         audioplayer:triggerListener('onPause')
-        TriggerServerEvent('mx-audioplayer:pause', id, soundData.soundId)
+        TriggerServerEvent('mx-audioplayer:pause', id, soundId)
     end
     cb('ok')
 end)
 
 RegisterNUICallback('getCurrentSongDuration', function(data, cb)
-    local soundData = audioplayer:getSoundData()
-    if not soundData then return cb(0) end
-    local maxDuration = Surround:getMaxDuration(soundData.soundId)
+    local player = audioplayer:getPlayer()
+    if not player then return cb(0) end
+    local maxDuration = Surround:getMaxDuration(player.soundId)
     cb(maxDuration)
 end)
 
 RegisterNUICallback('getCurrentSongTimeStamp', function(data, cb)
-    local soundData = audioplayer:getSoundData()
-    if not soundData then return cb(0) end
-    local timeStamp = Surround:getTimeStamp(soundData.soundId)
+    local player = audioplayer:getPlayer()
+    if not player then return cb(0) end
+    local timeStamp = Surround:getTimeStamp(player.soundId)
     cb(math.floor(timeStamp))
 end)
 
 RegisterNUICallback('setVolume', function(data, cb)
-    local id, soundData = audioplayer:getId(), audioplayer:getSoundData()
-    if not soundData then return cb(0) end
-    AudioVolume = data.volume
-    soundData.volume = data.volume
-    TriggerServerEvent('mx-audioplayer:setVolume', id, soundData.soundId, data.volume)
+    local id, player = audioplayer.id, audioplayer:getPlayer()
+    if not player then return cb(0) end
+    audioplayer:updatePlayerData({
+        volume = data.volume
+    })
+    TriggerServerEvent('mx-audioplayer:setVolume', id, player.soundId, data.volume)
     audioplayer:triggerListener('onVolumeChange')
     cb('ok')
 end)
 
 RegisterNUICallback('seek', function(data, cb)
-    local soundData = audioplayer:getSoundData()
-    if not soundData then return cb(0) end
-    TriggerServerEvent('mx-audioplayer:seek', soundData.soundId, data.position)
+    local player = audioplayer:getPlayer()
+    if not player then return cb(0) end
+    TriggerServerEvent('mx-audioplayer:seek', player.soundId, data.position)
     audioplayer:triggerListener('onSeek')
     cb('ok')
 end)
@@ -190,7 +186,7 @@ end)
 
 RegisterNUICallback('setPlaylist', function(data, cb)
     playlist = data.playlist
-    local id = audioplayer:getId()
+    local id = audioplayer.id
     TriggerServerEvent('mx-audioplayer:setPlaylist', id, playlist)
     cb('ok')
 end)
@@ -198,10 +194,9 @@ end)
 ---@param data Settings
 RegisterNUICallback('saveSettings', function(data, cb)
     SetResourceKvp('mx_audioplayer_settings', json.encode(data))
-    Debug('Settings saved', data)
     if data.minimalHud then
         audioplayer:toggleShortDisplay(true, {
-            customId = audioplayer.shortDisplay.customId,
+            id = audioplayer.shortDisplay.customId,
             vehicle = IsInVehicle and CurrentVehicle or nil
         })
     end
@@ -209,10 +204,7 @@ RegisterNUICallback('saveSettings', function(data, cb)
 end)
 
 RegisterNUICallback('close', function(data, cb)
-    local id = audioplayer:getId()
-    SetNuiFocus(false, false)
-    audioplayer:triggerListener('onClose')
-    TriggerServerEvent('mx-audioplayer:disableUi', id, false)
+    audioplayer:close()
     cb('ok')
 end)
 
@@ -255,15 +247,19 @@ end)
 local function checkPlaylistAlreadyExist(playlist)
     local _playlist = GetResourceKvpString('mx_audioplayer_playlist')
     _playlist = _playlist and json.decode(_playlist) or {}
-    local finded = table.find(_playlist, function(v)
+    local find = table.find(_playlist, function(v)
         return v.id == playlist.id
     end)
-    return finded
+    return find
 end
 
 RegisterNetEvent('mx-audioplayer:receivePlaylist', function(playlist, senderName)
     if checkPlaylistAlreadyExist(playlist) then
-        return Notification(i18n.t('playlist.already_exist', senderName, playlist.name), 'error')
+        Notification(i18n.t('playlist.already_exist', {
+            senderName = senderName,
+            playlistName = playlist.name
+        }), 'error')
+        return
     end
     SendNUIMessage({
         action = 'receivePlaylist',
@@ -273,7 +269,25 @@ RegisterNetEvent('mx-audioplayer:receivePlaylist', function(playlist, senderName
     _playlist = _playlist and json.decode(_playlist) or {}
     table.insert(_playlist, playlist)
     SetResourceKvp('mx_audioplayer_playlist', json.encode(_playlist))
-    Notification(i18n.t('playlist.received', senderName, playlist.name), 'success')
+    Notification(i18n.t('playlist.received', {
+        senderName = senderName,
+        playlistName = playlist.name
+    }), 'success')
+end)
+
+---@param data Player
+RegisterNetEvent('mx-audioplayer:playSound', function(data)
+    local _id = audioplayer.id
+    if _id ~= data.id then return end
+    if audioplayer.shortDisplay.visible then
+        audioplayer:toggleShortDisplay(true, {
+            vehicle = CurrentVehicle,
+            id = data.id
+        })
+    end
+    audioplayer:setPlayerData(data)
+    audioplayer:triggerListener('onPlay')
+    SendReactMessage('setCurrentSong', data)
 end)
 
 function DrawText3D(x, y, z, text)

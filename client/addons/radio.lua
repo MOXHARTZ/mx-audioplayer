@@ -1,5 +1,4 @@
 if not Config.Radio.Enable then return end
-local audioplayer = require 'client.modules.audioplayer'
 CreateThread(function()
     Info('Radio is enabled')
 end)
@@ -17,43 +16,39 @@ local function openUi()
     local _vehicle = CurrentVehicle
     local plate = mathTrim(GetVehicleNumberPlateText(CurrentVehicle))
     local radioSettings = {
-        customId = plate,
+        id = plate,
         silent = true
     }
     audioplayer:open(radioSettings, {
-        onPlay = function(sound)
-            Debug('onPlay ::: sound', sound)
+        onPlay = function(soundId)
             if not DoesEntityExist(_vehicle) then
-                TriggerServerEvent('mx-audioplayer:destroy', sound.soundId)
+                TriggerServerEvent('mx-audioplayer:destroy', soundId)
                 return
             end
-            local volume = AudioVolume
-            TriggerServerEvent('mx-audioplayer:attach', sound.soundId, NetworkGetNetworkIdFromEntity(_vehicle), volume, IsInVehicle)
+            local volume = audioplayer:getPlayer().volume
+            TriggerServerEvent('mx-audioplayer:attach', soundId, NetworkGetNetworkIdFromEntity(_vehicle), volume, IsInVehicle)
         end,
-        onLogin = function(soundId, token)
-            Debug('Login', soundId, token)
+        onLogin = function(_, _, token)
             if not IsInVehicle then return end
             Entity(CurrentVehicle).state:set('audioplayer_account', token, true)
         end,
-        onLogout = function(soundId)
-            Debug('Logout', soundId)
+        onLogout = function(_, _)
             if not IsInVehicle then return end
             Entity(CurrentVehicle).state:set('audioplayer_account', nil, true)
         end,
-        autoLogin = function(soundId)
+        autoLogin = function(_, _, token)
             if not IsInVehicle then return end
             if not Entity(CurrentVehicle).state.audioplayer_account then
-                return Debug('Auto login: No account found')
+                return
             end
             local account = Entity(CurrentVehicle).state.audioplayer_account
             local success = Login({
                 token = account
             })
             if not success then
-                Notification('This user credentials has been modified. Please log in again.', 'error')
+                Notification(i18n.t('login.this_user_credentials_has_been_modified'), 'error')
                 Entity(CurrentVehicle).state:set('audioplayer_account', nil, true)
             end
-            Debug('Auto Login: success state', success)
         end,
     })
 end
@@ -84,7 +79,7 @@ AddEventHandler('mx-audioplayer:vehicleEntered', function(vehicle)
     local plate = mathTrim(GetVehicleNumberPlateText(vehicle))
     audioplayer:toggleShortDisplay(true, {
         vehicle = vehicle,
-        customId = plate
+        id = plate
     })
     if not Config.Radio.DisableDefaultRadio then
         return
@@ -100,34 +95,15 @@ AddEventHandler('mx-audioplayer:vehicleLeft', function(vehicle)
     audioplayer:toggleShortDisplay(false)
 end)
 
-RegisterNetEvent('mx-audioplayer:playSound', function(id)
-    if not InvokingResource or not CustomId then
-        return
+RegisterNetEvent('mx-audioplayer:disableUi', function(source, id, disabled)
+    local _id = audioplayer.id
+    if id ~= _id then return end
+    if disabled then
+        audioplayer:toggleShortDisplay(false)
+    elseif audioplayer.shortDisplay.vehicle == CurrentVehicle then
+        audioplayer:toggleShortDisplay(true, {
+            vehicle = CurrentVehicle,
+            id = _id
+        })
     end
-    local _id = InvokingResource .. CustomId
-    if _id ~= id then
-        return Debug('playSound ::: id mismatch', _id, id)
-    end
-    audioplayer:toggleShortDisplay(true, {
-        vehicle = CurrentVehicle,
-        customId = CustomId
-    })
 end)
-
--- RegisterNetEvent('mx-audioplayer:disableUi', function(source, id, state)
---     if GetPlayerServerId(PlayerId()) == source then
---         return
---     end
---     if not InvokingResource or not CustomId then
---         return
---     end
---     local _id = InvokingResource .. CustomId
---     if state and _id == id then
---         ToggleShortDisplay(false, ShortDisplayData)
---     elseif ShortDisplayData.vehicle == CurrentVehicle then
---         ToggleShortDisplay(true, {
---             vehicle = CurrentVehicle,
---             customId = CustomId
---         })
---     end
--- end)

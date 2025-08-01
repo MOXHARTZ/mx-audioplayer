@@ -1,81 +1,59 @@
 {
     "or": "OR",
-    "header.title": "Title",
-    "header.artist": "Artist",
-    "header.playlist": "Playlist",
-    "playlist.empty": "No songs in playlist",
-    "playlist.not_selected": "No song selected",
-    "playlist.deleted_songs": "Songs are deleted successfully",
-    "playlist.cleared": "Playlist cleared successfully",
-    "playlist.no_more_songs": "No more songs to play",
-    "playlist.song_already_playing": "Song is already playing",
-    "playlist.song_not_exist": "Song does not exist",
-    "playlist.search": "Search…",
-    "playlist.select_playlist": "First, select a playlist. You can create a playlist by right clicking the left side",
-    "playlist.dialog.created": "Playlist created successfully",
-    "playlist.dialog.name": "Name",
-    "playlist.dialog.description": "Description",
-    "playlist.dialog.image_url": "Image Url",
-    "playlist.dialog.create": "Create a playlist",
-    "playlist.dialog.edit": "Edit details",
-    "playlist.context.edit": "Edit Details",
-    "playlist.context.delete": "Delete Playlist",
-    "playlist.context.create": "Create Playlist",
-    "playlist.context.share": "Share Playlist To A Player",
-    "playlist.context.actions": "Actions",
-    "playlist.context.danger": "Danger Zone",
-    "edit.clear": "Delete all",
-    "edit.delete": "Delete Selected Songs",
-    "edit.cancel": "Cancel",
-    "search_track.content": "You can add a song to the playlist by entering a track name or you can pass here by a spotify, youtube",
-    "search_track.title": "Add a song to the playlist",
-    "search_track.subtitle": "Search and discover new music",
-    "search_track.placeholder": "Track name or url (supports playlist and album)",
-    "search_track.invalid_url": "Invalid url",
-    "general.unknown": "Unknown",
-    "general.something_went_wrong": "Something went wrong",
-    "general.ui.disabled": "At the moment you can't open the radio cause its using by another player.",
-    "general.edit.enabled": "Edit mode is enabled. Now you can sort the playlist and songs by dragging",
-    "general.cancel": "Cancel",
-    "general.done": "Done",
-    "general.delete.confirm": "Please click again delete to confirm.",
-    "shared.title": "Nearby Players",
-    "shared.no_players": "No one was found to share the playlist",
-    "shared.success": "Playlist shared successfully",
-    "playlist.already_exist": "You received a playlist from %s but you already have that playlist. So we don't add it to your playlists. Playlist Name: %s",
-    "playlist.received": "You received a playlist from %s. Playlist Name: %s",
-    "boombox.target.open": "Open",
-    "boombox.target.destroy": "Destroy Boombox",
-    "boombox.target.pickup": "Pickup Boombox",
-    "boombox.drop.text": "Press [H] to drop the boombox",
-    "dj.open.menu": "Press [E] to open the DJ menu",
-    "dj.target.open": "Open UI",
-    "radio.command": "Open Car Radio",
-    "search_track.add_all": "Add all to playlist",
-    "general.currently_playing": "Currently Playing",
-    "general.play": "Play",
-    "playlist.confirm.delete_all.title": "Are you sure you want to delete all songs?",
-    "playlist.confirm.delete_all.content": "This action can't be undone",
-    "modal.confirm": "Confirm",
-    "modal.cancel": "Cancel",
-    "settings.title": "Settings",
-    "settings.minimal_hud": "Minimal HUD",
-    "settings.minimal_hud.description": "When you activate it. You can manage the songs in your playlist with the shortcuts even when you close the menu. To learn the shortcuts, move your mouse to the play, forward and back buttons.",
-    "settings.minimal_hud.position.title": "Minimal Hud Position",
-    "settings.minimal_hud.position.top_left": "Top Left",
-    "settings.minimal_hud.position.top_left_description": "The minimal hud will be placed on the top left corner of your screen",
-    "settings.minimal_hud.position.top_right": "Top Right",
-    "settings.minimal_hud.position.top_right_description": "The minimal hud will be placed on the top right corner of your screen",
-    "settings.minimal_hud.position.bottom_left": "Bottom Left",
-    "settings.minimal_hud.position.bottom_left_description": "The minimal hud will be placed on the bottom left corner of your screen",
-    "settings.minimal_hud.position.bottom_right": "Bottom Right",
-    "settings.minimal_hud.position.bottom_right_description": "The minimal hud will be placed on the bottom right corner of your screen",
-    "keyboard.shortcut.toggle": "Play/Pause",
-    "keyboard.shortcut.volume": "Volume Up/Down",
-    "keyboard.shortcut.forward": "Previous/Next",
-    "settings.subtitle": "Customize your audio experience",
     "you_have_logged_out": "You have logged out of your account.",
+    "required": "Please fill out this field",
+    "header": {
+        "title": "Title",
+        "artist": "Artist",
+        "playlist": "Playlist",
+        "edit_profile": "Edit Profile",
+        "logout": "Logout"
+    },
+    "profile": {
+        "title": "Manage Account",
+        "username": "New Username",
+        "username_placeholder": "Update your username",
+        "password": "New Password",
+        "password_placeholder": "Enter your password",
+        "avatar": "Avatar Url",
+        "avatar_placeholder": "Enter your avatar URL",
+        "delete_account": "Delete Account",
+        "update_account": "Update Account"
+    },
     "playlist": {
+        "empty": "No songs in playlist",
+        "not_selected": "No song selected",
+        "deleted_songs": "Songs are deleted successfully",
+        "cleared": "Playlist cleared successfully",
+        "no_more_songs": "No more songs to play",
+        "song_already_playing": "Song is already playing",
+        "song_not_exist": "Song does not exist",
+        "search": "Search…",
+        "select_playlist": "First, select a playlist. You can create a playlist by right clicking the left side",
+        "already_exist": "You received a playlist from {{senderName}} but you already have that playlist. So we don't add it to your playlists. Playlist Name: {{playlistName}}",
+        "received": "You received a playlist from {{senderName}}. Playlist Name: {{playlistName}}",
+        "dialog": {
+            "created": "Playlist created successfully",
+            "name": "Name",
+            "description": "Description",
+            "image_url": "Image Url",
+            "create": "Create a playlist",
+            "edit": "Edit details"
+        },
+        "context": {
+            "edit": "Edit Details",
+            "delete": "Delete Playlist",
+            "create": "Create Playlist",
+            "share": "Share Playlist To A Player",
+            "actions": "Actions",
+            "danger": "Danger Zone"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "Are you sure you want to delete all songs?",
+                "content": "This action can't be undone"
+            }
+        },
         "no_songs": "No songs available",
         "ready_to_play": "Ready to play",
         "song": "Song",
@@ -83,13 +61,92 @@
         "selected": "Selected",
         "loading": "Loading playlist...",
         "no_results": "No results",
-        "empty": "Empty Playlist",
         "no_song_match": "No songs match your search",
         "add_some_songs": "Add some songs to get started"
     },
+    "edit": {
+        "clear": "Delete all",
+        "delete": "Delete Selected Songs",
+        "cancel": "Cancel"
+    },
+    "search_track": {
+        "content": "You can add a song to the playlist by entering a track name or you can pass here by a spotify, youtube",
+        "title": "Add a song to the playlist",
+        "subtitle": "Search and discover new music",
+        "placeholder": "Track name or url (supports playlist and album)",
+        "invalid_url": "Invalid url",
+        "add_all": "Add all to playlist"
+    },
+    "general": {
+        "play": "Play",
+        "unknown": "Unknown",
+        "something_went_wrong": "Something went wrong",
+        "ui.disabled": "At the moment you can't open the radio cause its using by another player.",
+        "edit.enabled": "Edit mode is enabled. Now you can sort the playlist and songs by dragging",
+        "cancel": "Cancel",
+        "done": "Done",
+        "delete.confirm": "Please click again delete to confirm.",
+        "currently_playing": "Currently Playing"
+    },
+    "shared": {
+        "title": "Nearby Players",
+        "no_players": "No one was found to share the playlist",
+        "success": "Playlist shared successfully"
+    },
+    "boombox": {
+        "target": {
+            "open": "Open",
+            "destroy": "Destroy Boombox",
+            "pickup": "Pickup Boombox"
+        },
+        "drop": {
+            "text": "Press [H] to drop the boombox"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "Press [E] to open the DJ menu"
+        },
+        "target": {
+            "open": "Open UI"
+        }
+    },
+    "radio": {
+        "command": "Open Car Radio"
+    },
+    "modal": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+    },
+    "settings": {
+        "title": "Settings",
+        "subtitle": "Customize your audio experience",
+        "minimal_hud": {
+            "title": "Minimal HUD",
+            "description": "When you activate it. You can manage the songs in your playlist with the shortcuts even when you close the menu. To learn the shortcuts, move your mouse to the play, forward and back buttons.",
+            "position": {
+                "title": "Minimal Hud Position",
+                "top_left": "Top Left",
+                "top_left_description": "The minimal hud will be placed on the top left corner of your screen",
+                "top_right": "Top Right",
+                "top_right_description": "The minimal hud will be placed on the top right corner of your screen",
+                "bottom_left": "Bottom Left",
+                "bottom_left_description": "The minimal hud will be placed on the bottom left corner of your screen",
+                "bottom_right": "Bottom Right",
+                "bottom_right_description": "The minimal hud will be placed on the bottom right corner of your screen"
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "Play/Pause",
+            "volume": "Volume Up/Down",
+            "forward": "Previous/Next"
+        }
+    },
     "login": {
         "title": "Welcome Back",
-        "subtitle": "Sign in to your audio paradise",
+        "subtitle": "Sign in",
         "username": "Username",
         "password": "Password",
         "username_placeholder": "Enter your username",
@@ -99,11 +156,12 @@
         "need_to_create_account": "Need to create an account?",
         "sign_up": "Sign Up",
         "login_successful": "Login successful",
-        "invalid_username_or_password": "Invalid username or password"
+        "invalid_username_or_password": "Invalid username or password",
+        "this_user_credentials_has_been_modified": "This user credentials has been modified. Please log in again."
     },
     "register": {
         "title": "Join the Audio Player",
-        "subtitle": "Create your account and start your journey",
+        "subtitle": "Create your account",
         "firstname": "First Name",
         "lastname": "Last Name",
         "firstname_placeholder": "Enter your first name",

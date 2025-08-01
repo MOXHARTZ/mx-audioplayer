@@ -1,5 +1,5 @@
 while not Version do Wait(0) end
-local versionCheck = Version.checkScriptVersion('mx-surround', '2.4.8')
+local versionCheck = Version.checkScriptVersion('mx-surround', '3.0.0')
 if not versionCheck then return end
 
 -- Audioplayer list for each id
@@ -30,9 +30,42 @@ local function generateToken()
     return token
 end
 
+---@param playlist PlaylistData[]
+---@param soundId string
+---@return {playlistIndex: number, songIndex: number, playlistId: string, songId: string} | nil
+local function getPlaylistSound(playlist, soundId)
+    for i, v in pairs(playlist) do
+        for j, w in pairs(v.songs) do
+            if w.soundId == soundId then
+                return {
+                    playlistIndex = i,
+                    songIndex = j,
+                    playlistId = v.id,
+                    songId = w.id,
+                }
+            end
+        end
+    end
+    return nil
+end
+
+---@class PlaySound
+---@field soundId string -- soundData.soundId combines with `id` to make a real unique id for each player.
+---@field soundData PlaylistSong
+---@field coords vector3
+---@field options AudioPlayerOptions
+---@field netId? number
+
+-- Clarification:
+-- soundId is the id of the sound that is being played.
+-- `soundData.soundId` is the REAL id of the sound that is being played.
+-- The difference is the soundId is the id is `soundId` combines with `id` to make a real unique id for each player.
+-- Otherwise, if we use only `soundId`, the sound will be overwrite when a account use multiple audioplayers.
+-- NOTE: this need to be change in the future, its too complex to understand. And hard to maintain.
+
 ---@param source number
 ---@param id string
----@param data table
+---@param data PlaySound
 ---@return Player | false
 local function playSound(source, id, data)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
@@ -40,70 +73,105 @@ local function playSound(source, id, data)
         Error('mx-audioplayer:play ::: User not found', id)
         return false
     end
+    local options, soundId = data.options or {}, data.soundId
     if user.player?.soundId then
         Surround:Destroy(-1, user.player.soundId)
         user.player.soundId = nil
-        Debug('mx-audioplayer:play ::: Destroying previous sound', user.player.soundId)
     end
-    data.volume = data.playQuietly and 0.0 or data.volume
-    local success = Surround:Play(-1, data.soundId, data.url, data.coords, false, data.volume, data.panner)
+
+    local volume = options.silent and 0.0 or (user.player.volume or 1)
+
+    local playlist = db.getPlaylist(user.accountId)
+    assert(playlist, 'mx-audioplayer:play ::: Playlist not found', user.accountId)
+
+    local soundData = getPlaylistSound(playlist, data.soundData.soundId)
+    assert(soundData, 'mx-audioplayer:play ::: Sound not found', data.soundData.soundId, playlist)
+
+    if not data.soundData.url then
+        -- first param is the query, second param is the limit
+        local response = Surround:searchTrack(data.soundData.title .. ' - ' .. data.soundData.artist, 1)
+        if not response then
+            Error('mx-audioplayer:play ::: Failed to search track', data.soundData.title .. ' - ' .. data.soundData.artist)
+            return false
+        end
+        local url = 'https://www.youtube.com/watch?v=' .. response[1].videoId
+        playlist[soundData.playlistIndex].songs[soundData.songIndex].url = url
+        data.soundData.url = url
+        db.setPlaylist(user.accountId, playlist)
+        TriggerClientEvent('mx-audioplayer:setPlaylist', source, playlist)
+    end
+
+    local success = Surround:Play(-1, soundId, data.soundData.url, data.coords, false, volume, options.panner)
     if not success then
         return false
     end
-    Surround:onDestroy(data.soundId, function()
+
+    if data.netId then
+        Surround:attachEntity(-1, soundId, data.netId)
+    end
+
+    Surround:onDestroy(soundId, function()
         if not DoesPlayerExist(source) then return Debug('mx-audioplayer:destroy ::: Player not found', source) end
         TriggerClientEvent('mx-audioplayer:destroy', source, id)
         Debug('mx-audioplayer:play ::: Sound destroyed', data.soundId)
     end)
-    Surround:onPlayEnd(data.soundId, function()
+
+    Surround:onPlayEnd(soundId, function()
         if not DoesPlayerExist(source) then return Debug('mx-audioplayer:playEnd ::: Player not found', source) end
+
+        -- fetch again, because player can change the playlist.
         local playlist = db.getPlaylist(user.accountId)
         if not playlist then
             return Debug('mx-audioplayer:playEnd ::: Playlist not found', user.accountId)
         end
-        local category = table.find(playlist, function(v) return v.id == id end)
-        if not category then
-            return Debug('mx-audioplayer:playEnd ::: Category not found', id, playlist)
+        local soundData = getPlaylistSound(playlist, data.soundData.soundId)
+        if not soundData then
+            return Debug('mx-audioplayer:playEnd ::: Sound not found', data.soundData.soundId, playlist)
         end
-        local currentTrack, currentTrackId = table.find(category, function(v) return v.soundId == data.soundId end)
-        if not currentTrack then
-            return Debug('mx-audioplayer:playEnd ::: Sound not found', data.soundId, playlist)
+        local playlistData = playlist[soundData.playlistIndex]
+        if soundData.songIndex == #playlistData.songs then
+            soundData.songIndex = 1
+        else
+            soundData.songIndex = soundData.songIndex + 1
         end
-        currentSound.playing = false
-        db.setPlaylist(user.accountId, playlist)
-        TriggerClientEvent('mx-audioplayer:playEnd', source, id)
-        Debug('mx-audioplayer:play ::: Sound ended', data.soundId)
+        local nextSound = playlistData.songs[soundData.songIndex]
+        if nextSound then
+            local netId = Surround:getSoundNetId(soundId)
+            TriggerClientEvent('mx-audioplayer:setWaitingForResponse', source, id, true)
+            options.silent = false
+            playSound(source, id, {
+                soundId = nextSound.soundId .. id,
+                soundData = nextSound,
+                coords = data.coords,
+                options = options,
+                netId = netId
+            })
+            TriggerClientEvent('mx-audioplayer:setWaitingForResponse', source, id, false)
+        end
     end)
-    if data.maxDistance then
-        Surround:setMaxDistance(-1, data.soundId, data.maxDistance)
+    if options.maxDistance then
+        Surround:setMaxDistance(-1, soundId, options.maxDistance)
     end
-    if not data.soundId then
-        return false
-    end
-    Surround:setDestroyOnFinish(-1, data.soundId, false)
+    Surround:setDestroyOnFinish(-1, soundId, false)
+
     user.player = {
         id = id,
-        soundId = data.soundId,
+        soundId = soundId,
         source = source,
-        soundData = data
+        soundData = data.soundData,
+        playing = true,
+        duration = 0
     }
-    TriggerClientEvent('mx-audioplayer:playSound', -1, id)
+
+    TriggerClientEvent('mx-audioplayer:playSound', source, user.player)
     return user.player
 end
 
 ---@param source number
+---@param data PlaySound
 ---@return Player | false
-lib.callback.register('mx-audioplayer:play', function(source, id, url, soundId, soundData, volume, playQuietly, coords, customData)
-    return playSound(source, id, {
-        url = url,
-        soundId = soundId,
-        soundData = soundData,
-        volume = volume,
-        playQuietly = playQuietly,
-        coords = coords,
-        panner = customData.panner,
-        maxDistance = customData.maxDistance,
-    })
+lib.callback.register('mx-audioplayer:play', function(source, id, data)
+    return playSound(source, id, data)
 end)
 
 local disabledUis = {}
@@ -126,9 +194,9 @@ AddEventHandler('playerDropped', function()
     for k, v in pairs(AudioPlayerAccounts) do
         if not v.player then goto continue end
         if v.player.source == src then
-            Surround:Destroy(-1, v)
+            Surround:Destroy(-1, v.player.soundId)
+            Debug('Player dropped we destroyed the sound', src, v.player.soundId)
             v.player = nil
-            Debug('Player dropped', src, v.player.soundId)
         end
         ::continue::
     end
@@ -140,8 +208,7 @@ RegisterNetEvent('mx-audioplayer:setVolume', function(id, soundId, volume)
         Error('mx-audioplayer:setVolume ::: User not found', id)
         return
     end
-    user.player.soundData.volume = volume
-    Debug('mx-audioplayer:setVolume', soundId, volume)
+    user.player.volume = volume
     Surround:setVolumeMax(-1, soundId, volume)
 end)
 
@@ -156,7 +223,7 @@ RegisterNetEvent('mx-audioplayer:resume', function(id, soundId)
         return
     end
     Surround:Resume(-1, soundId)
-    user.player.soundData.playing = true
+    user.player.playing = true
 end)
 
 RegisterNetEvent('mx-audioplayer:pause', function(id, soundId)
@@ -165,7 +232,7 @@ RegisterNetEvent('mx-audioplayer:pause', function(id, soundId)
         Error('mx-audioplayer:pause ::: User not found', id)
         return
     end
-    user.player.soundData.playing = false
+    user.player.playing = false
     Surround:Pause(-1, soundId)
 end)
 
@@ -181,7 +248,6 @@ RegisterNetEvent('mx-audioplayer:destroy', function(id, soundId)
     end
     user.player = nil
     Surround:Destroy(-1, soundId)
-    Debug('mx-audioplayer:destroy', soundId, user.player.soundId)
 end)
 
 RegisterNetEvent('mx-audioplayer:attach', function(soundId, netId, volume, isInVehicle)
@@ -189,7 +255,7 @@ RegisterNetEvent('mx-audioplayer:attach', function(soundId, netId, volume, isInV
     exports['mx-surround']:attachEntity(-1, soundId, netId)
     local wait = isInVehicle and 0 or 200
     Wait(wait)
-    exports['mx-surround']:setVolumeMax(-1, soundId, volume)
+    exports['mx-surround']:setVolumeMax(-1, soundId, volume or 1)
 end)
 
 function InitPlayersName(players)
@@ -240,7 +306,6 @@ RegisterNetEvent('mx-audioplayer:sharePlaylist', function(playlist, player)
         senderName, senderLastname = '', ''
     end
     senderName = senderName .. ' ' .. senderLastname
-    Debug('Received playlist from', senderName, 'to', player)
     TriggerClientEvent('mx-audioplayer:receivePlaylist', player, playlist, senderName)
 end)
 
@@ -281,13 +346,17 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
     if not user then
         return false
     end
-    AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = user.id }
-    local playlist = db.getPlaylist(user.id)
+    AudioPlayerAccounts[#AudioPlayerAccounts + 1] = {
+        id = id,
+        accountId = user.id,
+        player = {
+            playing = false,
+            volume = 1,
+        }
+    }
     user = userDboToDto(src, user)
-    Debug('mx-audioplayer:login', user)
     if not data.token then
         data.token = generateToken()
-        Debug('mx-audioplayer:login ::: Generated token', data.token)
         tokens[data.token] = {
             username = username,
             password = password
@@ -331,7 +400,6 @@ lib.callback.register('mx-audioplayer:register', function(source, id, username, 
         return false
     end
     AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = userId }
-    Debug('Account', userId, 'registered')
     return true
 end)
 
@@ -381,18 +449,16 @@ end)
 
 ---@param source number
 ---@param id string
----@return {playlist?: table, user?: Account, player: Player}
+---@return {playlist?: table, user?: Account, player: Player} | nil
 lib.callback.register('mx-audioplayer:getData', function(source, id)
     local src = source
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
-        Debug('mx-audioplayer:getData ::: User not found', id)
-        return { playlist = nil, user = nil }
+        return nil
     end
     local userData = db.getUserById(user.accountId)
     userData = userDboToDto(src, userData)
     local playlist = db.getPlaylist(user.accountId)
-    Debug('mx-audioplayer:getData', user.accountId, userData)
     return {
         playlist = playlist,
         user = userData,

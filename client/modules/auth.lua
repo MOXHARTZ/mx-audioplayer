@@ -1,9 +1,7 @@
-local audioplayer = require 'client.modules.audioplayer'
-
 ---@param data LoginData
 ---@return false | string
 function Login(data)
-    local id = audioplayer:getId()
+    local id = audioplayer.id
     local token = lib.callback.await('mx-audioplayer:login', 0, id, data)
     if token and audioplayer.options then
         audioplayer:open(audioplayer.options, audioplayer.handlers)
@@ -24,7 +22,7 @@ RegisterNUICallback('login', function(data, cb)
 end)
 
 RegisterNUICallback('logout', function(data, cb)
-    local id = audioplayer:getId()
+    local id = audioplayer.id
     local success = lib.callback.await('mx-audioplayer:logout', 0, id)
     if not success then
         Error('Failed to logout')
@@ -39,15 +37,14 @@ end)
 
 ---@param data CreateAccount
 RegisterNUICallback('register', function(data, cb)
-    local id = audioplayer:getId()
+    local id = audioplayer.id
     local success = lib.callback.await('mx-audioplayer:register', 0, id, data.username, data.password, data.firstname, data.lastname)
     cb('ok')
 end)
 
 ---@param data UpdateProfile
 RegisterNUICallback('updateProfile', function(data, cb)
-    Debug('updateProfile', data)
-    local id = audioplayer:getId()
+    local id = audioplayer.id
     local success = lib.callback.await('mx-audioplayer:updateProfile', 0, id, data)
     CloseUI()
     cb('ok')

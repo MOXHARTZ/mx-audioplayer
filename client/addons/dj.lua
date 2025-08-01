@@ -1,5 +1,4 @@
 if not Config.DJ.Enable then return end
-local audioplayer = require 'client.modules.audioplayer'
 
 local djSettings = {
     silent = false,
@@ -7,7 +6,7 @@ local djSettings = {
 }
 
 local function openUi(locationData)
-    djSettings.customId = locationData.id
+    djSettings.id = locationData.id
     djSettings.panner = locationData.panner
     djSettings.maxDistance = locationData.maxDistance
     audioplayer:open(djSettings)

@@ -3,7 +3,7 @@ game 'gta5'
 author 'https://github.com/MOXHARTZ'
 repository 'https://github.com/MOXHARTZ/mx-audioplayer'
 discord 'https://discord.gg/crbtDw9hT7'
-version '2.8.6'
+version '3.0.0'
 lua54 'yes'
 
 shared_scripts {
@@ -13,6 +13,7 @@ shared_scripts {
 
 client_scripts {
     'client/framework/*.lua',
+    'client/modules/audioplayer.lua',
     'client/*.lua',
     'client/modules/auth.lua',
     'client/addons/*.lua',
@@ -24,13 +25,13 @@ server_scripts {
     'server/*.lua'
 }
 
--- ui_page 'ui/build/index.html'
-ui_page 'http://localhost:5173/' -- dev
+ui_page 'web/build/index.html'
+-- ui_page 'http://localhost:3005/' -- dev
 
 files({
     'locales/*.json',
-    'ui/build/index.html',
-    'ui/build/**/*',
+    'web/build/index.html',
+    'web/build/**/*',
     'client/modules/audioplayer.lua',
 })
 

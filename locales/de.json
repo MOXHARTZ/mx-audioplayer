@@ -1,74 +1,180 @@
 {
-    "header.title": "Titel",
-    "header.artist": "Künstler",
-    "playlist.empty": "Keine Lieder in der Playlist",
-    "playlist.not_selected": "keine Lieder ausgewählt",
-    "playlist.deleted_songs": "Lieder wurden erfolgreich gelöscht",
-    "playlist.cleared": "Playlist erfolgreich geleert",
-    "playlist.no_more_songs": "Keine weiteren Lieder zum Abspielen",
-    "playlist.song_already_playing": "Lied wird bereits gespielt",
-    "playlist.song_not_exist": "Lied existiert nicht",
-    "playlist.search": "Suche…",
-    "playlist.select_playlist": "Wählen Sie zuerst eine Playlist. Sie können eine Playlist erstellen, indem Sie mit der rechten Maustaste auf die linke Seite klicken",
-    "playlist.dialog.created": "Playlist erfolgreich erstellt",
-    "playlist.dialog.name": "Name",
-    "playlist.dialog.description": "Beschreibung",
-    "playlist.dialog.image_url": "Bild-URL",
-    "playlist.dialog.create": "Erstelle eine Playlist",
-    "playlist.dialog.edit": "Details bearbeiten",
-    "playlist.context.edit": "Details bearbeiten",
-    "playlist.context.delete": "Playlist löschen",
-    "playlist.context.create": "Playlist erstellen",
-    "playlist.context.share": "Playlist einem Spieler teilen",
-    "edit.clear": "Alles löschen",
-    "edit.delete": "Ausgewählte Lieder löschen",
-    "edit.cancel": "Abbrechen",
-    "search_track.content": "Sie können ein Lied zur Playlist hinzufügen, indem Sie einen Liednamen eingeben, oder Sie können hier mit einer Spotify-, YouTube- oder SoundCloud-URL vorbeikommen",
-    "search_track.title": "Füge der Playlist ein Lied hinzu",
-    "search_track.placeholder": "Liedname oder URL",
-    "search_track.invalid_url": "Ungültige URL",
-    "general.unknown": "Unbekannt",
-    "general.something_went_wrong": "Etwas ist schiefgelaufen",
-    "general.ui.disabled": "Momentan können Sie das Radio nicht öffnen, da es von einem anderen Spieler verwendet wird.",
-    "general.edit.enabled": "Bearbeitungsmodus ist aktiviert. Jetzt können Sie die Playlist und die Lieder durch Ziehen sortieren",
-    "general.cancel": "Abbrechen",
-    "general.done": "Fertig",
-    "general.delete.confirm": "Bitte klicken Sie erneut auf Löschen, um zu bestätigen.",
-    "shared.title": "Nahe Spieler",
-    "shared.no_players": "Niemand wurde gefunden, um die Playlist zu teilen",
-    "shared.success": "Playlist erfolgreich geteilt",
-    "playlist.already_exist": "Sie haben eine Playlist von %s erhalten, aber Sie haben diese Playlist bereits. Deshalb fügen wir sie nicht zu Ihren Playlists hinzu. Playlist-Name: %s",
-    "playlist.received": "Sie haben eine Playlist von %s erhalten. Playlist-Name: %s",
-    "boombox.target.open": "Öffnen",
-    "boombox.target.destroy": "Boombox zerstören",
-    "boombox.target.pickup": "Boombox aufheben",
-    "boombox.drop.text": "Drücken Sie [H], um die Boombox fallen zu lassen",
-    "dj.open.menu": "Drücken Sie [E], um das DJ-Menü zu öffnen",
-    "dj.target.open": "Radio öffnen",
-    "radio.command": "Auto-Radio öffnen",
-    "header.playlist": "Wiedergabeliste",
-    "playlist.confirm.delete_all.content": "Möchten Sie wirklich alle Elemente in der Wiedergabeliste löschen?",
-    "general.currently_playing": "Aktuell spielt",
-    "playlist.confirm.delete_all.title": "Alle löschen bestätigen",
-    "modal.cancel": "Abbrechen",
-    "modal.confirm": "Bestätigen",
-    "playlist.context.danger": "Verwalten",
-    "search_track.add_all": "Alle hinzufügen",
-    "playlist.context.actions": "Aktionen",
-    "general.play": "Abspielen",
-    "settings.title": "Einstellungen",
-    "settings.minimal_hud": "Minimales HUD",
-    "settings.minimal_hud.description": "Wenn Sie es aktivieren, können Sie die Songs in Ihrer Playlist mit den Tastenkombinationen verwalten, selbst wenn Sie das Menü schließen. Um die Tastenkombinationen zu lernen, bewegen Sie Ihre Maus über die Wiedergabe-, Vorwärts- und Zurück-Tasten.",
-    "settings.minimal_hud.position.title": "Minimale HUD-Position",
-    "settings.minimal_hud.position.top_left": "Oben Links",
-    "settings.minimal_hud.position.top_left_description": "Das minimale HUD wird in der oberen linken Ecke deines Bildschirms platziert",
-    "settings.minimal_hud.position.top_right": "Oben Rechts",
-    "settings.minimal_hud.position.top_right_description": "Das minimale HUD wird in der oberen rechten Ecke deines Bildschirms platziert",
-    "settings.minimal_hud.position.bottom_left": "Unten Links",
-    "settings.minimal_hud.position.bottom_left_description": "Das minimale HUD wird in der unteren linken Ecke deines Bildschirms platziert",
-    "settings.minimal_hud.position.bottom_right": "Unten Rechts",
-    "settings.minimal_hud.position.bottom_right_description": "Das minimale HUD wird in der unteren rechten Ecke deines Bildschirms platziert",
-    "keyboard.shortcut.toggle": "Wiedergabe/Pause",
-    "keyboard.shortcut.volume": "Lautstärke Lauter/Leiser",
-    "keyboard.shortcut.forward": "Vorheriger/Nächster Titel"
+    "or": "ODER",
+    "you_have_logged_out": "Sie haben sich von Ihrem Konto abgemeldet.",
+    "required": "Bitte füllen Sie dieses Feld aus",
+    "header": {
+        "title": "Titel",
+        "artist": "Künstler",
+        "playlist": "Wiedergabeliste",
+        "edit_profile": "Profil bearbeiten",
+        "logout": "Abmelden"
+    },
+    "profile": {
+        "title": "Konto verwalten",
+        "username": "Neuer Benutzername",
+        "username_placeholder": "Aktualisieren Sie Ihren Benutzernamen",
+        "password": "Neues Passwort",
+        "password_placeholder": "Geben Sie Ihr Passwort ein",
+        "avatar": "Avatar URL",
+        "avatar_placeholder": "Geben Sie Ihre Avatar URL ein",
+        "delete_account": "Konto löschen",
+        "update_account": "Konto aktualisieren"
+    },
+    "playlist": {
+        "empty": "Keine Songs in der Wiedergabeliste",
+        "not_selected": "Kein Song ausgewählt",
+        "deleted_songs": "Songs wurden erfolgreich gelöscht",
+        "cleared": "Wiedergabeliste erfolgreich geleert",
+        "no_more_songs": "Keine weiteren Songs zum Abspielen",
+        "song_already_playing": "Song wird bereits abgespielt",
+        "song_not_exist": "Song existiert nicht",
+        "search": "Suchen…",
+        "select_playlist": "Wählen Sie zuerst eine Wiedergabeliste aus. Sie können eine Wiedergabeliste erstellen, indem Sie mit der rechten Maustaste auf die linke Seite klicken",
+        "already_exist": "Sie haben eine Wiedergabeliste von {{senderName}} erhalten, aber Sie haben diese bereits. Wir fügen sie daher nicht zu Ihren Wiedergabelisten hinzu. Wiedergabelistenname: {{playlistName}}",
+        "received": "Sie haben eine Wiedergabeliste von {{senderName}} erhalten. Wiedergabelistenname: {{playlistName}}",
+        "dialog": {
+            "created": "Wiedergabeliste erfolgreich erstellt",
+            "name": "Name",
+            "description": "Beschreibung",
+            "image_url": "Bild URL",
+            "create": "Wiedergabeliste erstellen",
+            "edit": "Details bearbeiten"
+        },
+        "context": {
+            "edit": "Details bearbeiten",
+            "delete": "Wiedergabeliste löschen",
+            "create": "Wiedergabeliste erstellen",
+            "share": "Wiedergabeliste mit einem Spieler teilen",
+            "actions": "Aktionen",
+            "danger": "Gefahrenbereich"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "Sind Sie sicher, dass Sie alle Songs löschen möchten?",
+                "content": "Diese Aktion kann nicht rückgängig gemacht werden"
+            }
+        },
+        "no_songs": "Keine Songs verfügbar",
+        "ready_to_play": "Bereit zum Abspielen",
+        "song": "Song",
+        "songs": "Songs",
+        "selected": "Ausgewählt",
+        "loading": "Wiedergabeliste wird geladen...",
+        "no_results": "Keine Ergebnisse",
+        "no_song_match": "Keine Songs entsprechen Ihrer Suche",
+        "add_some_songs": "Fügen Sie einige Songs hinzu, um zu beginnen"
+    },
+    "edit": {
+        "clear": "Alles löschen",
+        "delete": "Ausgewählte Songs löschen",
+        "cancel": "Abbrechen"
+    },
+    "search_track": {
+        "content": "Sie können einen Song zur Wiedergabeliste hinzufügen, indem Sie einen Tracknamen eingeben oder hier über spotify, youtube weiterleiten",
+        "title": "Song zur Wiedergabeliste hinzufügen",
+        "subtitle": "Suchen und entdecken Sie neue Musik",
+        "placeholder": "Trackname oder URL (unterstützt Wiedergabelisten und Alben)",
+        "invalid_url": "Ungültige URL",
+        "add_all": "Alle zur Wiedergabeliste hinzufügen"
+    },
+    "general": {
+        "play": "Abspielen",
+        "unknown": "Unbekannt",
+        "something_went_wrong": "Etwas ist schiefgelaufen",
+        "ui.disabled": "Derzeit können Sie das Radio nicht öffnen, da es von einem anderen Spieler verwendet wird.",
+        "edit.enabled": "Bearbeitungsmodus ist aktiviert. Jetzt können Sie die Wiedergabeliste und Songs durch Ziehen sortieren",
+        "cancel": "Abbrechen",
+        "done": "Fertig",
+        "delete.confirm": "Bitte klicken Sie erneut auf löschen, um zu bestätigen.",
+        "currently_playing": "Wird gerade abgespielt"
+    },
+    "shared": {
+        "title": "Spieler in der Nähe",
+        "no_players": "Niemand wurde gefunden, um die Wiedergabeliste zu teilen",
+        "success": "Wiedergabeliste erfolgreich geteilt"
+    },
+    "boombox": {
+        "target": {
+            "open": "Öffnen",
+            "destroy": "Boombox zerstören",
+            "pickup": "Boombox aufheben"
+        },
+        "drop": {
+            "text": "Drücken Sie [H], um die Boombox fallen zu lassen"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "Drücken Sie [E], um das DJ-Menü zu öffnen"
+        },
+        "target": {
+            "open": "UI öffnen"
+        }
+    },
+    "radio": {
+        "command": "Auto-Radio öffnen"
+    },
+    "modal": {
+        "confirm": "Bestätigen",
+        "cancel": "Abbrechen"
+    },
+    "settings": {
+        "title": "Einstellungen",
+        "subtitle": "Passen Sie Ihr Audio-Erlebnis an",
+        "minimal_hud": {
+            "title": "Minimales HUD",
+            "description": "Wenn Sie es aktivieren. Sie können die Songs in Ihrer Wiedergabeliste mit den Verknüpfungen verwalten, auch wenn Sie das Menü schließen. Um die Verknüpfungen zu lernen, bewegen Sie Ihre Maus zu den Wiedergabe-, Vor- und Zurück-Tasten.",
+            "position": {
+                "title": "Minimale HUD-Position",
+                "top_left": "Oben links",
+                "top_left_description": "Das minimale HUD wird in der oberen linken Ecke Ihres Bildschirms platziert",
+                "top_right": "Oben rechts",
+                "top_right_description": "Das minimale HUD wird in der oberen rechten Ecke Ihres Bildschirms platziert",
+                "bottom_left": "Unten links",
+                "bottom_left_description": "Das minimale HUD wird in der unteren linken Ecke Ihres Bildschirms platziert",
+                "bottom_right": "Unten rechts",
+                "bottom_right_description": "Das minimale HUD wird in der unteren rechten Ecke Ihres Bildschirms platziert"
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "Abspielen/Pause",
+            "volume": "Lautstärke +/-",
+            "forward": "Vorheriger/Nächster"
+        }
+    },
+    "login": {
+        "title": "Willkommen zurück",
+        "subtitle": "Anmelden",
+        "username": "Benutzername",
+        "password": "Passwort",
+        "username_placeholder": "Geben Sie Ihren Benutzernamen ein",
+        "password_placeholder": "Geben Sie Ihr Passwort ein",
+        "sign_in": "Anmelden",
+        "sign_in_loading": "Anmeldung läuft...",
+        "need_to_create_account": "Möchten Sie ein Konto erstellen?",
+        "sign_up": "Registrieren",
+        "login_successful": "Anmeldung erfolgreich",
+        "invalid_username_or_password": "Ungültiger Benutzername oder Passwort",
+        "this_user_credentials_has_been_modified": "Die Anmeldedaten dieses Benutzers wurden geändert. Bitte melden Sie sich erneut an."
+    },
+    "register": {
+        "title": "Treten Sie dem Audio Player bei",
+        "subtitle": "Erstellen Sie Ihr Konto",
+        "firstname": "Vorname",
+        "lastname": "Nachname",
+        "firstname_placeholder": "Geben Sie Ihren Vornamen ein",
+        "lastname_placeholder": "Geben Sie Ihren Nachnamen ein",
+        "username": "Benutzername",
+        "username_placeholder": "Wählen Sie einen eindeutigen Benutzernamen",
+        "password": "Passwort",
+        "password_placeholder": "Erstellen Sie ein sicheres Passwort",
+        "sign_up_loading": "Konto wird erstellt...",
+        "already_have_account": "Haben Sie bereits ein Konto?",
+        "sign_in": "Anmelden",
+        "sign_up": "Registrieren",
+        "registration_successful": "Registrierung erfolgreich",
+        "registration_failed": "Registrierung fehlgeschlagen"
+    }
 }
