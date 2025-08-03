@@ -8,19 +8,20 @@ import { addPlaylist, clearSound, setPlaying, setPlaylist, setSettings, setUserD
 import { Song } from './fake-api/song'
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { Account, Player, ReadyListener } from './utils/types'
+import { Account, Player, Playlist, ReadyListener } from './utils/types'
 import router from './routes'
 import { RouterProvider } from 'react-router-dom'
-import { Playlist } from './fake-api/playlist-categories';
 import { addToast, HeroUIProvider } from '@heroui/react';
 import ShortDisplay from './components/shortdisplay';
 import { AnimatePresence, motion } from "motion/react"
 import { nextSongThunk } from './thunks/nextSong';
 import { setPositionThunk } from './thunks/setPosition'
-
+if (isEnvBrowser()) {
+  import('@/mocks/open');
+}
 
 function App() {
-  const [visible, setVisible] = useState(isEnvBrowser());
+  const [visible, setVisible] = useState(false);
   const [shortDisplay, setShortDisplay] = useState(false)
   const dispatch = useAppDispatch()
   const { settings, playing, repeat, playlist, currentSongData } = useAppSelector(state => state.Main)

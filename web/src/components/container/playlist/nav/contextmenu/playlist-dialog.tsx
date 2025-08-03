@@ -1,7 +1,6 @@
 import i18next from 'i18next'
 import { useCallback, useState } from 'react';
 import PlaylistImage from '../PlaylistImage';
-import { Playlist } from '@/fake-api/playlist-categories';
 import { notification } from '@/utils/misc';
 import { useAppDispatch } from '@/stores';
 import { addPlaylist, updatePlaylist } from '@/stores/Main';
@@ -9,8 +8,15 @@ import { nanoid } from '@reduxjs/toolkit';
 import { isEmpty } from '@/utils/misc';
 import classNames from 'classnames';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Textarea, Input } from "@heroui/react";
+import type { Playlist } from '@/utils/types';
 
-const PlaylistDialog = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (open: boolean) => void, currentPlaylist?: Playlist }) => {
+type PlaylistDialogProps = {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    currentPlaylist?: Playlist;
+}
+
+const PlaylistDialog = ({ open, setOpen, currentPlaylist }: PlaylistDialogProps) => {
     const dispatch = useAppDispatch()
     const [name, setName] = useState(currentPlaylist?.name ?? '')
     const [description, setDescription] = useState(currentPlaylist?.description ?? '')

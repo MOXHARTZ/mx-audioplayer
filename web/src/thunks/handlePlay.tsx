@@ -1,13 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchNui } from '../utils/fetchNui';
 import { Song } from '@/fake-api/song';
-import { isEnvBrowser, YOUTUBE_URL } from '@/utils/misc';
+import { isEnvBrowser } from '@/utils/misc';
 
 interface Params {
   response: false | number;
-  // position: number | string;
-  // playlistId?: string | number;
-  // updatedSoundData?: Song;
 }
 
 interface Payload {
@@ -32,16 +29,6 @@ export const handlePlay = createAsyncThunk<
         }
       }
       const soundData = data.soundData;
-      // let url = soundData.url;
-      // if (!url) {
-      //   const response = await fetchNui<{ videoId: string }[]>('searchQuery', { query: `${soundData.title} - ${soundData.artist}` })
-      //   if (!response) return rejectWithValue(false);
-      //   url = `${YOUTUBE_URL}${response[0].videoId}`;
-      // }
-      // const updatedSoundData = {
-      //   ...soundData,
-      //   url
-      // }
       const response = await fetchNui<false | number | { error: string }>('play', {
         soundData,
         volume: data.volume
@@ -56,10 +43,7 @@ export const handlePlay = createAsyncThunk<
       }
 
       return {
-        response,
-        // position: data.position,
-        // playlistId: data.playlistId,
-        // updatedSoundData: !soundData.url ? updatedSoundData : undefined
+        response
       }
     } catch (error) {
       return rejectWithValue(false);

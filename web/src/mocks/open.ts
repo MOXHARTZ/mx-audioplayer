@@ -1,0 +1,917 @@
+import { Song } from "@/fake-api/song";
+import { debugData } from "@/utils/debugData";
+import { Account, Playlist } from "@/utils/types";
+
+const data = {
+    playing: true,
+    volume: 1,
+    currentSound: {
+        duration: 0,
+        url: "https://www.youtube.com/watch?v=KmquJOYsXZ4",
+        title: "LUXURIA",
+        id: "o8d9mcrM24QbiHsuDqZaR",
+        cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+        artist: "Ceg",
+        soundId: "brQrymS16sLRoWi1o5ig5"
+    },
+    playlist: [
+        {
+            id: "sYhODyfpEKkvPGlOUTO9o",
+            songs: [
+                {
+                    duration: 0,
+                    url: "https://www.youtube.com/watch?v=VRjqeSzeYuk",
+                    title: "AQUAFINA",
+                    id: "_xByxD2TwVUDWpmyYArPz",
+                    cover: "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02f11ac5d98c62ff0200d4537d",
+                    artist: "Motive",
+                    soundId: "fH_Cf2CCYE2dLFsThWxgH"
+                },
+                {
+                    duration: 0,
+                    url: "https://www.youtube.com/watch?v=0xji3PXYSxU",
+                    title: "TAK TAK TAK",
+                    id: "wT4E-sgSLRpGBhDNJ_Akf",
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Lvbel C5",
+                    soundId: "dlKqGmv-I1LVXJiBbfKyf"
+                },
+                {
+                    duration: 0,
+                    url: "https://www.youtube.com/watch?v=eWeWAZiqW0Y",
+                    title: "ÇOK AĞLADIM",
+                    id: "LMZ3-59aaQKkc7A_Wil0M",
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "ERAY067, Mansur",
+                    soundId: "dH7CLnOYcQJSj8koWkLn-"
+                },
+                {
+                    duration: 0,
+                    url: "https://www.youtube.com/watch?v=ZLVJLT14SeI",
+                    title: "DELETE",
+                    id: "DxJvZRVLgIMUgcsS9Mxmu",
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Keskin, Khontkar",
+                    soundId: "5x98sb0MXkmyGKZxPw0qc"
+                },
+                {
+                    duration: 0,
+                    url: "https://www.youtube.com/watch?v=KmquJOYsXZ4",
+                    title: "LUXURIA",
+                    id: "Wjv78oi5lR8vuIXSnXqlR",
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Ceg",
+                    soundId: "7gXrqrAIoHVg-6mSvk7Mh"
+                },
+                {
+                    duration: 0,
+                    url: "https://www.youtube.com/watch?v=x569JJYBPxc",
+                    title: "GELDİM ŞAMPİYONA DENK",
+                    id: "SyKYJsXmMTEJMqyJ-yBuy",
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Pois",
+                    soundId: "74GF0ar-z8YkF0Uyt8Iy7"
+                },
+                {
+                    duration: 0,
+                    url: "https://www.youtube.com/watch?v=KJ5Bljn3VyE",
+                    title: "Taksi",
+                    id: "XkP9kI4pJZrkOSDkFc6Gt",
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Simge",
+                    soundId: "KcfIz300H09NEf4cWPyAS"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Murda, Meltem Hayirli",
+                    id: "EgwKXCGygIdNLESH9e84P",
+                    soundId: "T3bR8u99vXj7qzbgwe8AR",
+                    title: "HOT - Meltem Hayirli Remix"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "LXNGVX, Mc Staff",
+                    id: "LRBI8Mha6QOwXkpqnLUkX",
+                    soundId: "4czVAWslSJlt0Vq2G87oY",
+                    title: "FUZILADA"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "MXZI, DJ VTTT77, DJ VYZ, FLOW3",
+                    id: "g2HbCUA7LeFhrLe0gEsqD",
+                    soundId: "rCDMpaWk6LAAZV4ZS6GkY",
+                    title: "FUNK DO ELEVATOR"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "MUPP",
+                    id: "7imD48zCQ13lPQbhNrgWd",
+                    soundId: "ZrzwB6KXQ0Nwn72_63Q0o",
+                    title: "You crash through me like"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "NUEKI, TOLCHONOV",
+                    id: "uPvolAevr7SQWQFf5OHdW",
+                    soundId: "i7xTszc2eKsV1cAGeqdPI",
+                    title: "ISUDAKI"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "blueberry, DJ KHRLP, BRXLINE",
+                    id: "Nwip5-dmSOvszSTY1_QdS",
+                    soundId: "vWEF_fMOqih2t7-OM_L1G",
+                    title: "Disfrutarla"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Grioten, DeeKay, BEXSTMXDE",
+                    id: "x1VfT0M16j4abx7PCM1o9",
+                    soundId: "3BtNE9pknqPS-nKG_Fgti",
+                    title: "GREEN!"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Serhat Durmus, 2Scratch, LAARA",
+                    id: "nLPVCvSmau845QmCAqR0Z",
+                    soundId: "F-ezgW_rt2vKBhFK77kIs",
+                    title: "Your Arms"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "GXMZ, Jmilton",
+                    id: "PDa3xs-QCELGdDpaPcrRz",
+                    soundId: "WRCmnWzqYr7ZFhhSWGLeU",
+                    title: "RITMO VEM"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "KNSRK",
+                    id: "qwGNEr38VTCdoVPQr_jFU",
+                    soundId: "GGHkHjRgRklUjonvzkyAx",
+                    title: "Strength"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Cem Bergamalı, Demet Akalın",
+                    id: "48532fy_5mz_yZUQhOkdh",
+                    soundId: "iP1zKMDL2oQayH4rIrIZi",
+                    title: "Ben Sana Hayran (Toycular)"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Prompto",
+                    id: "EwZpcHak3VJ4Ev2-aXJcR",
+                    soundId: "qSr9Ar_pD3zpxGsAzqWmX",
+                    title: "Shoreditch"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Resentvul, Savage Ga$p",
+                    id: "HvUyd4-WNZvBqUj1ekTSw",
+                    soundId: "qKTTftbmx46qoezMDAOkC",
+                    title: "Butterfly Tat (feat. Savage Ga$p)"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Lestmor, XKELN",
+                    id: "4f1kXFvtd2ZBHxzn2Z3yF",
+                    soundId: "qo7g_NTeYKuj6AiIm4bak",
+                    title: "Moonlight"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Lil God Dan",
+                    id: "RudHwH0JTebzqCZ0uPGL5",
+                    soundId: "PrREj1W7XOL-dLpQ69eW4",
+                    title: "Mad for no reason"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=2YdgNjrBu3s",
+                    title: "Carried Away (feat. Night Lovell)",
+                    id: "PJk_jQMPJEfSaLF7y2C2Y",
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "$uicideboy$, Night Lovell",
+                    soundId: "vqno8sDrFyq0UsQ6Bm4J5"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Bazanji",
+                    id: "7I4w3inYlp8hxSVJhLm1z",
+                    soundId: "3yaQnLRdTp7PxAcoron3A",
+                    title: "COUNT ME OUT"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "DUSTY",
+                    id: "DvC1AV8UsHVGXQvb1eU4j",
+                    soundId: "bqf7wYY9osPhhiWWMIw8C",
+                    title: "Desir3"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Papithbk, SPACEMAN",
+                    id: "tSZq6w2JaIa2jl521hfZK",
+                    soundId: "UEhQ0XukgvM11AqoOrZOX",
+                    title: "Feels Like"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "1nonly, Freddie Dredd",
+                    id: "mEE6YYoTmNlxzCeKUvO39",
+                    soundId: "wGp4ePFmzL-zeX-Z_PERY",
+                    title: "GRAILED"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "NEFFEX, D.A.G.S",
+                    id: "nDoh_LjgnOCZXMFPAks9W",
+                    soundId: "mwe7dm-9LveI0f42zr3CM",
+                    title: "5AM (Overnight Success)"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Sadzilla, Lil Godd",
+                    id: "PFzOck39JeHqfKGroynxc",
+                    soundId: "K5GgzCaw02nNdkV1Z7wXO",
+                    title: "I'm sorry but the person you called has a voice mail box that has not been set up yet"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "lucidbeatz",
+                    id: "d6x53IB_aU6ClLsUkiCcN",
+                    soundId: "to86-cStiGXALqeEgpq-z",
+                    title: "waves"
+                },
+                {
+                    duration: 0,
+                    cover: "https://newjams-images.scdn.co/image/ab67647800003f8a/dt/v3/release-radar/ab6761610000e5ebbc89d109efcd4516b0803e54/en",
+                    artist: "Pham",
+                    id: "8V-ldA8s6vDurXA_Pq5TL",
+                    soundId: "IPXc8YavGJ4p_jrefYmfW",
+                    title: "Honey"
+                }
+            ],
+            "description": "",
+            "name": "TBD"
+        },
+        {
+            id: "7rKUgYP2a_uO5QL7NnvoY",
+            "songs": [
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=FX18L-HfdlI",
+                    title: "Nafile",
+                    id: "MWPtP0AS6q0w97RjkQDTr",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Lauda, Aspova",
+                    soundId: "jet9HYaOuxyNI0SlKWf2_"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=0xji3PXYSxU",
+                    title: "TAK TAK TAK",
+                    id: "YRULubORRHcorUeDgUVkC",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Lvbel C5",
+                    soundId: "rMTE0gRnre6aijnB3Fa4S"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=eWeWAZiqW0Y",
+                    title: "ÇOK AĞLADIM",
+                    id: "mBJg4JBjvfOqwVH4OkuOS",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "ERAY067, Mansur",
+                    soundId: "kCuCVcr2Wm06SDq4dXWFO"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=ZLVJLT14SeI",
+                    title: "DELETE",
+                    id: "qtFjMbv42Oj2aggcLt7hj",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Keskin, Khontkar",
+                    soundId: "jNqm6uz3wKv9o9YbxOwpz"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=o47aIKYKpZQ",
+                    title: "Sana Dair",
+                    id: "Y-0sOTSYwzXTGGLtkNekl",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Mavi",
+                    soundId: "nI5_FqmbXTdZmEWeql_Nb"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=GR6r-jIryH0",
+                    title: "Heyecan",
+                    id: "4fTszIm5QATNY7EW6kH_f",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Tefo, Seko, Serdar Ortaç",
+                    soundId: "JCNVgQsl48qE-jIbUrejl"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=KmquJOYsXZ4",
+                    title: "LUXURIA",
+                    id: "o8d9mcrM24QbiHsuDqZaR",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ceg",
+                    soundId: "brQrymS16sLRoWi1o5ig5"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Sansar Salvo",
+                    id: "px4FMyYWPVqZalnmLyk5R",
+                    soundId: "AxhoqVHqs56BVjSiSrUQf",
+                    title: "Bench Press"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Burry Soprano",
+                    id: "1d71zDQZBG5igoPDcfpk4",
+                    soundId: "3kdbp9r7ArFEB8Yn0HnOT",
+                    title: "prada neefim"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Pois",
+                    id: "uR_Bn6CBMwdAJo3RA-cyt",
+                    soundId: "s5fdsBhbFK1C3cOdQ5K0E",
+                    title: "GELDİM ŞAMPİYONA DENK"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=J0DhdS-WPXY",
+                    title: "Kendim İçin - Live",
+                    id: "_uHt3XTwtmpqb-R8tI9Bf",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Şanışer, Ados, Çağan Şengül",
+                    soundId: "RNQt45poDy022nusKjdHe"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=UQKHTzlf-OM",
+                    title: "Krizz",
+                    id: "a8hicNlsX1HhJwoe91iUB",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Old G",
+                    soundId: "eU9jnhmJaJYJzOlSQNMud"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Kum, UZUM3, Luca Fritz",
+                    id: "z0NJCVkDEW0UxocybT2uk",
+                    soundId: "wrGn39v-AzqWqOBqZFBaP",
+                    title: "Yoksun"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "BERTO, Astral",
+                    id: "ZEFu1EkJVfq7Gl46JDWs6",
+                    soundId: "i7VF3hq0Z-cLcmBrwUKtI",
+                    title: "farkLı moda"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=dwHhnfH7E38",
+                    title: "KOMANDO",
+                    id: "nBz3zkLbf6YRjnUYR9A_r",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Tuğrul Bektaş",
+                    soundId: "PzprAl8TnfYm0WkUW42q_"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=prImxPHd7K8",
+                    title: "BUGÜN EN MUTLU GÜNÜM",
+                    id: "1Hgy8fyqcGHvVFP-iZuKL",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Sdrk",
+                    soundId: "yRoxeOsd4J2u7de5kdVPx"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=PS7ea_BLjIY",
+                    title: "Kardeş",
+                    id: "qxgAQ3O45TvjBB2KdA5BJ",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Groz",
+                    soundId: "_cKVUe3WMS1GQy6Y7JxXt"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "MERMI",
+                    id: "j218p5TjTOzaHfaPL1hMc",
+                    soundId: "qSwTBjx7GFpiOyWnWjCv2",
+                    title: "SEVMESEYDİN"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "MERO",
+                    id: "THmhNswSG2Kv-glVeyJIT",
+                    soundId: "F4LLtaKd1H4TxcRlTxSJr",
+                    title: "Uçurum"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Motive",
+                    id: "LBIPSKOGtQqCtyj2XWkVt",
+                    soundId: "LTRwWAoCOFVQkzx9dvrEC",
+                    title: "AQUAFINA"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Era7capone, Avie",
+                    id: "xKMlPYA1V6TNhFsaL1IJO",
+                    soundId: "hIxJ_9547zCk-ZMOp5NdU",
+                    title: "RS6"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ezhel",
+                    id: "8cpWPyZYwmwifLODKXiGt",
+                    soundId: "44TtuAMYb1eUt1xAYvIBZ",
+                    title: "Eyvallah"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Çağla, Doğu Swag",
+                    id: "LlzZd7dNe_JV6L54_9cMm",
+                    soundId: "azOtjYmXuKqtY2p5mx2TQ",
+                    title: "Seni Düşündüm"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "ElMusto, Azer Bülbül",
+                    id: "qcOP3lK4enfCWtKpqNx0Y",
+                    soundId: "2iI3P8b5C_0lw9OnsPZKR",
+                    title: "Çoğu Gitti Azı Kaldı"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Velet",
+                    id: "_7_eXEWPXjnheKpH-I9_x",
+                    soundId: "s3vffXwJWM0dGg1MRdx1q",
+                    title: "90'dan"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "İmpala",
+                    id: "BwW9bQugMVIshPS8mzlW6",
+                    soundId: "_vB97UEU16fdDu5hTMm6t",
+                    title: "GRİ"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Keişan",
+                    id: "sIsp9u_Oqmfw6Vr8cPlQn",
+                    soundId: "eOBsUUmgTprAlHCyB8V7O",
+                    title: "ACEDIA"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Mass",
+                    id: "S3G1hzAcShpw6SRri7MWH",
+                    soundId: "Z0mYgOOcB1ayGvIgVFdFg",
+                    title: "Pembe"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Kamufle, Ravend",
+                    id: "j2-yTM2S3-VW3GOnVgEyO",
+                    soundId: "CozPr5BhnDKY1KBjvom2i",
+                    title: "Tamamlanmaya Çalışıyorum"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Hazar Altın, Kayra",
+                    id: "Xf6mL1aPnc2D2fn_EwFcx",
+                    soundId: "4HqRwixzT2pgJqmzJ21sa",
+                    title: "Erkek Adam Ağlamazmış"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Kozmos",
+                    id: "MhrMbdwhPv2XZkqJu11nJ",
+                    soundId: "wsKP2MCj1rccmUFXceik7",
+                    title: "Nerden Rastladım"
+                },
+                {
+                    duration: 0,
+                    "url": "https://www.youtube.com/watch?v=p3RHMbTuFB4",
+                    title: "SHUKUR",
+                    id: "SYwajCzgSBHGPN0BCzpFf",
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ohash",
+                    soundId: "gXg9seevHBbFwUJyAjMg8"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Orchi, Gece, Gavi",
+                    id: "QI5_JnTN2Ic4U--TZcSre",
+                    soundId: "GL6IqNzLbIr8byLex34YO",
+                    title: "GEL"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "ATE",
+                    id: "XfhMBnTdybsVsJ4w-xrwl",
+                    soundId: "NtK8ID8x0oSPEAz_gxe5z",
+                    title: "AVARITIA"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "13 Killoki, zenu",
+                    id: "4ZjLzQYqGg_sj-V5cxBwQ",
+                    soundId: "_thNcYSnb2aRz3XbHnJgQ",
+                    title: "DAMONLA VAPE"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "D3",
+                    id: "NFAgLHApcctLp_hsVHSXC",
+                    soundId: "gdHTD2sOuIFDQKbooOqbw",
+                    title: "KALBİM22DE"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Knock Out",
+                    id: "NC4mG3ke272C-LC3e5Z2L",
+                    soundId: "sFQOVrTPbfkqq9FPWjsBa",
+                    title: "KAFFAMA GÖRE"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Berkay Duman, KEIN",
+                    id: "lQD7qRSkRiLkoBLrQZVHu",
+                    soundId: "ddNzYKwNdMaWei5WQ5iBf",
+                    title: "PEŞİNDEYİM"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Bedo",
+                    id: "gCpge2s15ioFj_jV-TVbq",
+                    soundId: "KHU1oVoV5Y0oO1OS5_Bwu",
+                    title: "Bitanem"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Seyir",
+                    id: "ZnpJwKqgVCV5Zdp_l6i2C",
+                    soundId: "m-TtZw21CCxmaqrF-VOnx",
+                    title: "Distopya"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Baz",
+                    id: "ZDVYmQSxyusqQ4HajSkoW",
+                    soundId: "ClOthAEU1oiC3wRflUwIV",
+                    title: "FENA"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "UZI",
+                    id: "8alx4rdLsAH5ch5M6uXPL",
+                    soundId: "iB4WtV6xIrocp-44-6wyk",
+                    title: "BACK IN BUSINESS"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "BLOK3",
+                    id: "BiAj_TNX7ZkC1M7ISpUre",
+                    soundId: "UxQn0nwxE6DsSeWXfPDVE",
+                    title: "napıyosun mesela ?"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Lvbel C5, AKDO",
+                    id: "8GIP9NpXYOjlVjUWN0UpF",
+                    soundId: "b02dwoaxdEULq43fbOcl4",
+                    title: "dubaiiiiii"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Batuflex, ERAY067, Mansur",
+                    id: "352Du7WtIUh18PjlvCsar",
+                    soundId: "R4EDnaiKPu-gLzya2tul1",
+                    title: "BURADA SOKAKLAR"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Kayra",
+                    id: "E1U4GbgXls_U3m1NVcmzf",
+                    soundId: "dev8m7bDB2IAQoDN1xtDh",
+                    title: "Yalnızsam Söyle"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Şehinşah",
+                    id: "jHapa-oyoPxop8IH53YbF",
+                    soundId: "tPBnv0EJZf23tcc7GDn1F",
+                    title: "INVIDIA"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Khontkar, GROZA",
+                    id: "BptRLglOagR82iir_fjul",
+                    soundId: "fp5ctyuZkFZHAHAHSTluf",
+                    title: "GÖZÜ PEK"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Jeff Redd",
+                    id: "kklM4LP4Eo3u9QPYhmvX6",
+                    soundId: "MkmSoURyI5v015sbEVywq",
+                    title: "ÇOK İYİ"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Decrat",
+                    id: "xT4LumCFZdg9TI29k_mM7",
+                    soundId: "y2bwiKHomnCNq9SENhdfs",
+                    title: "Senin Olsun Dünyalar"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Canbay & Wolker, Aleyna Kalaycıoğlu",
+                    id: "C6OYYUz9krG5M1swOxL8g",
+                    soundId: "QTCItxvFX863GsGQ8Vu2-",
+                    title: "EPEY ZAMAN GEÇTİ"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "UZ4Y",
+                    id: "tSXnc4-Xw_-I0SQpQJUX6",
+                    soundId: "y03kh0IKCXNa0tkxz9CN3",
+                    title: "ÇİNÇİN"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Şanışer, İzel",
+                    id: "fwJOZ5LIeN644O9V9MSGA",
+                    soundId: "K3bntO_OFSubdgrC2F980",
+                    title: "Kaç Kere Öldün - Live"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Jeng, ERU, KÖK$VL",
+                    id: "R-zc0B1epuVPlFVYvcnCz",
+                    soundId: "_BWi0OmKFJ4tTvYFBWIyv",
+                    title: "MERYEM ANA"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Hayki",
+                    id: "BUEhhED7hgSi4mWIE5bJI",
+                    soundId: "rABAFOndpAMZnpqTMWdAu",
+                    title: "Sen Şimdi Yabancı"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "KOZ",
+                    id: "tGJQK8FEkdxZ5zLI1-gPp",
+                    soundId: "jtvuZsF9hx3ASz24Cyu-e",
+                    title: "Ahtapot"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Bossy, Kimera",
+                    id: "64cY_XCITzzwaw76E2xIK",
+                    soundId: "IyFWCSrlemRzifgO6W-hr",
+                    title: "FERNET"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "BGR",
+                    id: "nBWl9NkiE9Obv2wlZEXl6",
+                    soundId: "kt8dQWm7Y0KeqkOolhmTE",
+                    title: "SUPERBIA"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Pois, Chiko",
+                    id: "2JSYukIzTTwLsUtmlWp6X",
+                    soundId: "v09uk62eJCIty7LGNuauN",
+                    title: "SOKAKLAR"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Murda",
+                    id: "QTTSWJw-fCWrLKIxqab-R",
+                    soundId: "zomcxKCQgc2bjryo6VlLp",
+                    title: "HOT"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Chiko, Cesiminho, ElMusto",
+                    id: "PLy9Vi8sn_xSrSeeUCTxq",
+                    soundId: "3ltTYSoV8Hyc_r_ReQz-G",
+                    title: "Zaza"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "EGE!",
+                    id: "tBAhxnYe8hGdVPgL7CS2t",
+                    soundId: "wLt__IzuXqLkdHUfeAfPp",
+                    title: "jordan logosu"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "emir taha, Ezhel",
+                    id: "9-gjOP3z4DnEGC9GJ8BY2",
+                    soundId: "hvnm8dFD48-oUH56GdFBO",
+                    title: "İSTANBOO"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ezhel",
+                    id: "XJXb7dzLG9ZMeVL-nc0Zg",
+                    soundId: "oe239YUmZr6-GDmjoBpHq",
+                    title: "Alabora"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "No.1",
+                    id: "qDkZwZazkJtq25nRu79R8",
+                    soundId: "BO1CpmRpPurMH5hSIPAZk",
+                    title: "Dopamin!"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ceg",
+                    id: "hXpDFJ8K7Yet6EIQt7DhR",
+                    soundId: "IzFHSUbJJWPYhwIhb4NE_",
+                    title: "Extrovert"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Norm Ender, Ebru Gündeş",
+                    id: "0t5W-rWBmIymbzPj1P3Bv",
+                    soundId: "EG8nBVrf-mFIsOvwN9qhO",
+                    title: "Bir Çift Göz"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ceg, Kozmos",
+                    id: "xVvifdDnXQcut2RzlwyZg",
+                    soundId: "seu2xd07C7Ph7XLXkaYhP",
+                    title: "Notre Dame"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ceg",
+                    id: "xMXjios_uMReCSK4UiedU",
+                    soundId: "6pJB1PMs7NXPdsvvpY5nG",
+                    title: "Tımarhane"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Critical, UZI",
+                    id: "RIqHPaj13zbsMaOeHCPbj",
+                    soundId: "S6PFNGS7VMARDBEhUtFvN",
+                    title: "DEDE GANG"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ceg",
+                    id: "NQG5MYcsxeaTZZrMJZ8Ku",
+                    soundId: "JwOJgr9yJQNuGGyYscA0Z",
+                    title: "Pirus Zaferi"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Organize",
+                    id: "ZRkK_MFobApK3jodMWu2i",
+                    soundId: "BP6gwMOdRTiyRJfP-9MWb",
+                    title: "İSTERSENİZ YANLIŞ ANLAYIN"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Muti",
+                    id: "Ze5nwdyg-4U6SuLM31TI6",
+                    soundId: "1ZeB8zqIgcdVonM4T49fu",
+                    title: "mama i'm a criminal"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Wegh, Reynmen",
+                    id: "ITF9r4RwgA7qd_o-M0mcz",
+                    soundId: "kZeOWdFs6my_PCENUsgJS",
+                    title: "Göz Ucuyla"
+                },
+                {
+                    duration: 0,
+                    cover: "https://i.scdn.co/image/ab67706f00000002e101f085d89d309c74261111",
+                    artist: "Ezhel",
+                    id: "8-JdKymOjTR2gV3ByjnAJ",
+                    soundId: "H-5UFVV-GyzA4e72LCVQ9",
+                    title: "Ağla"
+                }
+            ],
+            description: "",
+            name: "BKD"
+        }
+    ],
+    user: {
+        lastname: "Banned",
+        username: "moxha",
+        id: 1,
+        password: "-285723711",
+        isOwner: true,
+        firstname: "Admin"
+    }
+} as { playlist: Playlist[]; currentSound: Song; user?: Account; volume: number; playing: boolean; }
+
+debugData([
+    {
+        action: 'open',
+        data
+    }
+], 0)

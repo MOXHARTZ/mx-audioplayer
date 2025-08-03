@@ -4,19 +4,19 @@ import i18next from "i18next";
 import { handlePlay } from './handlePlay';
 import { RootState } from '@/stores';
 import { notification } from '@/utils/misc';
-import type { Playlist } from '@/fake-api/playlist-categories';
-import type { Song } from '@/fake-api/song';
+import type { Playlist } from '@/utils/types';
+import { Song } from '@/fake-api/song';
 
 export const nextSongThunk = (checkShuffle: boolean, playlist?: Playlist, position?: number | string): AppThunk => (dispatch, getState) => {
     const state: StaticType = getState().Main;
     if (state.waitingForResponse) return;
-    let currentSongChildren
+    let currentSongChildren: Song[]
     position = position || state.position
 
     if (playlist) {
         currentSongChildren = playlist.songs
     } else {
-        currentSongChildren = state.playlist.find(playlist => playlist.id === state.currentSongData?.playlistId)?.songs
+        currentSongChildren = state.playlist.find(playlist => playlist.id === state.currentSongData?.playlistId)?.songs ?? []
     }
     if (!currentSongChildren) {
         notification(i18next.t('playlist.empty'), 'error')

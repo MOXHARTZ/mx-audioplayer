@@ -1,9 +1,26 @@
 if not Config.Boombox.Enable then return end
-CreateThread(function()
-    Info('Boombox is enabled')
-end)
 
-local boombox_ = joaat('prop_boombox_01')
+local GetEntityCoords = GetEntityCoords
+local GetGamePool = GetGamePool
+local GetEntityModel = GetEntityModel
+local DoesEntityExist = DoesEntityExist
+local NetworkGetNetworkIdFromEntity = NetworkGetNetworkIdFromEntity
+local SetNetworkIdCanMigrate = SetNetworkIdCanMigrate
+local SetNetworkIdExistsOnAllMachines = SetNetworkIdExistsOnAllMachines
+local NetworkSetNetworkIdDynamic = NetworkSetNetworkIdDynamic
+local SetNetworkIdSyncToPlayer = SetNetworkIdSyncToPlayer
+local NetworkGetEntityOwner = NetworkGetEntityOwner
+local HasModelLoaded = HasModelLoaded
+local RequestModel = RequestModel
+local CreateObject = CreateObject
+local PlaceObjectOnGroundProperly = PlaceObjectOnGroundProperly
+local SetEntityHeading = SetEntityHeading
+local SetEntityAsMissionEntity = SetEntityAsMissionEntity
+local SetModelAsNoLongerNeeded = SetModelAsNoLongerNeeded
+local DrawText3D = DrawText3D
+local IsControlJustPressed = IsControlJustPressed
+
+local boomboxModel = joaat('prop_boombox_01')
 local carry_anim_dict = 'anim@heists@box_carry@'
 local carry_anim_name = 'idle'
 local put_anim_dict = 'random@domestic'
@@ -12,10 +29,10 @@ local put_anim_name = 'pickup_low'
 local carrying_boombox = false
 
 local function nearbyBoombox()
-    local playerCoords = PlayerCoords
+    local playerCoords = GetEntityCoords(cache.ped)
     local objects = GetGamePool('CObject')
     for _, object in ipairs(objects) do
-        if GetEntityModel(object) == boombox_ and #(playerCoords - GetEntityCoords(object)) < 3.0 then
+        if GetEntityModel(object) == boomboxModel and #(playerCoords - GetEntityCoords(object)) < 3.0 then
             return object
         end
     end
@@ -83,54 +100,48 @@ local function openUi()
     })
 end
 
-local function loadAnim(dict)
-    RequestAnimDict(dict)
-    while not HasAnimDictLoaded(dict) do
-        RequestAnimDict(dict)
-        Wait(5)
-    end
-end
-
 local function create()
     local boombox = nearbyBoombox()
     if boombox then return end
-    local ped = PlayerPed
+    local ped = cache.ped
     local playerCoords = GetEntityCoords(ped)
     local heading = GetEntityHeading(ped)
-    RequestModel(boombox_)
-    while not HasModelLoaded(boombox_) do
-        RequestModel(boombox_)
+    RequestModel(boomboxModel)
+    while not HasModelLoaded(boomboxModel) do
+        RequestModel(boomboxModel)
         Wait(5)
     end
-    local object = CreateObject(boombox_, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
+    local object = CreateObject(boomboxModel, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
     PlaceObjectOnGroundProperly(object)
     SetEntityHeading(object, heading)
     SetEntityAsMissionEntity(object, true, true)
-    SetModelAsNoLongerNeeded(boombox_)
-    loadAnim(put_anim_dict)
+    SetModelAsNoLongerNeeded(boomboxModel)
+    lib.requestAnimDict(put_anim_dict)
     TaskPlayAnim(ped, put_anim_dict, put_anim_name, 8.0, -8.0, -1, 0, 0, false, false, false)
     Wait(200)
     PlaceObjectOnGroundProperly(object)
     StopAnimTask(ped, put_anim_dict, put_anim_name, 3.0)
+    RemoveAnimDict(put_anim_dict)
 end
 
 RegisterNetEvent('mx-audioplayer:boombox:create', create)
 
 local function carryAnim()
-    local ped = PlayerPed
+    local ped = cache.ped
     if not takeEntityOwnership(ped) then return end
-    loadAnim(carry_anim_dict)
+    lib.requestAnimDict(carry_anim_dict)
     while carrying_boombox do
-        if IsEntityPlayingAnim(PlayerPed, carry_anim_dict, carry_anim_name, 3) then goto continue end
+        if IsEntityPlayingAnim(cache.ped, carry_anim_dict, carry_anim_name, 3) then goto continue end
         TaskPlayAnim(ped, carry_anim_dict, carry_anim_name, 8.0, -8.0, -1, 51, 0, false, false, false)
         ::continue::
         Wait(500)
     end
     StopAnimTask(ped, carry_anim_dict, carry_anim_name, 3.0)
+    RemoveAnimDict(carry_anim_dict)
 end
 
 local function drop()
-    local player = PlayerPed
+    local player = cache.ped
     local playerCoords = GetEntityCoords(player)
     local boombox = nearbyBoombox()
     if not boombox then return end
@@ -139,14 +150,15 @@ local function drop()
     DetachEntity(boombox, true, true)
     SetEntityCoords(boombox, playerCoords.x, playerCoords.y, playerCoords.z - 0.95, true, true, true, true)
     SetEntityAsMissionEntity(boombox, true, true)
-    loadAnim(put_anim_dict)
+    lib.requestAnimDict(put_anim_dict)
     TaskPlayAnim(player, put_anim_dict, put_anim_name, 8.0, -8.0, -1, 0, 0, false, false, false)
     Wait(500)
     PlaceObjectOnGroundProperly(boombox)
+    RemoveAnimDict(carry_anim_dict)
 end
 
 local function pickup()
-    local player = PlayerPed
+    local player = cache.ped
     local boombox = nearbyBoombox()
     if not boombox then return end
     if not takeEntityOwnership(boombox) then return end
@@ -196,7 +208,7 @@ end
 if Config.Boombox.Target then
     Info('Boombox target is enabled')
     CreateThread(function()
-        exports['qtarget']:AddTargetModel(boombox_, {
+        exports['qtarget']:AddTargetModel(boomboxModel, {
             options = {
                 {
                     icon = 'fas fa-music',

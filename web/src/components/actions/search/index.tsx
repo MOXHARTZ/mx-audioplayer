@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { nanoid } from '@reduxjs/toolkit'
 import { useAppDispatch, useAppSelector } from '@/stores'
@@ -6,7 +6,7 @@ import { tracks, Track } from '@/fake-api/search-results'
 import { isEnvBrowser, isSpotifyAlbum, isSpotifyPlaylist, isUrl, getYoutubePlaylistID, YOUTUBE_URL } from '@/utils/misc'
 import { setCurrentSongs, setWaitingForResponse } from '@/stores/Main'
 import { fetchNui } from '@/utils/fetchNui'
-import { QueryResult } from '@/utils/types'
+import type { QueryResult } from '@/utils/types'
 import { BiSearch } from 'react-icons/bi'
 import { IoMusicalNotesOutline } from 'react-icons/io5'
 import { FaSpotify, FaYoutube } from 'react-icons/fa'
@@ -186,8 +186,6 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
                                 className="space-y-6"
                             >
                                 <motion.div
-                                    whileHover={{ scale: 1.01 }}
-                                    whileTap={{ scale: 0.99 }}
                                     transition={{ type: "spring", stiffness: 250, damping: 15 }}
                                     className="flex flex-col gap-4"
                                 >
@@ -206,21 +204,9 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
                                             className="flex items-center gap-6"
                                         >
                                             <motion.div
-                                                whileHover={{
-                                                    scale: 1.05,
-                                                    y: -2,
-                                                    transition: { type: "spring", stiffness: 300, damping: 20 }
-                                                }}
-                                                whileTap={{ scale: 0.95 }}
                                                 className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/20 hover:border-green-400/30 transition-all duration-300 group"
                                             >
-                                                <motion.div
-                                                    className="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 p-3 flex items-center justify-center shadow-lg shadow-green-500/25 group-hover:shadow-green-500/40 transition-all duration-300"
-                                                    whileHover={{
-                                                        rotate: 360,
-                                                        transition: { duration: 0.6, ease: "easeInOut" }
-                                                    }}
-                                                >
+                                                <motion.div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 p-3 flex items-center justify-center shadow-lg shadow-green-500/25 group-hover:shadow-green-500/40 transition-all duration-300">
                                                     <FaSpotify className="text-white text-xl" />
                                                 </motion.div>
                                                 <div className="text-center">
@@ -228,22 +214,8 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
                                                     <p className="text-gray-400 text-xs">Albüm & Playlist</p>
                                                 </div>
                                             </motion.div>
-                                            <motion.div
-                                                whileHover={{
-                                                    scale: 1.05,
-                                                    y: -2,
-                                                    transition: { type: "spring", stiffness: 300, damping: 20 }
-                                                }}
-                                                whileTap={{ scale: 0.95 }}
-                                                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-red-500/10 to-red-600/10 border border-red-500/20 hover:border-red-400/30 transition-all duration-300 group"
-                                            >
-                                                <motion.div
-                                                    className="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 p-3 flex items-center justify-center shadow-lg shadow-red-500/25 group-hover:shadow-red-500/40 transition-all duration-300"
-                                                    whileHover={{
-                                                        rotate: 360,
-                                                        transition: { duration: 0.6, ease: "easeInOut" }
-                                                    }}
-                                                >
+                                            <motion.div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gradient-to-br from-red-500/10 to-red-600/10 border border-red-500/20 hover:border-red-400/30 transition-all duration-300 group">
+                                                <motion.div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 p-3 flex items-center justify-center shadow-lg shadow-red-500/25 group-hover:shadow-red-500/40 transition-all duration-300">
                                                     <FaYoutube className="text-white text-xl" />
                                                 </motion.div>
                                                 <div className="text-center">
@@ -264,19 +236,16 @@ const SearchTrack = ({ open, setOpen }: SearchTrackProps) => {
                                             className="flex flex-wrap justify-center gap-2"
                                         >
                                             <motion.span
-                                                whileHover={{ scale: 1.05 }}
                                                 className="px-3 py-1 bg-gradient-to-r from-green-500/20 to-green-600/20 border border-green-500/30 rounded-full text-green-400 text-xs font-medium"
                                             >
                                                 "https://open.spotify.com/playlist/..."
                                             </motion.span>
                                             <motion.span
-                                                whileHover={{ scale: 1.05 }}
                                                 className="px-3 py-1 bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-500/30 rounded-full text-red-400 text-xs font-medium"
                                             >
                                                 "https://youtube.com/..."
                                             </motion.span>
                                             <motion.span
-                                                whileHover={{ scale: 1.05 }}
                                                 className="px-3 py-1 bg-gradient-to-r from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-full text-purple-400 text-xs font-medium"
                                             >
                                                 "Shape Of You"

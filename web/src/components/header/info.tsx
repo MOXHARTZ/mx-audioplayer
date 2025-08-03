@@ -4,6 +4,7 @@ import i18next from 'i18next'
 import { Image } from '@heroui/react'
 import Volume from './volume'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 type InfoProps = {
     isShort?: boolean
@@ -13,6 +14,7 @@ const Info = ({ isShort }: InfoProps) => {
     const { currentSongData, volume } = useAppSelector(state => state.Main)
     const currentSong = currentSongData?.song
     const [showVolume, setShowVolume] = useState(false)
+    const [autoAnimate] = useAutoAnimate()
 
     useEffect(() => {
         if (!isShort) return
@@ -61,7 +63,21 @@ const Info = ({ isShort }: InfoProps) => {
                     ) : null}
                 </AnimatePresence>
 
-                <aside className='flex gap-4 items-center'>
+
+                <motion.aside
+                    className='flex gap-4 items-center'
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                        x: 0
+                    }}
+                    transition={{
+                        duration: 0.6,
+                        delay: (isShort && showVolume) ? 0.0 : 0.3
+                    }}
+                    layout
+                >
                     <Image
                         src={currentSong?.cover}
                         fallbackSrc='https://www.heroui.com/images/album-cover.png'
@@ -86,7 +102,7 @@ const Info = ({ isShort }: InfoProps) => {
                             </p>
                         </article>
                     )}
-                </aside>
+                </motion.aside>
             </motion.article>
         </LayoutGroup>
     )

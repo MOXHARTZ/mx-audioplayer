@@ -90,9 +90,8 @@ const Actions = () => {
                 {!editMode &&
                     <section className='flex items-center gap-2'>
                         <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                            whileHover={{ rotate: 90 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20, }}
                         >
                             <Button
                                 isIconOnly

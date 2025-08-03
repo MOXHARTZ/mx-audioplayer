@@ -82,10 +82,10 @@ local function playSound(source, id, data)
     local volume = options.silent and 0.0 or (user.player.volume or 1)
 
     local playlist = db.getPlaylist(user.accountId)
-    assert(playlist, 'mx-audioplayer:play ::: Playlist not found', user.accountId)
+    assert(playlist, 'mx-audioplayer:play ::: Playlist not found')
 
     local soundData = getPlaylistSound(playlist, data.soundData.soundId)
-    assert(soundData, 'mx-audioplayer:play ::: Sound not found', data.soundData.soundId, playlist)
+    assert(soundData, 'mx-audioplayer:play ::: Sound not found')
 
     if not data.soundData.url then
         -- first param is the query, second param is the limit
@@ -137,7 +137,7 @@ local function playSound(source, id, data)
         local nextSound = playlistData.songs[soundData.songIndex]
         if nextSound then
             local netId = Surround:getSoundNetId(soundId)
-            TriggerClientEvent('mx-audioplayer:setWaitingForResponse', source, id, true)
+            TriggerClientEvent('mx-audioplayer:setWaitingForResponse', -1, id, true)
             options.silent = false
             playSound(source, id, {
                 soundId = nextSound.soundId .. id,
@@ -146,7 +146,7 @@ local function playSound(source, id, data)
                 options = options,
                 netId = netId
             })
-            TriggerClientEvent('mx-audioplayer:setWaitingForResponse', source, id, false)
+            TriggerClientEvent('mx-audioplayer:setWaitingForResponse', -1, id, false)
         end
     end)
     if options.maxDistance then
@@ -163,7 +163,7 @@ local function playSound(source, id, data)
         duration = 0
     }
 
-    TriggerClientEvent('mx-audioplayer:playSound', source, user.player)
+    TriggerClientEvent('mx-audioplayer:playSound', -1, user.player)
     return user.player
 end
 
@@ -354,7 +354,6 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
             volume = 1,
         }
     }
-    user = userDboToDto(src, user)
     if not data.token then
         data.token = generateToken()
         tokens[data.token] = {
@@ -362,6 +361,7 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
             password = password
         }
     end
+    Debug('mx-audioplayer:login accounts', AudioPlayerAccounts)
     return data.token
 end)
 

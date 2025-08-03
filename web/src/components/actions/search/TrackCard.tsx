@@ -11,7 +11,6 @@ type TrackCardProps = {
 export default function TrackCard({ track, onClick }: TrackCardProps) {
   return (
     <motion.div
-
       className="w-full p-4 rounded-xl bg-black/20 border border-rose-500/20 cursor-pointer group hover:border-rose-400/40 hover:bg-black/30 transition-all duration-300 !overflow-hidden"
       onClick={() => onClick(track)}
     >

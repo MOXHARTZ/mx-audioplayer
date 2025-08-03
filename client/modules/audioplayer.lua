@@ -1,3 +1,6 @@
+local IsControlPressed = IsControlPressed
+local IsControlJustPressed = IsControlJustPressed
+
 ---@class AudioPlayer
 ---@field visible boolean
 ---@field id string
@@ -145,6 +148,7 @@ end
 
 ---@param listenerName string
 function audioplayer:triggerListener(listenerName, ...)
+    if not self.handlers then return end
     local player, soundData = self:getPlayer(), self:getSoundData()
     if self.handlers[listenerName] then
         self.handlers[listenerName](player.soundId, soundData, ...)

@@ -38,61 +38,57 @@ const MainLayout = () => {
                     duration: 0.2
                 }}
             >
-                <AnimatePresence mode="wait">
-                    {playlist && (
-                        <motion.div
-                            key="main-content"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{
-                                type: "spring",
-                                stiffness: 200,
-                                damping: 25
-                            }}
-                            className="space-y-6"
-                        >
-                            <motion.div
-                                initial={{ opacity: 0, y: -30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 150,
-                                    damping: 20,
-                                    delay: 0.2
-                                }}
-                            >
-                                <Header />
-                            </motion.div>
+                <motion.div
+                    key="main-content"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 25
+                    }}
+                    className="space-y-6"
+                >
+                    <motion.div
+                        initial={{ opacity: 0, y: -30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 150,
+                            damping: 20,
+                            delay: 0.2
+                        }}
+                    >
+                        <Header />
+                    </motion.div>
 
-                            <motion.div
-                                initial={{ opacity: 0, y: -20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 150,
-                                    damping: 20,
-                                    delay: 0.4
-                                }}
-                            >
-                                <Actions />
-                            </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 150,
+                            damping: 20,
+                            delay: 0.4
+                        }}
+                    >
+                        <Actions />
+                    </motion.div>
 
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 150,
-                                    damping: 20,
-                                    delay: 0.6
-                                }}
-                            >
-                                <PlaylistContainer />
-                            </motion.div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 150,
+                            damping: 20,
+                            delay: 0.6
+                        }}
+                    >
+                        <PlaylistContainer />
+                    </motion.div>
+                </motion.div>
 
                 <AnimatePresence mode="wait">
                     <motion.div

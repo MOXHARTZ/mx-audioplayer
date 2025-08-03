@@ -1,6 +1,5 @@
 import { MdAudiotrack, MdEdit } from 'react-icons/md';
 import { IoPerson } from 'react-icons/io5';
-import { Playlist } from '@/fake-api/playlist-categories';
 import { useCallback, useRef, useState } from 'react';
 import PlaylistDialog from './playlist-dialog';
 import { useAppDispatch } from '@/stores';
@@ -10,10 +9,17 @@ import i18next from 'i18next';
 import Share from './share';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn, DropdownSection } from "@heroui/react";
 import { IoMdTrash } from "react-icons/io";
+import { Playlist } from '@/utils/types';
 
 const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
-export default function ContextMenu({ children, disabled, playlist }: { children?: React.ReactNode, disabled?: boolean, playlist?: Playlist }) {
+type ContextMenuProps = {
+    children?: React.ReactNode;
+    disabled?: boolean;
+    playlist?: Playlist;
+}
+
+export default function ContextMenu({ children, disabled, playlist }: ContextMenuProps) {
     const [showCreatePlaylist, setShowCreatePlaylist] = useState<boolean>(false);
     const [showEditPlaylist, setShowEditPlaylist] = useState<boolean>(false)
     const [showShare, setShowShare] = useState<boolean>(false)

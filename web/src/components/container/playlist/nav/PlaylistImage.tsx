@@ -1,9 +1,9 @@
-import { Playlist } from '@/fake-api/playlist-categories'
 import { isEmpty } from '@/utils/misc'
 import { Image } from '@heroui/react'
 import classNames from 'classnames'
 import { MdAudiotrack } from 'react-icons/md'
 import { motion } from 'framer-motion'
+import { Playlist } from '@/utils/types'
 
 const PlaylistImage = ({ playlist, className, url }: { playlist?: Playlist, className?: string, url?: string }) => {
     if (!playlist || (!playlist.thumbnail && playlist.songs.length === 0) || url) return (

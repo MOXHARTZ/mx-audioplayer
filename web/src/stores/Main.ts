@@ -3,15 +3,14 @@ import { fetchNui } from "@/utils/fetchNui";
 import { isEnvBrowser, notification } from "@/utils/misc";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import i18next from 'i18next'
-import playlist, { Playlist } from "@/fake-api/playlist-categories";
 import { Song } from "@/fake-api/song";
-import { Account, Settings } from "@/utils/types";
+import { Account, Playlist, Settings } from "@/utils/types";
 
 export interface StaticType {
     playing: boolean;
     currentSongData: { playlistId: string | number, song: Song } | undefined;
     position: string | number;
-    playlist: typeof playlist;
+    playlist: Playlist[];
     currentPlaylistId: number | string;
     currentSongs: Song[] | undefined;
     editMode: boolean;
@@ -33,7 +32,7 @@ const Static = createSlice({
         playing: false,
         currentSongData: undefined,
         position: -1, // Current song id
-        playlist: isEnvBrowser() ? playlist : [],
+        playlist: [],
         currentPlaylistId: -1,
         currentSongs: undefined,
         editMode: false,
@@ -54,7 +53,7 @@ const Static = createSlice({
                 playing: action.payload
             })
         },
-        setPlaylist: (state, action: PayloadAction<typeof playlist>) => {
+        setPlaylist: (state, action: PayloadAction<Playlist[]>) => {
             state.playlist = action.payload;
             if (!action.payload || !state.playlist) return;
             state.currentSongs = state.playlist.find(playlist => playlist.id === state.currentPlaylistId)?.songs ?? undefined;
@@ -165,43 +164,6 @@ const Static = createSlice({
     extraReducers: (builder) => {
         builder.addCase(handlePlay.fulfilled, (state, { payload }) => {
             state.waitingForResponse = false;
-            // state.waitingForResponse = false;
-            // if (!payload.response) return;
-            // const playlistId = payload.playlistId ?? state.currentPlaylistId;
-            // state.position = payload.position;
-
-            // if (payload.updatedSoundData) {
-            //     const url = payload.updatedSoundData.url;
-            //     state.playlist = state.playlist.map(playlist => {
-            //         if (playlist.id === playlistId) {
-            //             return {
-            //                 ...playlist,
-            //                 songs: playlist.songs.map(song => {
-            //                     if (song.id === payload.position) {
-            //                         song.url = url;
-            //                         return song;
-            //                     }
-            //                     return song;
-            //                 })
-            //             }
-            //         }
-            //         return playlist;
-            //     })
-            //     state.currentSongs = state.playlist.find(playlist => playlist.id === playlistId)?.songs ?? undefined;
-            //     fetchNui('setPlaylist', {
-            //         playlist: state.playlist
-            //     })
-            // }
-
-            // const playlist = state.playlist.find(playlist => playlist.id === playlistId);
-            // if (!playlist) return;
-
-            // const soundData = playlist.songs.find(song => song.id === payload.position);
-            // if (!soundData) return;
-
-            // state.currentSongData = { playlistId: playlistId, song: soundData };
-            // soundData.duration = Math.floor(payload.response);
-            // state.playing = true;
         })
         builder.addCase(handlePlay.rejected, (state, { payload }) => {
             state.waitingForResponse = false;

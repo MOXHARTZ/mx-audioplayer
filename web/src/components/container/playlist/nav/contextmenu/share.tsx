@@ -1,13 +1,18 @@
-import { Playlist } from '@/fake-api/playlist-categories'
 import { fetchNui } from '@/utils/fetchNui'
-import { Player } from '@/utils/types'
+import type { Player, Playlist } from '@/utils/types'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import i18next from 'i18next'
 import { useCallback, useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, Card, User } from "@heroui/react";
 import { notification } from '@/utils/misc'
 
-const Share = ({ open, setOpen, currentPlaylist }: { open: boolean, setOpen: (open: boolean) => void, currentPlaylist?: Playlist }) => {
+type ShareProps = {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    currentPlaylist?: Playlist;
+}
+
+const Share = ({ open, setOpen, currentPlaylist }: ShareProps) => {
     const [players, setPlayers] = useState<Player[]>([])
     const handleClose = useCallback(() => {
         setOpen(false);

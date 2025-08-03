@@ -25,8 +25,8 @@ server_scripts {
     'server/*.lua'
 }
 
-ui_page 'web/build/index.html'
--- ui_page 'http://localhost:3005/' -- dev
+-- ui_page 'web/build/index.html'
+ui_page 'http://localhost:3005/' -- dev
 
 files({
     'locales/*.json',

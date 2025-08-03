@@ -57,11 +57,12 @@ const Control: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> =
     useNuiEvent<{ time: number }>('timeUpdate', ({ time }) => {
         setTimeStamp(time)
     })
-    const updateVolume = useCallback((newValue: number) => {
-        if (newValue < 0 || newValue > 1) return;
-        dispatch(setVolume(newValue as number));
-        fetchNui('setVolume', { volume: newValue as number })
-    }, []);
+    const updateVolume = (newValue: number) => {
+        newValue = Math.min(Math.max(newValue, 0), 1)
+        if (volume === newValue) return
+        dispatch(setVolume(newValue));
+        fetchNui('setVolume', { volume: newValue })
+    }
     useEffect(() => {
         if (position === -1) setTimeStamp(0);
     }, [position])

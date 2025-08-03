@@ -1,4 +1,4 @@
-local UiReady = false
+local uiReady = false
 local playlist = {}
 Surround = exports['mx-surround']
 local vehicleEvents = {
@@ -44,22 +44,16 @@ function Notification(msg, type)
     -- end
 end
 
-PlayerPed = PlayerPedId()
-PlayerCoords = GetEntityCoords(PlayerPed)
-CurrentVehicle = GetVehiclePedIsIn(PlayerPed, false)
-
 CreateThread(function()
-    while not UiReady do Wait(200) end
-    while true do
-        PlayerPed = PlayerPedId()
-        PlayerCoords = GetEntityCoords(PlayerPed)
-        CurrentVehicle = GetVehiclePedIsIn(PlayerPed, false)
-        if IsInVehicle ~= (CurrentVehicle ~= 0) then
-            local entered = CurrentVehicle ~= 0
-            TriggerEvent(vehicleEvents[entered and 'enter' or 'leave'], CurrentVehicle)
-            IsInVehicle = CurrentVehicle ~= 0
-        end
-        Wait(300)
+    while not uiReady do Wait(200) end
+    TriggerEvent(vehicleEvents[cache.vehicle and 'enter' or 'leave'], cache.vehicle)
+end)
+
+lib.onCache('vehicle', function(vehicle)
+    if vehicle then
+        TriggerEvent(vehicleEvents['enter'], vehicle)
+    else
+        TriggerEvent(vehicleEvents['leave'], vehicle)
     end
 end)
 
@@ -197,7 +191,7 @@ RegisterNUICallback('saveSettings', function(data, cb)
     if data.minimalHud then
         audioplayer:toggleShortDisplay(true, {
             id = audioplayer.shortDisplay.customId,
-            vehicle = IsInVehicle and CurrentVehicle or nil
+            vehicle = cache.vehicle
         })
     end
     cb('ok')
@@ -228,7 +222,7 @@ RegisterNUICallback('uiReady', function(data, cb)
             settings = settings and json.decode(settings) or {}
         }
     })
-    UiReady = true
+    uiReady = true
     cb('ok')
 end)
 
@@ -278,10 +272,13 @@ end)
 ---@param data Player
 RegisterNetEvent('mx-audioplayer:playSound', function(data)
     local _id = audioplayer.id
-    if _id ~= data.id then return end
+    if _id ~= data.id then
+        Debug('mx-audioplayer:playSound ::: id is not the same', '_id', _id, 'data.id', data.id)
+        return
+    end
     if audioplayer.shortDisplay.visible then
         audioplayer:toggleShortDisplay(true, {
-            vehicle = CurrentVehicle,
+            vehicle = cache.vehicle,
             id = data.id
         })
     end

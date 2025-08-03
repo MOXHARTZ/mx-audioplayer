@@ -1,4 +1,5 @@
 import { Track } from "@/fake-api/search-results";
+import { Song } from "@/fake-api/song";
 
 export type QueryResult = Error | Track[]
 export interface Error {
@@ -32,4 +33,12 @@ export type Account = {
     lastname: string;
     avatar?: string;
     isOwner: boolean
+}
+
+export type Playlist = {
+    id: string | number;
+    name: string
+    songs: Song[];
+    thumbnail?: string;
+    description?: string;
 }

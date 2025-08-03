@@ -51,14 +51,39 @@ const Header = ({ isShort }: HeaderProps) => {
                         })}>
                             <Info isShort={isShort} />
                             <article className='w-full flex flex-col'>
-                                <motion.h1
-                                    className='text-2xl truncate m-auto mb-5 bg-gradient-to-r from-rose-400 to-red-400 bg-clip-text text-transparent font-bold'
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.4 }}
-                                >
-                                    {currentPlaylistName ?? i18next.t('header.playlist')}
-                                </motion.h1>
+                                {isShort ? (
+                                    <>
+                                        {currentSongData?.song && (
+                                            <motion.div
+                                                className='flex flex-col items-center mb-2'
+                                                initial={{ opacity: 0, y: -5 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
+                                            >
+                                                <motion.h1
+                                                    className='text-xl truncate m-auto mb-1 bg-gradient-to-r from-rose-400 to-red-400 bg-clip-text text-transparent font-bold'
+                                                    initial={{ opacity: 0, y: -10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.4 }}
+                                                >
+                                                    {currentSongData.song.title}
+                                                </motion.h1>
+                                                <p className='text-xs truncate text-gray-400'>
+                                                    {currentSongData.song.artist}
+                                                </p>
+                                            </motion.div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <motion.h1
+                                        className='text-2xl truncate m-auto mb-5 bg-gradient-to-r from-rose-400 to-red-400 bg-clip-text text-transparent font-bold'
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.4 }}
+                                    >
+                                        {currentPlaylistName ?? i18next.t('header.playlist')}
+                                    </motion.h1>
+                                )}
                                 <Control timeStamp={timeStamp} setTimeStamp={setTimeStamp} />
                                 <Timer timeStamp={timeStamp} setTimeStamp={setTimeStamp} />
                             </article>

@@ -3,7 +3,7 @@ import { setVolume } from '@/stores/Main';
 import { fetchNui } from '@/utils/fetchNui';
 import { Slider } from '@heroui/react';
 import classNames from 'classnames';
-import { memo, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { IoVolumeHigh, IoVolumeLow } from 'react-icons/io5';
 
 type VolumeProps = {
@@ -13,9 +13,18 @@ type VolumeProps = {
 const Volume = ({ isShort }: VolumeProps) => {
     const dispatch = useAppDispatch()
     const { volume } = useAppSelector(state => state.Main)
-    const volumeOnChange = useCallback((newValue: number | number[]) => {
-        dispatch(setVolume(newValue as number));
-    }, []);
+    const [tempVolume, setTempVolume] = useState(volume)
+    const onChangeEnd = (value: number) => {
+        fetchNui('setVolume', { volume: value })
+        dispatch(setVolume(value))
+    }
+
+    // PURPOSE: When player change volume in short display, volume is updating with this
+    // otherwise, volume will not update
+    useEffect(() => {
+        setTempVolume(volume)
+    }, [volume])
+
     return (
         <article className={classNames({
             'w-64 flex items-center gap-3 justify-self-end': true,
@@ -24,14 +33,14 @@ const Volume = ({ isShort }: VolumeProps) => {
             <IoVolumeLow size={isShort ? 24 : 32} />
             <Slider
                 aria-label="Volume"
-                value={volume}
+                value={tempVolume}
                 maxValue={1}
                 step={0.01}
                 orientation={isShort ? 'vertical' : 'horizontal'}
                 size='sm'
-                onChange={volumeOnChange}
+                onChange={(value) => setTempVolume(value as number)}
                 color='foreground'
-                onChangeEnd={(value) => fetchNui('setVolume', { volume: value as number })}
+                onChangeEnd={(value) => onChangeEnd(value as number)}
                 classNames={{
                     base: `${isShort ? 'h-full w-auto' : 'w-64'}`,
                     track: "bg-default-500/30",
@@ -43,4 +52,4 @@ const Volume = ({ isShort }: VolumeProps) => {
     )
 }
 
-export default memo(Volume)
+export default Volume

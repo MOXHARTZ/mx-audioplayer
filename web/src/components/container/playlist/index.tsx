@@ -1,22 +1,30 @@
-import { useEffect, memo, useCallback, useMemo } from 'react'
+import { useEffect, useCallback, useMemo, Fragment, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/stores'
 import { setCurrentPlaylistId, setCurrentSongs, setPlaying, setSelectedSongs } from '@/stores/Main'
 import { Song } from '@/fake-api/song'
 import { handlePlay } from '@/thunks/handlePlay'
 import i18next from 'i18next'
 import { useParams } from 'react-router-dom'
-import SortableList from "react-easy-sort";
+import { VirtuosoGrid } from 'react-virtuoso'
+import SortableList, { SortableItem } from "react-easy-sort";
 import { arrayMoveImmutable } from 'array-move'
 import TrackCard from './TrackCard'
-import { Chip, Spinner } from '@heroui/react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { IoMusicalNotesOutline, IoPlayOutline } from 'react-icons/io5'
+import { Spinner } from '@heroui/react'
+import { motion } from 'framer-motion'
+import { IoPlayOutline } from 'react-icons/io5'
 import { notification } from '@/utils/misc'
+import Empty from './Empty'
+import React from 'react'
 
 const Playlist = () => {
     const { currentSongs, position, editMode, selectedSongs, volume, filterPlaylist, playing } = useAppSelector(state => state.Main)
     const { playlistId } = useParams() as { playlistId: string }
     const dispatch = useAppDispatch()
+    const [isInitialLoad, setIsInitialLoad] = useState(true)
+    const [animationsComplete, setAnimationsComplete] = useState({
+        container: false,
+        header: false
+    })
 
     const setCurrentSong = useCallback((id: string) => {
         if (id === position) {
@@ -79,44 +87,18 @@ const Playlist = () => {
         )
     }, [currentSongs, filterPlaylist])
 
-    const EmptyState = () => (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="flex flex-col items-center justify-center py-12 space-y-4"
-        >
-            <motion.div
-                animate={{
-                    rotate: [0, 10, -10, 0],
-                    scale: [1, 1.1, 1]
-                }}
-                transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                }}
-                className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-red-400 flex items-center justify-center"
-            >
-                <IoMusicalNotesOutline size={32} className="text-white" />
-            </motion.div>
-            <div className="text-center space-y-2">
-                <h3 className="text-lg font-semibold text-white">
-                    {i18next.t('playlist.empty')}
-                </h3>
-                <p className="text-gray-400 text-sm">
-                    {filterPlaylist ? i18next.t('playlist.no_song_match') : i18next.t('playlist.add_some_songs')}
-                </p>
-            </div>
-            <Chip
-                color="danger"
-                variant="shadow"
-                className="bg-black/20 border border-rose-500/20 text-rose-400"
-            >
-                {filterPlaylist ? i18next.t('playlist.no_results') : i18next.t('playlist.empty')}
-            </Chip>
-        </motion.div>
-    )
+    // When first load is complete, set isInitialLoad to false
+    useEffect(() => {
+        if (animationsComplete.container && animationsComplete.header) {
+            const timer = setTimeout(() => {
+                setIsInitialLoad(false)
+            }, 1000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [animationsComplete])
+
+    const allAnimationsComplete = animationsComplete.container && animationsComplete.header
 
     if (!currentSongs) {
         return (
@@ -140,18 +122,40 @@ const Playlist = () => {
         )
     }
 
+    const renderItemContainer = (children: React.ReactNode, index: number) => {
+        if (isInitialLoad) {
+            return (
+                <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 20,
+                        delay: index * 0.05
+                    }}
+                >
+                    {children}
+                </motion.div>
+            )
+        }
+        return <div>{children}</div>
+    }
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="w-full h-full"
+            onAnimationComplete={() => setAnimationsComplete(prev => ({ ...prev, container: true }))}
+            className="w-full h-full flex flex-col"
         >
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.1 }}
-                className="mb-6 p-4 rounded-xl bg-black/20 border border-rose-500/20"
+                onAnimationComplete={() => setAnimationsComplete(prev => ({ ...prev, header: true }))}
+                className="mb-6 p-4 rounded-xl bg-black/20 border border-rose-500/20 flex-shrink-0"
             >
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -180,53 +184,49 @@ const Playlist = () => {
                     )}
                 </div>
             </motion.div>
-            <SortableList
-                onSortEnd={onSortEnd}
-                className="list flex flex-col gap-3"
-                draggedItemClassName="dragged"
-                allowDrag={editMode}
-            >
-                <AnimatePresence mode="wait">
-                    {filteredPlaylist.length === 0 ? (
-                        <EmptyState key="empty" />
-                    ) : (
-                        <motion.div
-                            key="tracks"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="grid grid-cols-1 lg:grid-cols-2 gap-3"
-                        >
-                            {filteredPlaylist.map((song, index) => (
-                                <motion.div
-                                    key={song.id}
-                                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 200,
-                                        damping: 20,
-                                        delay: index * 0.05
-                                    }}
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    <TrackCard
-                                        song={song}
-                                        onClick={() => handleSongClick(song)}
-                                        selected={selectedSongs.includes(song.id)}
-                                        toggleSelectedSong={toggleSelectedSong}
-                                        position={position}
-                                        editMode={editMode}
-                                    />
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </SortableList>
+
+            {filteredPlaylist.length === 0 ? (
+                <Empty filterPlaylist={filterPlaylist} />
+            ) : allAnimationsComplete ? (
+                <SortableList
+                    onSortEnd={onSortEnd}
+                    draggedItemClassName="dragged"
+                    allowDrag={editMode}
+                    className="list h-full"
+                >
+                    <VirtuosoGrid
+                        data={filteredPlaylist}
+                        itemContent={(index, song) => (
+                            renderItemContainer(
+                                <TrackCard
+                                    song={song}
+                                    onClick={() => handleSongClick(song)}
+                                    selected={selectedSongs.includes(song.id)}
+                                    toggleSelectedSong={toggleSelectedSong}
+                                    position={position}
+                                    editMode={editMode}
+                                />,
+                                index
+                            )
+                        )}
+                        listClassName="grid grid-cols-1 lg:grid-cols-2 gap-3"
+                        itemClassName="h-full"
+                    />
+                </SortableList>
+            ) : (
+                <div className="flex items-center justify-center h-full">
+                    <Spinner
+                        size="lg"
+                        color="danger"
+                        classNames={{
+                            circle1: "border-b-rose-400",
+                            circle2: "border-b-rose-400"
+                        }}
+                    />
+                </div>
+            )}
         </motion.div>
     )
 }
 
-export default memo(Playlist)
+export default Playlist

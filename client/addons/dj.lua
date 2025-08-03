@@ -1,5 +1,12 @@
 if not Config.DJ.Enable then return end
 
+local GetEntityCoords = GetEntityCoords
+local IsControlJustPressed = IsControlJustPressed
+local DrawText3D = DrawText3D
+local GetJobName = GetJobName
+
+local table_includes = table.includes
+
 local djSettings = {
     silent = false,
     staySameCoords = true,
@@ -17,10 +24,11 @@ if not Config.DJ.Target then
         local openStr = i18n.t('dj.open.menu')
         while true do
             local sleep = 1250
-            for k, v in pairs(Config.DJ.Locations) do
-                local coords = v.coords
-                local dst = #(PlayerCoords - coords)
-                local hasPerm = table.includes(Config.DJ.Jobs, GetJobName()) or not Config.DJ.Jobs
+            for _, v in pairs(Config.DJ.Locations) do
+                local ped = cache.ped
+                local coords = GetEntityCoords(ped)
+                local dst = #(coords - v.coords)
+                local hasPerm = table_includes(Config.DJ.Jobs, GetJobName()) or not Config.DJ.Jobs
                 if dst < 2.0 and hasPerm then
                     sleep = 0
                     DrawText3D(coords.x, coords.y, coords.z, openStr)
@@ -35,7 +43,6 @@ if not Config.DJ.Target then
 end
 
 if Config.DJ.Target then
-    Info('DJ target is enabled')
     CreateThread(function()
         for k, v in pairs(Config.DJ.Locations) do
             local enterCoords = v.coords
@@ -55,7 +62,7 @@ if Config.DJ.Target then
                             openUi(v)
                         end,
                         canInteract = function()
-                            return table.includes(Config.DJ.Jobs, GetJobName()) or not Config.DJ.Jobs
+                            return table_includes(Config.DJ.Jobs, GetJobName()) or not Config.DJ.Jobs
                         end
                     }
                 },
