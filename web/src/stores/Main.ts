@@ -49,9 +49,7 @@ const Static = createSlice({
     reducers: {
         setPlaying: (state, action: PayloadAction<boolean>) => {
             state.playing = action.payload;
-            fetchNui('togglePlay', {
-                playing: action.payload
-            })
+            fetchNui('togglePlay', action.payload)
         },
         setPlaylist: (state, action: PayloadAction<Playlist[]>) => {
             state.playlist = action.payload;
@@ -147,9 +145,11 @@ const Static = createSlice({
         },
         setShuffle: (state, action: PayloadAction<boolean>) => {
             state.shuffle = action.payload;
+            fetchNui('setShuffle', action.payload)
         },
         setRepeat: (state, action: PayloadAction<boolean>) => {
             state.repeat = action.payload;
+            fetchNui('setRepeat', action.payload)
         },
         setFilterPlaylist: (state, action: PayloadAction<string>) => {
             state.filterPlaylist = action.payload;

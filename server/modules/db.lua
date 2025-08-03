@@ -124,6 +124,7 @@ function db.setPlaylist(userId, playlist)
     if cache then
         DeleteTemp('playlist', userId)
     end
+
     MySQL.insert.await(Query.UPSERT_PLAYLIST, { json.encode(playlist), userId })
     Debug('db.setPlaylist', userId)
 end
@@ -197,7 +198,7 @@ CreateThread(function()
             CREATE TABLE `audioplayer_playlists` (
                 `id` INT(11) NOT NULL AUTO_INCREMENT,
                 `userId` INT(11) NOT NULL,
-                `data` TEXT NULL DEFAULT NULL COLLATE 'utf8mb3_general_ci',
+                `data` TEXT NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
                 PRIMARY KEY (`id`) USING BTREE,
                 UNIQUE INDEX `userId` (`userId`) USING BTREE
             )

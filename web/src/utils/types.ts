@@ -14,8 +14,21 @@ export type ReadyListener = {
 }
 
 export type Player = {
+    id: string;
+    soundId: string;
     source: number;
+    soundData: Song;
+    playing: boolean;
+    duration: number;
+    volume: number;
+    repeatState: boolean;
+    shuffle: boolean;
+    currentPlaylistId: string;
+}
+
+export type GtaPlayer = {
     name: string;
+    source: number;
 }
 
 export type MinimalHudPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';

@@ -43,7 +43,7 @@ const Actions = () => {
     const toggleEditMode = useCallback(() => {
         const newEditMode = !editMode
         if (newEditMode) {
-            notification(i18next.t('general.edit.enabled'), 'info')
+            notification(i18next.t('general.edit_enabled'), 'info')
             dispatch(setFilterPlaylist(''))
         }
         dispatch(setEditMode(newEditMode))

@@ -74,9 +74,9 @@ const Info = ({ isShort }: InfoProps) => {
                     }}
                     transition={{
                         duration: 0.6,
-                        delay: (isShort && showVolume) ? 0.0 : 0.3
                     }}
-                    layout
+                    // Just animate when short display is enabled
+                    layout={!!isShort}
                 >
                     <Image
                         src={currentSong?.cover}

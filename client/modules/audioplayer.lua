@@ -1,6 +1,13 @@
 local IsControlPressed = IsControlPressed
 local IsControlJustPressed = IsControlJustPressed
 
+local DEFAULT_PLAYER = {
+    volume = 1,
+    playing = false,
+    repeatState = false,
+    shuffle = false
+}
+
 ---@class AudioPlayer
 ---@field visible boolean
 ---@field id string
@@ -11,7 +18,8 @@ local IsControlJustPressed = IsControlJustPressed
 ---@field handlers? OpenAudioPlayerHandlers
 ---@field shortDisplay? ShortDisplay
 _G['audioplayer'] = {
-    shortDisplay = {}
+    shortDisplay = {},
+    player = DEFAULT_PLAYER
 }
 
 function audioplayer:isUIDisabled()
@@ -21,7 +29,7 @@ function audioplayer:isUIDisabled()
     end
     local uiDisabled = lib.callback.await('mx-audioplayer:isUiDisabled', 0, id)
     if uiDisabled then
-        Notification(i18n.t('general.ui.disabled'), 'error')
+        Notification(i18n.t('general.ui_disabled'), 'error')
         return true
     end
     return false
@@ -31,7 +39,6 @@ end
 function audioplayer:getInfo(options)
     self.id = options.id or ''
     self.options = nil
-    if self:isUIDisabled() then return end
     self:initOptions(options)
     local id = self.id
     local data = lib.callback.await('mx-audioplayer:getData', 0, id) ---@type {playlist?: table, user?: Account, player: Player} | nil
@@ -47,6 +54,7 @@ end
 ---@param options? AudioPlayerOptions
 ---@param handlers? OpenAudioPlayerHandlers
 function audioplayer:open(options, handlers)
+    if self:isUIDisabled() then return end
     self.visible = true
     options = options or {}
     self:getInfo(options)
@@ -72,8 +80,7 @@ function audioplayer:open(options, handlers)
         playlist = self.playlist,
         currentSound = soundData,
         user = self.user,
-        volume = player.volume or 1,
-        playing = player.playing or false,
+        player = player
     })
     TriggerServerEvent('mx-audioplayer:setHandlers', id, handlers)
 
@@ -113,7 +120,7 @@ end
 ---@param data Player
 function audioplayer:updatePlayerData(data)
     if not data then return end
-    if not self.player then self.player = {} end
+    if not self.player then self.player = DEFAULT_PLAYER end
     for k, v in pairs(data) do
         self.player[k] = v
     end
@@ -191,10 +198,7 @@ function audioplayer:getSoundData()
 end
 
 function audioplayer:getPlayer()
-    return self.player or {
-        volume = 1,
-        playing = false,
-    }
+    return self.player or DEFAULT_PLAYER
 end
 
 function audioplayer:shortDisplayKeyListener()

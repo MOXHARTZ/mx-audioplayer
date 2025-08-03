@@ -30,25 +30,6 @@ local function generateToken()
     return token
 end
 
----@param playlist PlaylistData[]
----@param soundId string
----@return {playlistIndex: number, songIndex: number, playlistId: string, songId: string} | nil
-local function getPlaylistSound(playlist, soundId)
-    for i, v in pairs(playlist) do
-        for j, w in pairs(v.songs) do
-            if w.soundId == soundId then
-                return {
-                    playlistIndex = i,
-                    songIndex = j,
-                    playlistId = v.id,
-                    songId = w.id,
-                }
-            end
-        end
-    end
-    return nil
-end
-
 ---@class PlaySound
 ---@field soundId string -- soundData.soundId combines with `id` to make a real unique id for each player.
 ---@field soundData PlaylistSong
@@ -84,10 +65,17 @@ local function playSound(source, id, data)
     local playlist = db.getPlaylist(user.accountId)
     assert(playlist, 'mx-audioplayer:play ::: Playlist not found')
 
-    local soundData = getPlaylistSound(playlist, data.soundData.soundId)
-    assert(soundData, 'mx-audioplayer:play ::: Sound not found')
+    if not user.player?.currentPlaylistId then
+        Debug('mx-audioplayer:play ::: Current playlist id not found', user.accountId)
+        return false
+    end
 
     if not data.soundData.url then
+        local currentPlaylist, currentPlaylistIndex = table.find(playlist, function(v) return v.id == user.player.currentPlaylistId end)
+        assert(currentPlaylist, 'mx-audioplayer:play ::: Current playlist not found')
+        local soundData, soundIndex = table.find(currentPlaylist.songs, function(v) return v.soundId == data.soundData.soundId end)
+        assert(soundData, 'mx-audioplayer:play ::: Sound not found')
+
         -- first param is the query, second param is the limit
         local response = Surround:searchTrack(data.soundData.title .. ' - ' .. data.soundData.artist, 1)
         if not response then
@@ -95,7 +83,7 @@ local function playSound(source, id, data)
             return false
         end
         local url = 'https://www.youtube.com/watch?v=' .. response[1].videoId
-        playlist[soundData.playlistIndex].songs[soundData.songIndex].url = url
+        playlist[currentPlaylistIndex].songs[soundIndex].url = url
         data.soundData.url = url
         db.setPlaylist(user.accountId, playlist)
         TriggerClientEvent('mx-audioplayer:setPlaylist', source, playlist)
@@ -117,37 +105,7 @@ local function playSound(source, id, data)
     end)
 
     Surround:onPlayEnd(soundId, function()
-        if not DoesPlayerExist(source) then return Debug('mx-audioplayer:playEnd ::: Player not found', source) end
-
-        -- fetch again, because player can change the playlist.
-        local playlist = db.getPlaylist(user.accountId)
-        if not playlist then
-            return Debug('mx-audioplayer:playEnd ::: Playlist not found', user.accountId)
-        end
-        local soundData = getPlaylistSound(playlist, data.soundData.soundId)
-        if not soundData then
-            return Debug('mx-audioplayer:playEnd ::: Sound not found', data.soundData.soundId, playlist)
-        end
-        local playlistData = playlist[soundData.playlistIndex]
-        if soundData.songIndex == #playlistData.songs then
-            soundData.songIndex = 1
-        else
-            soundData.songIndex = soundData.songIndex + 1
-        end
-        local nextSound = playlistData.songs[soundData.songIndex]
-        if nextSound then
-            local netId = Surround:getSoundNetId(soundId)
-            TriggerClientEvent('mx-audioplayer:setWaitingForResponse', -1, id, true)
-            options.silent = false
-            playSound(source, id, {
-                soundId = nextSound.soundId .. id,
-                soundData = nextSound,
-                coords = data.coords,
-                options = options,
-                netId = netId
-            })
-            TriggerClientEvent('mx-audioplayer:setWaitingForResponse', -1, id, false)
-        end
+        OnPlayEnd(source, id, soundId, data, options)
     end)
     if options.maxDistance then
         Surround:setMaxDistance(-1, soundId, options.maxDistance)
@@ -160,11 +118,92 @@ local function playSound(source, id, data)
         source = source,
         soundData = data.soundData,
         playing = true,
-        duration = 0
+        duration = 0,
+        currentPlaylistId = user.player.currentPlaylistId,
+        volume = user.player.volume,
+        repeatState = user.player.repeatState,
+        shuffle = user.player.shuffle,
     }
 
     TriggerClientEvent('mx-audioplayer:playSound', -1, user.player)
     return user.player
+end
+
+---@param source string
+---@param id string
+---@param soundId string
+---@param data PlaySound
+---@param options AudioPlayerOptions
+function OnPlayEnd(source, id, soundId, data, options)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        Error('mx-audioplayer:playEnd ::: User not found', id)
+        return
+    end
+
+    local player = user.player
+    if not player then
+        Error('mx-audioplayer:playEnd ::: Player not found', id)
+        return
+    end
+
+    if not DoesPlayerExist(source) then return Debug('mx-audioplayer:playEnd ::: Player not found', source) end
+
+    if player.repeatState then
+        Surround:setTimeStamp(-1, soundId, 0)
+        Debug('mx-audioplayer:playEnd ::: Repeat state is true, set time to 0', soundId)
+        return
+    end
+
+    local playlist = db.getPlaylist(user.accountId)
+    if not playlist then
+        return Debug('mx-audioplayer:playEnd ::: Playlist not found', user.accountId)
+    end
+
+    if not player.currentPlaylistId then
+        return Debug('mx-audioplayer:playEnd ::: Current playlist id not found', user.accountId)
+    end
+
+    local currentPlaylist = table.find(playlist, function(v) return v.id == player.currentPlaylistId end)
+    if not currentPlaylist then
+        return Debug('mx-audioplayer:playEnd ::: Current playlist not found', player.currentPlaylistId)
+    end
+
+    local soundData, soundIndex = table.find(currentPlaylist.songs, function(v) return v.soundId == data.soundData.soundId end)
+    if not soundData then
+        return Debug('mx-audioplayer:playEnd ::: Sound not found', data.soundData.soundId, currentPlaylist)
+    end
+
+    if soundIndex == #currentPlaylist.songs then
+        soundIndex = 1
+    else
+        soundIndex = soundIndex + 1
+    end
+    local nextSound = currentPlaylist.songs[soundIndex]
+
+    if player.shuffle and #currentPlaylist.songs > 2 then
+        local newIndex = math.random(1, #currentPlaylist.songs)
+        local time = os.time()
+        while soundIndex == newIndex and os.time() - time < 10 do
+            Wait(0)
+            newIndex = math.random(1, #currentPlaylist.songs)
+        end
+        nextSound = currentPlaylist.songs[newIndex]
+    end
+
+    if nextSound then
+        local netId = Surround:getSoundNetId(soundId)
+        TriggerClientEvent('mx-audioplayer:setWaitingForResponse', -1, id, true)
+        options.silent = false
+        playSound(source, id, {
+            soundId = nextSound.soundId .. id,
+            soundData = nextSound,
+            coords = data.coords,
+            options = options,
+            netId = netId
+        })
+        TriggerClientEvent('mx-audioplayer:setWaitingForResponse', -1, id, false)
+    end
 end
 
 ---@param source number
@@ -205,7 +244,6 @@ end)
 RegisterNetEvent('mx-audioplayer:setVolume', function(id, soundId, volume)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
-        Error('mx-audioplayer:setVolume ::: User not found', id)
         return
     end
     user.player.volume = volume
@@ -213,13 +251,18 @@ RegisterNetEvent('mx-audioplayer:setVolume', function(id, soundId, volume)
 end)
 
 RegisterNetEvent('mx-audioplayer:seek', function(soundId, position)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.player.soundId == soundId end)
+    if not user then
+        return
+    end
+    -- when seek is triggered, surround will automatically play the sound
+    user.player.playing = true
     Surround:setTimeStamp(-1, soundId, position)
 end)
 
 RegisterNetEvent('mx-audioplayer:resume', function(id, soundId)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
-        Error('mx-audioplayer:resume ::: User not found', id)
         return
     end
     Surround:Resume(-1, soundId)
@@ -229,17 +272,39 @@ end)
 RegisterNetEvent('mx-audioplayer:pause', function(id, soundId)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
-        Error('mx-audioplayer:pause ::: User not found', id)
         return
     end
     user.player.playing = false
     Surround:Pause(-1, soundId)
 end)
 
+RegisterNetEvent('mx-audioplayer:setRepeat', function(id, state)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        return
+    end
+    user.player.repeatState = state
+end)
+
+RegisterNetEvent('mx-audioplayer:setShuffle', function(id, state)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        return
+    end
+    user.player.shuffle = state
+end)
+
+RegisterNetEvent('mx-audioplayer:setCurrentPlaylistId', function(id, playlistId)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        return
+    end
+    user.player.currentPlaylistId = playlistId
+end)
+
 RegisterNetEvent('mx-audioplayer:destroy', function(id, soundId)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
-        Error('mx-audioplayer:destroy ::: User not found', id)
         return
     end
     if user.player.soundId ~= soundId then
@@ -334,7 +399,6 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
     if data.token then
         local token = tokens[data.token]
         if not token then
-            Debug('mx-audioplayer:login ::: Token not found', data.token)
             return false
         end
         username, password = token.username, token.password
@@ -361,7 +425,6 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
             password = password
         }
     end
-    Debug('mx-audioplayer:login accounts', AudioPlayerAccounts)
     return data.token
 end)
 

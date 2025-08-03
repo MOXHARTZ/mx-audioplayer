@@ -1,5 +1,5 @@
 import { fetchNui } from '@/utils/fetchNui'
-import type { Player, Playlist } from '@/utils/types'
+import type { GtaPlayer, Playlist } from '@/utils/types'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import i18next from 'i18next'
 import { useCallback, useEffect, useState } from 'react'
@@ -13,13 +13,13 @@ type ShareProps = {
 }
 
 const Share = ({ open, setOpen, currentPlaylist }: ShareProps) => {
-    const [players, setPlayers] = useState<Player[]>([])
+    const [players, setPlayers] = useState<GtaPlayer[]>([])
     const handleClose = useCallback(() => {
         setOpen(false);
     }, []);
     const [parent] = useAutoAnimate()
     useEffect(() => {
-        fetchNui<Player[]>('getNearbyPlayers').then((players) => {
+        fetchNui<GtaPlayer[]>('getNearbyPlayers').then((players) => {
             if (!players || players.length === 0) {
                 notification(i18next.t('shared.no_players'), 'error')
                 return setOpen(false)
@@ -27,7 +27,7 @@ const Share = ({ open, setOpen, currentPlaylist }: ShareProps) => {
             setPlayers(players)
         })
     }, [])
-    const handleShare = useCallback((player: Player) => {
+    const handleShare = useCallback((player: GtaPlayer) => {
         setOpen(false)
         notification(i18next.t('shared.success'), 'success')
         fetchNui('sharePlaylist', { player: +player.source, playlist: currentPlaylist })

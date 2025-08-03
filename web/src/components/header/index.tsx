@@ -42,8 +42,9 @@ const Header = ({ isShort }: HeaderProps) => {
                     className="w-full h-full"
                 >
                     <Card className={classNames({
-                        'w-full h-full bg-black/20 border border-rose-500/20 shadow-lg': !isShort,
-                        'w-full h-full bg-black/70 border border-rose-500/20 shadow-lg': isShort
+                        'w-full h-full border-rose-500/20 shadow-lg': true,
+                        'border border-rose-500/20 shadow-lg bg-black/30': !isShort,
+                        'bg-black/70 border border-rose-500/20 shadow-lg': isShort
                     })}>
                         <CardBody className={classNames({
                             'px-4 pt-2 pb-0 grid grid-cols-3': true,
@@ -61,14 +62,14 @@ const Header = ({ isShort }: HeaderProps) => {
                                                 transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
                                             >
                                                 <motion.h1
-                                                    className='text-xl truncate m-auto mb-1 bg-gradient-to-r from-rose-400 to-red-400 bg-clip-text text-transparent font-bold'
+                                                    className='text-xl truncate m-auto mb-1 bg-gradient-to-r from-rose-400 to-red-400 bg-clip-text text-transparent font-bold max-w-72'
                                                     initial={{ opacity: 0, y: -10 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.4 }}
                                                 >
                                                     {currentSongData.song.title}
                                                 </motion.h1>
-                                                <p className='text-xs truncate text-gray-400'>
+                                                <p className='text-xs truncate text-gray-40 max-w-64'>
                                                     {currentSongData.song.artist}
                                                 </p>
                                             </motion.div>

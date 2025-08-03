@@ -4,11 +4,11 @@ import { useAppDispatch, useAppSelector } from './stores'
 import useNuiEvent from './hooks/useNuiEvent'
 import { useExitListener } from './hooks/useExitListener'
 import { fetchNui } from './utils/fetchNui'
-import { addPlaylist, clearSound, setPlaying, setPlaylist, setSettings, setUserData, setVolume, setWaitingForResponse } from './stores/Main'
+import { addPlaylist, clearSound, setCurrentPlaylistId, setPlaying, setPlaylist, setRepeat, setSettings, setShuffle, setUserData, setVolume, setWaitingForResponse, updateCurrentSongs } from './stores/Main'
 import { Song } from './fake-api/song'
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { Account, Player, Playlist, ReadyListener } from './utils/types'
+import type { Account, Playlist, Player, ReadyListener } from './utils/types'
 import router from './routes'
 import { RouterProvider } from 'react-router-dom'
 import { addToast, HeroUIProvider } from '@heroui/react';
@@ -35,15 +35,18 @@ function App() {
     if (!isEnvBrowser()) return;
     document.body.style.backgroundImage = 'url(https://wallpaperaccess.com/full/707055.jpg)'
   }, [])
-  useNuiEvent<{ playlist: Playlist[]; currentSound: Song; user?: Account; volume: number; playing: boolean; }>('open', (data) => {
+  useNuiEvent<{ playlist: Playlist[]; currentSound: Song; user?: Account; player: Player }>('open', (data) => {
     setVisible(true)
-    dispatch(setVolume(data.volume))
+    dispatch(setVolume(data.player.volume))
+    dispatch(setRepeat(data.player.repeatState))
+    dispatch(setShuffle(data.player.shuffle))
     dispatch(setPlaylist(data.playlist))
     dispatch(setUserData(data.user))
+    dispatch(setCurrentPlaylistId(data.player.currentPlaylistId))
     if (!data.currentSound) {
       return dispatch(clearSound(true));
     }
-    dispatch(setPlaying(data.playing ?? false))
+    dispatch(setPlaying(data.player.playing ?? false))
     dispatch(setPositionThunk(data.currentSound))
   })
   useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound?: Song; playing: boolean }>('toggleShortDisplay', (data) => {
@@ -87,12 +90,6 @@ function App() {
   })
   useNuiEvent('close', closeUI)
   useNuiEvent<{ playlist: Playlist, position: number | string }>('end', (data) => {
-    if (repeat) {
-      fetchNui('seek', {
-        position: 0
-      })
-      return
-    }
     if (currentSongChildren?.length === 0) return;
     dispatch(nextSongThunk(true, data.playlist, data.position))
   })

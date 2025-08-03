@@ -48,6 +48,9 @@
 ---@field volume? number
 ---@field soundData? PlaylistSong
 ---@field duration? number
+---@field repeatState? boolean
+---@field shuffle? boolean
+---@field currentPlaylistId? string
 
 ---@class AudioplayerAccount
 ---@field id string

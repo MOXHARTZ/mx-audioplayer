@@ -15,6 +15,7 @@ import { IoPlayOutline } from 'react-icons/io5'
 import { notification } from '@/utils/misc'
 import Empty from './Empty'
 import React from 'react'
+import { fetchNui } from '@/utils/fetchNui'
 
 const Playlist = () => {
     const { currentSongs, position, editMode, selectedSongs, volume, filterPlaylist, playing } = useAppSelector(state => state.Main)
@@ -65,7 +66,8 @@ const Playlist = () => {
 
     useEffect(() => {
         dispatch(setCurrentPlaylistId(playlistId))
-    }, [playlistId, dispatch])
+        fetchNui('setCurrentPlaylistId', playlistId)
+    }, [playlistId])
 
     const onSortEnd = useCallback((oldIndex: number, newIndex: number) => {
         if (!currentSongs) {

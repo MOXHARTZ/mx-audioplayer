@@ -1,11 +1,13 @@
-import { useAppSelector } from '@/stores';
+import { useAppDispatch, useAppSelector } from '@/stores';
 import { fetchNui } from '@/utils/fetchNui';
 import { formatDuration } from '@/utils/misc';
 import { Slider } from '@heroui/react';
 import { FC, memo, useState } from 'react'
+import { setPlaying } from '@/stores/Main';
 
 const Timer: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> = ({ timeStamp, setTimeStamp }) => {
     const [seeking, setSeeking] = useState<number | false>(false)
+    const dispatch = useAppDispatch()
     const { currentSongData } = useAppSelector(state => state.Main)
     const currentSong = currentSongData?.song
     return (
@@ -24,6 +26,7 @@ const Timer: FC<{ timeStamp: number; setTimeStamp: (seek: number) => void }> = (
                         await fetchNui('seek', {
                             position: value as number
                         })
+                        dispatch(setPlaying(true))
                         setTimeout(() => {
                             setSeeking(false)
                         }, 1000)
