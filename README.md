@@ -35,8 +35,8 @@ This script is made for mx-surround. It's a audio player that allows you to play
 ![Screenshot 4](/screenshots/4.png)
 ![Screenshot 5](/screenshots/5.png)
 ![Screenshot 6](/screenshots/6.png)
-![Screenshot 6](/screenshots/7.png)
-![Screenshot 6](/screenshots/8.png)
+![Screenshot 7](/screenshots/7.png)
+![Screenshot 8](/screenshots/8.png)
 
 # REQUIREMENTS
 - [mx-surround](https://store.moxha.dev/package/5864855)
