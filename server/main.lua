@@ -60,7 +60,7 @@ local function playSound(source, id, data)
         user.player.soundId = nil
     end
 
-    local volume = options.silent and 0.0 or (user.player.volume or 1)
+    local volume = options.silent and 0.0 or (user.player?.volume or 1)
 
     local playlist = db.getPlaylist(user.accountId)
     assert(playlist, 'mx-audioplayer:play ::: Playlist not found')
@@ -119,10 +119,10 @@ local function playSound(source, id, data)
         soundData = data.soundData,
         playing = true,
         duration = 0,
-        currentPlaylistId = user.player.currentPlaylistId,
-        volume = user.player.volume,
-        repeatState = user.player.repeatState,
-        shuffle = user.player.shuffle,
+        currentPlaylistId = user.player?.currentPlaylistId,
+        volume = user.player?.volume,
+        repeatState = user.player?.repeatState,
+        shuffle = user.player?.shuffle,
     }
 
     TriggerClientEvent('mx-audioplayer:playSound', -1, user.player)
@@ -243,7 +243,7 @@ end)
 
 RegisterNetEvent('mx-audioplayer:setVolume', function(id, soundId, volume)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user then
+    if not user or not user.player then
         return
     end
     user.player.volume = volume
@@ -252,7 +252,7 @@ end)
 
 RegisterNetEvent('mx-audioplayer:seek', function(soundId, position)
     local user = table.find(AudioPlayerAccounts, function(v) return v.player.soundId == soundId end)
-    if not user then
+    if not user or not user.player then
         return
     end
     -- when seek is triggered, surround will automatically play the sound
@@ -262,7 +262,7 @@ end)
 
 RegisterNetEvent('mx-audioplayer:resume', function(id, soundId)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user then
+    if not user or not user.player then
         return
     end
     Surround:Resume(-1, soundId)
@@ -271,7 +271,7 @@ end)
 
 RegisterNetEvent('mx-audioplayer:pause', function(id, soundId)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user then
+    if not user or not user.player then
         return
     end
     user.player.playing = false
@@ -280,7 +280,7 @@ end)
 
 RegisterNetEvent('mx-audioplayer:setRepeat', function(id, state)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user then
+    if not user or not user.player then
         return
     end
     user.player.repeatState = state
@@ -288,7 +288,7 @@ end)
 
 RegisterNetEvent('mx-audioplayer:setShuffle', function(id, state)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user then
+    if not user or not user.player then
         return
     end
     user.player.shuffle = state
@@ -296,7 +296,7 @@ end)
 
 RegisterNetEvent('mx-audioplayer:setCurrentPlaylistId', function(id, playlistId)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user then
+    if not user or not user.player then
         return
     end
     user.player.currentPlaylistId = playlistId
@@ -304,7 +304,7 @@ end)
 
 RegisterNetEvent('mx-audioplayer:destroy', function(id, soundId)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user then
+    if not user or not user.player then
         return
     end
     if user.player.soundId ~= soundId then
