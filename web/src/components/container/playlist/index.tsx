@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, Fragment, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/stores'
 import { setCurrentPlaylistId, setCurrentSongs, setPlaying, setSelectedSongs } from '@/stores/Main'
 import { Song } from '@/fake-api/song'
@@ -6,7 +6,7 @@ import { handlePlay } from '@/thunks/handlePlay'
 import i18next from 'i18next'
 import { useParams } from 'react-router-dom'
 import { VirtuosoGrid } from 'react-virtuoso'
-import SortableList, { SortableItem } from "react-easy-sort";
+import SortableList from "react-easy-sort";
 import { arrayMoveImmutable } from 'array-move'
 import TrackCard from './TrackCard'
 import { Spinner } from '@heroui/react'
@@ -14,7 +14,6 @@ import { motion } from 'framer-motion'
 import { IoPlayOutline } from 'react-icons/io5'
 import { notification } from '@/utils/misc'
 import Empty from './Empty'
-import React from 'react'
 import { fetchNui } from '@/utils/fetchNui'
 
 const Playlist = () => {
@@ -27,7 +26,7 @@ const Playlist = () => {
         header: false
     })
 
-    const setCurrentSong = useCallback((id: string) => {
+    const setCurrentSong = (id: string) => {
         if (id === position) {
             dispatch(setPlaying(!playing))
             return
@@ -46,36 +45,36 @@ const Playlist = () => {
             soundData,
             volume
         }))
-    }, [currentSongs, position, volume, dispatch, playing])
+    }
 
-    const toggleSelectedSong = useCallback((id: string) => {
+    const toggleSelectedSong = (id: string) => {
         if (selectedSongs.includes(id)) {
             dispatch(setSelectedSongs(selectedSongs.filter(song => song !== id)))
         } else {
             dispatch(setSelectedSongs([...selectedSongs, id]))
         }
-    }, [selectedSongs, dispatch])
+    }
 
-    const handleSongClick = useCallback((song: Song) => {
+    const handleSongClick = (song: Song) => {
         if (editMode) {
             toggleSelectedSong(song.id)
             return
         }
         setCurrentSong(song.id)
-    }, [editMode, toggleSelectedSong, setCurrentSong])
+    }
 
     useEffect(() => {
         dispatch(setCurrentPlaylistId(playlistId))
         fetchNui('setCurrentPlaylistId', playlistId)
     }, [playlistId])
 
-    const onSortEnd = useCallback((oldIndex: number, newIndex: number) => {
+    const onSortEnd = (oldIndex: number, newIndex: number) => {
         if (!currentSongs) {
             notification(i18next.t('playlist.select_playlist'), 'error')
             return
         }
         dispatch(setCurrentSongs(arrayMoveImmutable(currentSongs, oldIndex, newIndex)))
-    }, [currentSongs, dispatch])
+    }
 
     const filteredPlaylist = useMemo(() => {
         if (!currentSongs) return []

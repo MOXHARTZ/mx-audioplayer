@@ -49,12 +49,16 @@ function App() {
     dispatch(setPlaying(data.player.playing ?? false))
     dispatch(setPositionThunk(data.currentSound))
   })
-  useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound?: Song; playing: boolean }>('toggleShortDisplay', (data) => {
+  useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound?: Song; player: Player }>('toggleShortDisplay', (data) => {
     setShortDisplay(data.state)
     if (!data.state) return;
     dispatch(setPlaylist(data.playlist))
-    if (data.playing) {
+    if (data.player.playing) {
       dispatch(setPlaying(true))
+      dispatch(setShuffle(data.player.shuffle))
+      dispatch(setRepeat(data.player.repeatState))
+      dispatch(setVolume(data.player.volume))
+      dispatch(setCurrentPlaylistId(data.player.currentPlaylistId))
     }
     if (!data.currentSound) {
       dispatch(clearSound(true));

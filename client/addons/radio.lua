@@ -26,33 +26,33 @@ local function openUi()
     }
     audioplayer:open(radioSettings, {
         onPlay = function(soundId)
-            if not DoesEntityExist(_vehicle) then
+            if not cache.vehicle or not DoesEntityExist(cache.vehicle) then
                 TriggerServerEvent('mx-audioplayer:destroy', soundId)
                 return
             end
             local volume = audioplayer:getPlayer().volume
-            TriggerServerEvent('mx-audioplayer:attach', soundId, NetworkGetNetworkIdFromEntity(_vehicle), volume, cache.vehicle)
+            TriggerServerEvent('mx-audioplayer:attach', soundId, NetworkGetNetworkIdFromEntity(cache.vehicle), volume, cache.vehicle)
         end,
         onLogin = function(_, _, token)
-            if not DoesEntityExist(_vehicle) then return Debug('radio: onLogin failed, vehicle not found') end
-            Entity(_vehicle).state:set('audioplayer_account', token, true)
+            if not DoesEntityExist(cache.vehicle) then return Debug('radio: onLogin failed, vehicle not found') end
+            Entity(cache.vehicle).state:set('audioplayer_account', token, true)
         end,
         onLogout = function(_, _)
-            if not _vehicle then return Debug('radio: onLogout failed, vehicle not found') end
-            Entity(_vehicle).state:set('audioplayer_account', nil, true)
+            if not cache.vehicle then return Debug('radio: onLogout failed, vehicle not found') end
+            Entity(cache.vehicle).state:set('audioplayer_account', nil, true)
         end,
         autoLogin = function(_, _, token)
-            if not _vehicle then return Debug('radio: autoLogin failed, vehicle not found') end
-            if not Entity(_vehicle).state.audioplayer_account then
+            if not cache.vehicle then return Debug('radio: autoLogin failed, vehicle not found') end
+            if not Entity(cache.vehicle).state.audioplayer_account then
                 return
             end
-            local account = Entity(_vehicle).state.audioplayer_account
+            local account = Entity(cache.vehicle).state.audioplayer_account
             local success = Login({
                 token = account
             })
             if not success then
                 Notification(i18n.t('login.this_user_credentials_has_been_modified'), 'error')
-                Entity(_vehicle).state:set('audioplayer_account', nil, true)
+                Entity(cache.vehicle).state:set('audioplayer_account', nil, true)
             end
         end,
     })

@@ -87,7 +87,7 @@ RegisterNUICallback('play', function(data, cb)
     local id = audioplayer.id
     local options = audioplayer.options
     local soundId = soundData.soundId .. id
-    local coords = options?.coords or GetEntityCoords(cache.ped) -- need instant coords
+    local coords = options?.coords or GetEntityCoords(cache.ped)
 
     local player = lib.callback.await('mx-audioplayer:play', false, id, {
         soundId = soundId,
@@ -313,7 +313,6 @@ end)
 RegisterNetEvent('mx-audioplayer:playSound', function(data)
     local _id = audioplayer.id
     if _id ~= data.id then
-        Debug('mx-audioplayer:playSound ::: id is not the same', '_id', _id, 'data.id', data.id)
         return
     end
     if audioplayer.shortDisplay.visible then

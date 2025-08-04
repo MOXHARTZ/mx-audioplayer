@@ -10,8 +10,6 @@ local SetNetworkIdExistsOnAllMachines = SetNetworkIdExistsOnAllMachines
 local NetworkSetNetworkIdDynamic = NetworkSetNetworkIdDynamic
 local SetNetworkIdSyncToPlayer = SetNetworkIdSyncToPlayer
 local NetworkGetEntityOwner = NetworkGetEntityOwner
-local HasModelLoaded = HasModelLoaded
-local RequestModel = RequestModel
 local CreateObject = CreateObject
 local PlaceObjectOnGroundProperly = PlaceObjectOnGroundProperly
 local SetEntityHeading = SetEntityHeading
@@ -106,11 +104,7 @@ local function create()
     local ped = cache.ped
     local playerCoords = GetEntityCoords(ped)
     local heading = GetEntityHeading(ped)
-    RequestModel(boomboxModel)
-    while not HasModelLoaded(boomboxModel) do
-        RequestModel(boomboxModel)
-        Wait(5)
-    end
+    lib.requestModel(boomboxModel)
     local object = CreateObject(boomboxModel, playerCoords.x, playerCoords.y, playerCoords.z, true, true, true)
     PlaceObjectOnGroundProperly(object)
     SetEntityHeading(object, heading)

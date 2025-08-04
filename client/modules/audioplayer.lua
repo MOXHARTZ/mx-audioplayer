@@ -251,7 +251,7 @@ function audioplayer:toggleShortDisplay(state, data)
         state = state,
         playlist = self.playlist,
         currentSound = self:getSoundData(),
-        playing = self.player?.playing or false,
+        player = self.player
     })
 
     self:shortDisplayKeyListener()
