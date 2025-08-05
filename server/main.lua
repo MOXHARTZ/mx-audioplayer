@@ -94,6 +94,13 @@ local function playSound(source, id, data)
         return false
     end
 
+    for _, location in ipairs(Config.DJ.Locations) do
+        if location.id == data.options?.id and location.stereo ~= nil then
+            Surround:setStereoMode(-1, soundId, location.stereo)
+            break
+        end
+    end
+
     if data.netId then
         Surround:attachEntity(-1, soundId, data.netId)
     end
