@@ -28,6 +28,7 @@ Config.DJ.Locations = {
     {
         id = 'Sex On The Beach',                                                      -- Unique ID
         coords = vector3(-1382.1446533203125, -614.4506225585938, 31.49793624877929), -- Location
+        -- stereo = false,                                                            -- optional. Override "Config.SetStereoWhenInInterior" from mx-surround
         panner = {                                                                    -- optional. Useful for big areas
             -- https://developer.mozilla.org/en-US/docs/Web/API/PannerNode
             panningModel = 'HRTF',
