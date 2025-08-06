@@ -58,7 +58,7 @@ const Static = createSlice({
         },
         setCurrentPlaylistId: (state, action: PayloadAction<string | number>) => {
             state.currentPlaylistId = action.payload;
-            state.currentSongs = state.playlist.find(playlist => playlist.id === action.payload)?.songs ?? undefined;
+            state.currentSongs = state?.playlist?.find?.(playlist => playlist.id === action.payload)?.songs ?? undefined;
         },
         setCurrentSongs: (state, action: PayloadAction<Song[]>) => {
             state.playlist = state.playlist.map(playlist => {
