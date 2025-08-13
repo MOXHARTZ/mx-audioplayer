@@ -73,7 +73,9 @@ RegisterNUICallback('handleChangePage', function(data, cb)
     end
 end)
 
-exports('open', audioplayer.open)
+exports('open', function(...)
+    return audioplayer:open(...)
+end)
 
 exports('getVolume', function()
     local player = audioplayer:getPlayer()
