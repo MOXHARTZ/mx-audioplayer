@@ -248,78 +248,41 @@ AddEventHandler('playerDropped', function()
     end
 end)
 
-RegisterNetEvent('mx-audioplayer:setVolume', function(id, soundId, volume)
+---@param id string
+---@param type 'volume' | 'seek' | 'playing' | 'repeatState' | 'shuffle' | 'currentPlaylistId'
+---@param data any
+RegisterNetEvent('mx-audioplayer:sync', function(id, type, data)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user or not user.player then
         return
     end
-    user.player.volume = volume
-    Surround:setVolumeMax(-1, soundId, volume)
-end)
 
-RegisterNetEvent('mx-audioplayer:seek', function(soundId, position)
-    local user = table.find(AudioPlayerAccounts, function(v) return v.player.soundId == soundId end)
-    if not user or not user.player then
-        return
+    if type == 'volume' then
+        user.player.volume = data.volume
+        Surround:setVolumeMax(-1, data.soundId, data.volume)
+    elseif type == 'seek' then
+        user.player.playing = true
+        Surround:setTimeStamp(-1, data.soundId, data.position)
+    elseif type == 'resume' then
+        user.player.playing = true
+        Surround:Resume(-1, data)
+    elseif type == 'pause' then
+        user.player.playing = false
+        Surround:Pause(-1, data)
+    elseif type == 'repeat' then
+        user.player.repeatState = data
+    elseif type == 'shuffle' then
+        user.player.shuffle = data
+    elseif type == 'currentPlaylistId' then
+        user.player.currentPlaylistId = data
+    elseif type == 'destroy' then
+        if user.player?.soundId ~= data.soundId then
+            Debug('mx-audioplayer:sync ::: SoundId not found', data.soundId, user.player.soundId)
+            return
+        end
+        user.player = nil
+        Surround:Destroy(-1, data.soundId)
     end
-    -- when seek is triggered, surround will automatically play the sound
-    user.player.playing = true
-    Surround:setTimeStamp(-1, soundId, position)
-end)
-
-RegisterNetEvent('mx-audioplayer:resume', function(id, soundId)
-    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user or not user.player then
-        return
-    end
-    Surround:Resume(-1, soundId)
-    user.player.playing = true
-end)
-
-RegisterNetEvent('mx-audioplayer:pause', function(id, soundId)
-    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user or not user.player then
-        return
-    end
-    user.player.playing = false
-    Surround:Pause(-1, soundId)
-end)
-
-RegisterNetEvent('mx-audioplayer:setRepeat', function(id, state)
-    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user or not user.player then
-        return
-    end
-    user.player.repeatState = state
-end)
-
-RegisterNetEvent('mx-audioplayer:setShuffle', function(id, state)
-    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user or not user.player then
-        return
-    end
-    user.player.shuffle = state
-end)
-
-RegisterNetEvent('mx-audioplayer:setCurrentPlaylistId', function(id, playlistId)
-    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user or not user.player then
-        return
-    end
-    user.player.currentPlaylistId = playlistId
-end)
-
-RegisterNetEvent('mx-audioplayer:destroy', function(id, soundId)
-    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user or not user.player then
-        return
-    end
-    if user.player.soundId ~= soundId then
-        Debug('mx-audioplayer:destroy ::: SoundId not found', soundId, user.player.soundId)
-        return
-    end
-    user.player = nil
-    Surround:Destroy(-1, soundId)
 end)
 
 RegisterNetEvent('mx-audioplayer:attach', function(soundId, netId, volume, isInVehicle)

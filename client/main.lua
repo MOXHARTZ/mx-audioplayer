@@ -121,10 +121,10 @@ RegisterNUICallback('togglePlay', function(playing, cb)
     local soundId = player.soundId
     if player.playing then
         audioplayer:triggerListener('onResume')
-        TriggerServerEvent('mx-audioplayer:resume', id, soundId)
+        TriggerServerEvent('mx-audioplayer:sync', id, 'resume', soundId)
     else
         audioplayer:triggerListener('onPause')
-        TriggerServerEvent('mx-audioplayer:pause', id, soundId)
+        TriggerServerEvent('mx-audioplayer:sync', id, 'pause', soundId)
     end
     cb('ok')
 end)
@@ -138,7 +138,7 @@ RegisterNUICallback('setRepeat', function(state, cb)
         -- lua doesn't support `repeat` as data or variable so we need to use this shitty name
         repeatState = state
     })
-    TriggerServerEvent('mx-audioplayer:setRepeat', id, state)
+    TriggerServerEvent('mx-audioplayer:sync', id, 'repeat', state)
     cb('ok')
 end)
 
@@ -150,7 +150,7 @@ RegisterNUICallback('setShuffle', function(state, cb)
     audioplayer:updatePlayerData({
         shuffle = state
     })
-    TriggerServerEvent('mx-audioplayer:setShuffle', id, state)
+    TriggerServerEvent('mx-audioplayer:sync', id, 'shuffle', state)
     cb('ok')
 end)
 
@@ -162,7 +162,7 @@ RegisterNUICallback('setCurrentPlaylistId', function(playlistId, cb)
     audioplayer:updatePlayerData({
         currentPlaylistId = playlistId
     })
-    TriggerServerEvent('mx-audioplayer:setCurrentPlaylistId', id, playlistId)
+    TriggerServerEvent('mx-audioplayer:sync', id, 'currentPlaylistId', playlistId)
     cb('ok')
 end)
 
@@ -186,18 +186,24 @@ RegisterNUICallback('setVolume', function(data, cb)
     audioplayer:updatePlayerData({
         volume = data.volume
     })
-    TriggerServerEvent('mx-audioplayer:setVolume', id, player.soundId, data.volume)
+    TriggerServerEvent('mx-audioplayer:sync', id, 'volume', {
+        soundId = player.soundId,
+        volume = data.volume
+    })
     audioplayer:triggerListener('onVolumeChange')
     cb('ok')
 end)
 
 RegisterNUICallback('seek', function(data, cb)
-    local player = audioplayer:getPlayer()
+    local id, player = audioplayer.id, audioplayer:getPlayer()
     if not player then return cb(0) end
     audioplayer:updatePlayerData({
         playing = true
     })
-    TriggerServerEvent('mx-audioplayer:seek', player.soundId, data.position)
+    TriggerServerEvent('mx-audioplayer:sync', id, 'seek', {
+        soundId = player.soundId,
+        position = data.position
+    })
     audioplayer:triggerListener('onSeek')
     cb('ok')
 end)

@@ -171,6 +171,14 @@ function audioplayer:onTimeUpdate(soundData)
     })
 end
 
+function audioplayer:destroySound()
+    local id, player = self.id, self:getPlayer()
+    if not player then return end
+    TriggerServerEvent('mx-audioplayer:sync', id, 'destroy', {
+        soundId = player.soundId
+    })
+end
+
 function audioplayer:onDestroyed()
     self:triggerListener('onClose')
     self:updatePlayerData({

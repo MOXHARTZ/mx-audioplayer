@@ -69,7 +69,7 @@ local function openUi()
     audioplayer:open(radioSettings, {
         onPlay = function(soundId)
             if not DoesEntityExist(currentBoombox) then
-                TriggerServerEvent('mx-audioplayer:destroy', soundId)
+                audioplayer:destroySound()
                 return
             end
             local volume = audioplayer:getPlayer().volume

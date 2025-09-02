@@ -27,7 +27,7 @@ local function openUi()
     audioplayer:open(radioSettings, {
         onPlay = function(soundId)
             if not cache.vehicle or not DoesEntityExist(cache.vehicle) then
-                TriggerServerEvent('mx-audioplayer:destroy', soundId)
+                audioplayer:destroySound()
                 return
             end
             local volume = audioplayer:getPlayer().volume
