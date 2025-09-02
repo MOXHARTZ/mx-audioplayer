@@ -249,7 +249,7 @@ AddEventHandler('playerDropped', function()
 end)
 
 ---@param id string
----@param type 'volume' | 'seek' | 'playing' | 'repeatState' | 'shuffle' | 'currentPlaylistId'
+---@param type 'volume' | 'seek' | 'playing' | 'repeat' | 'shuffle' | 'currentPlaylistId'
 ---@param data any
 RegisterNetEvent('mx-audioplayer:sync', function(id, type, data)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
@@ -277,11 +277,12 @@ RegisterNetEvent('mx-audioplayer:sync', function(id, type, data)
         user.player.currentPlaylistId = data
     elseif type == 'destroy' then
         if user.player?.soundId ~= data.soundId then
-            Debug('mx-audioplayer:sync ::: SoundId not found', data.soundId, user.player.soundId)
-            return
+            return Debug('mx-audioplayer:sync ::: SoundId not found', data.soundId, user.player.soundId)
         end
         user.player = nil
         Surround:Destroy(-1, data.soundId)
+    else
+        Debug('mx-audioplayer:sync ::: type is not valid', type)
     end
 end)
 
