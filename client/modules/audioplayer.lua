@@ -143,7 +143,7 @@ function audioplayer:initOptions(options)
         return
     end
     if options.staySameCoords then
-        self.options.coords = PlayerCoords
+        self.options.coords = GetEntityCoords(cache.ped)
     end
     if options.panner then
         self.options.panner = options.panner
