@@ -254,7 +254,11 @@ end)
 RegisterNetEvent('mx-audioplayer:sync', function(id, type, data)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user or not user.player then
-        return
+        return Debug('mx-audioplayer:sync ::: User not found or player not found', {
+            id = id,
+            type = type,
+            data = data
+        })
     end
 
     if type == 'volume' then
@@ -381,6 +385,7 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
     if not user then
         return false
     end
+    AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= id end)
     AudioPlayerAccounts[#AudioPlayerAccounts + 1] = {
         id = id,
         accountId = user.id,
@@ -433,7 +438,6 @@ lib.callback.register('mx-audioplayer:register', function(source, id, username, 
         Notification(src, 'We could not create an account with this username and password.', 'error')
         return false
     end
-    AudioPlayerAccounts[#AudioPlayerAccounts + 1] = { id = id, accountId = userId }
     return true
 end)
 
