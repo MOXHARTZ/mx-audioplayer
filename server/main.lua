@@ -201,6 +201,9 @@ function OnPlayEnd(source, id, soundId, data, options)
     if nextSound then
         local netId = Surround:getSoundNetId(soundId)
         TriggerClientEvent('mx-audioplayer:setWaitingForResponse', -1, id, true)
+        if type(options) ~= "table" then
+            options = {}
+        end
         options.silent = false
         playSound(source, id, {
             soundId = nextSound.soundId .. id,
