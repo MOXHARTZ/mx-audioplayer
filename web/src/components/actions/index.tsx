@@ -11,6 +11,7 @@ import { motion } from 'framer-motion'
 import ConfirmModal from '../modals/ConfirmModal'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { notification } from '@/utils/misc'
+import { setPlaylistModalVisible } from '@/stores/contextMenu'
 
 const Actions = () => {
     const { editMode, selectedSongs, position, filterPlaylist, currentSongs } = useAppSelector(state => state.Main)
@@ -24,7 +25,11 @@ const Actions = () => {
     }, [])
     const [open, setOpen] = useState(false);
     const handleClickOpen = useCallback(() => {
-        if (!currentSongs) return notification(i18next.t('playlist.select_playlist'), 'error')
+        if (!currentSongs) {
+            notification(i18next.t('playlist.select_playlist'), 'error')
+            dispatch(setPlaylistModalVisible(true))
+            return
+        }
         setOpen(true);
     }, [currentSongs]);
     const deleteSelectedSongs = useCallback(() => {

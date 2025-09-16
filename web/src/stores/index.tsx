@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import Main from './Main';
+import ContextMenuSlice from './contextMenu';
 
 const store = configureStore({
     reducer: {
-        Main
+        Main,
+        ContextMenuSlice
     }
 })
 

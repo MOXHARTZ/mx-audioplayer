@@ -2,8 +2,9 @@ import { MdAudiotrack, MdEdit } from 'react-icons/md';
 import { IoPerson } from 'react-icons/io5';
 import { useCallback, useRef, useState } from 'react';
 import PlaylistDialog from './playlist-dialog';
-import { useAppDispatch } from '@/stores';
+import { useAppDispatch, useAppSelector } from '@/stores';
 import { deletePlaylist } from '@/stores/Main';
+import { setPlaylistModalVisible } from '@/stores/contextMenu';
 import { notification } from '@/utils/misc';
 import i18next from 'i18next';
 import Share from './share';
@@ -20,7 +21,7 @@ type ContextMenuProps = {
 }
 
 export default function ContextMenu({ children, disabled, playlist }: ContextMenuProps) {
-    const [showCreatePlaylist, setShowCreatePlaylist] = useState<boolean>(false);
+    const { playlistModalVisible } = useAppSelector(state => state.ContextMenuSlice)
     const [showEditPlaylist, setShowEditPlaylist] = useState<boolean>(false)
     const [showShare, setShowShare] = useState<boolean>(false)
     const dispatch = useAppDispatch();
@@ -67,7 +68,7 @@ export default function ContextMenu({ children, disabled, playlist }: ContextMen
                         <DropdownItem
                             key="create"
                             startContent={<MdAudiotrack className={iconClasses} />}
-                            onPress={() => setShowCreatePlaylist(true)}
+                            onPress={() => dispatch(setPlaylistModalVisible(true))}
                         >
                             {i18next.t('playlist.context.create')}
                         </DropdownItem>
@@ -99,7 +100,7 @@ export default function ContextMenu({ children, disabled, playlist }: ContextMen
                     </DropdownSection>
                 </DropdownMenu>
             </Dropdown>
-            {showCreatePlaylist && <PlaylistDialog open={showCreatePlaylist} setOpen={setShowCreatePlaylist} />}
+            {playlistModalVisible && <PlaylistDialog open={playlistModalVisible} setOpen={(open) => dispatch(setPlaylistModalVisible(open))} />}
             {showEditPlaylist && <PlaylistDialog open={showEditPlaylist} setOpen={setShowEditPlaylist} currentPlaylist={playlist} />}
             {showShare && <Share open={showShare} setOpen={setShowShare} currentPlaylist={playlist} />}
         </div>

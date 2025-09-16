@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/stores'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import PlaylistImage from './PlaylistImage'
 import ContextMenu from './contextmenu'
 import SortableList, { SortableItem } from "react-easy-sort";
@@ -8,13 +8,20 @@ import classNames from 'classnames'
 import { arrayMoveImmutable } from 'array-move'
 import { Tooltip } from '@heroui/react';
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 
 const PlaylistNav = () => {
-    const { playlist, editMode } = useAppSelector(state => state.Main)
+    const { playlist, editMode, currentSongs } = useAppSelector(state => state.Main)
     const dispatch = useAppDispatch()
     const onSortEnd = (oldIndex: number, newIndex: number) => {
         dispatch(setPlaylist(arrayMoveImmutable(playlist, oldIndex, newIndex)))
     };
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!currentSongs && playlist.length > 0) {
+            navigate(`/playlist/${playlist[0].id}`)
+        }
+    }, [playlist, currentSongs])
     return (
         <motion.section
             className='w-[7.5rem] h-full shadow-xl bg-black/20 border border-rose-500/20 p-4 rounded-xl overflow-y-auto overflow-x-hidden relative'
