@@ -157,7 +157,15 @@
         "sign_up": "Kayıt Ol",
         "login_successful": "Giriş başarılı",
         "invalid_username_or_password": "Geçersiz kullanıcı adı veya şifre",
-        "this_user_credentials_has_been_modified": "Bu kullanıcı bilgileri değiştirildi. Lütfen tekrar giriş yapın."
+        "this_user_credentials_has_been_modified": "Bu kullanıcı bilgileri değiştirildi. Lütfen tekrar giriş yapın.",
+        "select_account": "Hesabınızı Seçin",
+        "select_account_subtitle": "Kayıtlı hesaplarınızdan birini seçin veya manuel giriş yapın",
+        "search_accounts": "Hesapları ara...",
+        "no_accounts_found": "Hesap bulunamadı",
+        "try_different_search": "Farklı bir arama terimi deneyin",
+        "manual_login": "Manuel Giriş",
+        "no_saved_accounts": "Kayıtlı hesap bulunamadı",
+        "back_to_accounts": "Hesaplara Dön"
     },
     "register": {
         "title": "Ses Çalar'a Katılın",

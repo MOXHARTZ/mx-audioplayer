@@ -157,7 +157,15 @@
         "sign_up": "Регистрация",
         "login_successful": "Входът е успешен",
         "invalid_username_or_password": "Невалидно потребителско име или парола",
-        "this_user_credentials_has_been_modified": "Данните за достъп на този потребител са променени. Моля, влезте отново."
+        "this_user_credentials_has_been_modified": "Данните за достъп на този потребител са променени. Моля, влезте отново.",
+        "select_account": "Изберете акаунта си",
+        "select_account_subtitle": "Изберете от запазените си акаунти или влезте ръчно",
+        "search_accounts": "Търсене на акаунти...",
+        "no_accounts_found": "Не са намерени акаунти",
+        "try_different_search": "Опитайте с различна дума за търсене",
+        "manual_login": "Ръчен вход",
+        "no_saved_accounts": "Не са намерени запазени акаунти",
+        "back_to_accounts": "Обратно към акаунтите"
     },
     "register": {
         "title": "Присъединете се към Аудио Плейъра",

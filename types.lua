@@ -78,6 +78,7 @@
 ---@field duration number
 
 ---@class LoginData
+---@field id? number
 ---@field token? string
 ---@field username? string
 ---@field password? number

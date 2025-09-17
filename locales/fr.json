@@ -157,7 +157,15 @@
         "sign_up": "S'inscrire",
         "login_successful": "Connexion réussie",
         "invalid_username_or_password": "Nom d'utilisateur ou mot de passe invalide",
-        "this_user_credentials_has_been_modified": "Les identifiants de cet utilisateur ont été modifiés. Veuillez vous reconnecter."
+        "this_user_credentials_has_been_modified": "Les identifiants de cet utilisateur ont été modifiés. Veuillez vous reconnecter.",
+        "select_account": "Sélectionnez votre compte",
+        "select_account_subtitle": "Choisissez parmi vos comptes sauvegardés ou connectez-vous manuellement",
+        "search_accounts": "Rechercher des comptes...",
+        "no_accounts_found": "Aucun compte trouvé",
+        "try_different_search": "Essayez un terme de recherche différent",
+        "manual_login": "Connexion manuelle",
+        "no_saved_accounts": "Aucun compte sauvegardé trouvé",
+        "back_to_accounts": "Retour aux comptes"
     },
     "register": {
         "title": "Rejoignez le lecteur audio",

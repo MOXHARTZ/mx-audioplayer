@@ -157,7 +157,15 @@
         "sign_up": "Registrieren",
         "login_successful": "Anmeldung erfolgreich",
         "invalid_username_or_password": "Ungültiger Benutzername oder Passwort",
-        "this_user_credentials_has_been_modified": "Die Anmeldedaten dieses Benutzers wurden geändert. Bitte melden Sie sich erneut an."
+        "this_user_credentials_has_been_modified": "Die Anmeldedaten dieses Benutzers wurden geändert. Bitte melden Sie sich erneut an.",
+        "select_account": "Wählen Sie Ihr Konto",
+        "select_account_subtitle": "Wählen Sie aus Ihren gespeicherten Konten oder melden Sie sich manuell an",
+        "search_accounts": "Konten suchen...",
+        "no_accounts_found": "Keine Konten gefunden",
+        "try_different_search": "Versuchen Sie einen anderen Suchbegriff",
+        "manual_login": "Manuelle Anmeldung",
+        "no_saved_accounts": "Keine gespeicherten Konten gefunden",
+        "back_to_accounts": "Zurück zu Konten"
     },
     "register": {
         "title": "Treten Sie dem Audio Player bei",

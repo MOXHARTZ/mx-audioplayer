@@ -22,6 +22,7 @@ export interface StaticType {
     filterPlaylist: string;
     settings: Settings;
     userData?: Account | undefined;
+    accounts: Account[];
 }
 
 // the shittiest code I've ever written in my life, but you know what? it works so fuck it.
@@ -44,7 +45,8 @@ const Static = createSlice({
         filterPlaylist: '',
         settings: {
             minimalHud: false
-        }
+        },
+        accounts: []
     } as StaticType,
     reducers: {
         setPlaying: (state, action: PayloadAction<boolean>) => {
@@ -159,6 +161,9 @@ const Static = createSlice({
         },
         setUserData: (state, action: PayloadAction<Account | undefined>) => {
             state.userData = action.payload;
+        },
+        setAccounts: (state, action: PayloadAction<Account[]>) => {
+            state.accounts = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -196,7 +201,8 @@ export const {
     setSettings,
     setUserData,
     setCurrentSongData,
-    updateCurrentSongs
+    updateCurrentSongs,
+    setAccounts
 } = Static.actions
 
 export default Static.reducer

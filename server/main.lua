@@ -201,7 +201,7 @@ function OnPlayEnd(source, id, soundId, data, options)
     if nextSound then
         local netId = Surround:getSoundNetId(soundId)
         TriggerClientEvent('mx-audioplayer:setWaitingForResponse', -1, id, true)
-        if type(options) ~= "table" then
+        if type(options) ~= 'table' then
             options = {}
         end
         options.silent = false
@@ -373,21 +373,36 @@ end
 ---@return false | string
 lib.callback.register('mx-audioplayer:login', function(source, id, data)
     local src = source
-    local username, password = data.username, data.password
-    if data.token then
-        local token = tokens[data.token]
-        if not token then
+    local user, username, password
+
+    if data.id then
+        local identifier = GetIdentifier(src)
+        if not identifier then
+            Error('mx-audioplayer:login ::: Failed to get identifier')
             return false
         end
-        username, password = token.username, token.password
+        user = db.getOwnedAccount(data.id, identifier)
+        if not user then
+            return false
+        end
+    else
+        username, password = data.username, data.password
+        if data.token then
+            local token = tokens[data.token]
+            if not token then
+                return false
+            end
+            username, password = token.username, token.password
+        end
+        assert(username, 'Username is required')
+        assert(password, 'Password is required')
+        assert(type(password) == 'number', 'Password need to be number but its not a number, probably this player trying to avoid hash. Source: ' .. src)
+        user = db.getUser(username, password)
+        if not user then
+            return false
+        end
     end
-    assert(username, 'Username is required')
-    assert(password, 'Password is required')
-    assert(type(password) == 'number', 'Password need to be number but its not a number, probably this player trying to avoid hash. Source: ' .. src)
-    local user = db.getUser(username, password)
-    if not user then
-        return false
-    end
+
     AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= id end)
     AudioPlayerAccounts[#AudioPlayerAccounts + 1] = {
         id = id,
@@ -400,8 +415,8 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
     if not data.token then
         data.token = generateToken()
         tokens[data.token] = {
-            username = username,
-            password = password
+            username = user.username,
+            password = user.password
         }
     end
     return data.token
@@ -517,4 +532,13 @@ RegisterNetEvent('mx-audioplayer:setPlaylist', function(id, playlist)
         return
     end
     db.setPlaylist(user.accountId, playlist)
+end)
+
+lib.callback.register('mx-audioplayer:getUserAccounts', function(source)
+    local identifier = GetIdentifier(source)
+    if not identifier then
+        Error('mx-audioplayer:getUserAccounts ::: Failed to get identifier')
+        return false
+    end
+    return db.getUserAccounts(identifier)
 end)

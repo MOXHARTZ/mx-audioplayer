@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from './stores'
 import useNuiEvent from './hooks/useNuiEvent'
 import { useExitListener } from './hooks/useExitListener'
 import { fetchNui } from './utils/fetchNui'
-import { addPlaylist, clearSound, setCurrentPlaylistId, setPlaying, setPlaylist, setRepeat, setSettings, setShuffle, setUserData, setVolume, setWaitingForResponse, updateCurrentSongs } from './stores/Main'
+import { addPlaylist, clearSound, setAccounts, setCurrentPlaylistId, setPlaying, setPlaylist, setRepeat, setSettings, setShuffle, setUserData, setVolume, setWaitingForResponse } from './stores/Main'
 import { Song } from './fake-api/song'
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
@@ -35,7 +35,7 @@ function App() {
     if (!isEnvBrowser()) return;
     document.body.style.backgroundImage = 'url(https://wallpaperaccess.com/full/707055.jpg)'
   }, [])
-  useNuiEvent<{ playlist: Playlist[]; currentSound: Song; user?: Account; player: Player }>('open', (data) => {
+  useNuiEvent<{ playlist: Playlist[]; currentSound: Song; user?: Account; player: Player; accounts: Account[] }>('open', (data) => {
     setVisible(true)
     dispatch(setVolume(data.player.volume))
     dispatch(setRepeat(data.player.repeatState))
@@ -48,6 +48,7 @@ function App() {
     }
     dispatch(setPlaying(data.player.playing ?? false))
     dispatch(setPositionThunk(data.currentSound))
+    dispatch(setAccounts(data.accounts))
   })
   useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound?: Song; player: Player }>('toggleShortDisplay', (data) => {
     setShortDisplay(data.state)

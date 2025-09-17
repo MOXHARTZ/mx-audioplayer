@@ -175,6 +175,19 @@ function db.updateUser(identifier, user, data)
     return MySQL.update.await(str, params)
 end
 
+---@param identifier string
+---@return Account[]
+function db.getUserAccounts(identifier)
+    return MySQL.query.await('SELECT * FROM audioplayer_users WHERE creator = ?', { identifier })
+end
+
+---@param id number
+---@param identifier string
+---@return Account | nil
+function db.getOwnedAccount(id, identifier)
+    return MySQL.prepare.await('SELECT * FROM audioplayer_users WHERE id = ? AND creator = ?', { id, identifier }) --[[@as Account | nil]]
+end
+
 CreateThread(function()
     local hasUsers = pcall(MySQL.scalar.await, 'SELECT 1 FROM audioplayer_users')
     if not hasUsers then

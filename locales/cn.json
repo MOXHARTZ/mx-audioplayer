@@ -157,7 +157,15 @@
         "sign_up": "注册",
         "login_successful": "登录成功",
         "invalid_username_or_password": "用户名或密码无效",
-        "this_user_credentials_has_been_modified": "此用户的凭据已被修改。请重新登录。"
+        "this_user_credentials_has_been_modified": "此用户的凭据已被修改。请重新登录。",
+        "select_account": "选择您的账户",
+        "select_account_subtitle": "从您保存的账户中选择或手动登录",
+        "search_accounts": "搜索账户...",
+        "no_accounts_found": "未找到账户",
+        "try_different_search": "尝试不同的搜索词",
+        "manual_login": "手动登录",
+        "no_saved_accounts": "未找到保存的账户",
+        "back_to_accounts": "返回账户"
     },
     "register": {
         "title": "加入音频播放器",

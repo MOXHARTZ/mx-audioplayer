@@ -157,7 +157,15 @@
         "sign_up": "Registrarse",
         "login_successful": "Inicio de sesión exitoso",
         "invalid_username_or_password": "Nombre de usuario o contraseña inválidos",
-        "this_user_credentials_has_been_modified": "Las credenciales de este usuario han sido modificadas. Por favor inicia sesión nuevamente."
+        "this_user_credentials_has_been_modified": "Las credenciales de este usuario han sido modificadas. Por favor inicia sesión nuevamente.",
+        "select_account": "Selecciona tu cuenta",
+        "select_account_subtitle": "Elige entre tus cuentas guardadas o inicia sesión manualmente",
+        "search_accounts": "Buscar cuentas...",
+        "no_accounts_found": "No se encontraron cuentas",
+        "try_different_search": "Prueba un término de búsqueda diferente",
+        "manual_login": "Inicio de sesión manual",
+        "no_saved_accounts": "No se encontraron cuentas guardadas",
+        "back_to_accounts": "Volver a las cuentas"
     },
     "register": {
         "title": "Únete al Reproductor de Audio",

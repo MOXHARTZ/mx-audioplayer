@@ -157,7 +157,15 @@
         "sign_up": "Înregistrare",
         "login_successful": "Conectare reușită",
         "invalid_username_or_password": "Nume de utilizator sau parolă invalidă",
-        "this_user_credentials_has_been_modified": "Credențialele acestui utilizator au fost modificate. Vă rugăm să vă conectați din nou."
+        "this_user_credentials_has_been_modified": "Credențialele acestui utilizator au fost modificate. Vă rugăm să vă conectați din nou.",
+        "select_account": "Selectați contul dvs.",
+        "select_account_subtitle": "Alegeți dintre conturile salvate sau conectați-vă manual",
+        "search_accounts": "Căutați conturi...",
+        "no_accounts_found": "Nu au fost găsite conturi",
+        "try_different_search": "Încercați un termen de căutare diferit",
+        "manual_login": "Conectare manuală",
+        "no_saved_accounts": "Nu au fost găsite conturi salvate",
+        "back_to_accounts": "Înapoi la conturi"
     },
     "register": {
         "title": "Alăturați-vă Player-ului Audio",

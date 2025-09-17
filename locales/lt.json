@@ -157,7 +157,15 @@
         "sign_up": "Registruotis",
         "login_successful": "Prisijungimas sėkmingas",
         "invalid_username_or_password": "Neteisingas vartotojo vardas arba slaptažodis",
-        "this_user_credentials_has_been_modified": "Šio vartotojo prisijungimo duomenys buvo pakeisti. Prašome prisijungti iš naujo."
+        "this_user_credentials_has_been_modified": "Šio vartotojo prisijungimo duomenys buvo pakeisti. Prašome prisijungti iš naujo.",
+        "select_account": "Pasirinkite savo paskyrą",
+        "select_account_subtitle": "Pasirinkite iš išsaugotų paskyrų arba prisijunkite rankiniu būdu",
+        "search_accounts": "Ieškoti paskyrų...",
+        "no_accounts_found": "Paskyrų nerasta",
+        "try_different_search": "Pabandykite kitą paieškos terminą",
+        "manual_login": "Rankinis prisijungimas",
+        "no_saved_accounts": "Išsaugotų paskyrų nerasta",
+        "back_to_accounts": "Grįžti į paskyras"
     },
     "register": {
         "title": "Prisijunkite prie Garso Grotuvo",

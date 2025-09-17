@@ -76,11 +76,13 @@ function audioplayer:open(options, handlers)
     if not id then return end
     self.handlers = handlers or {}
 
+    local accounts = lib.callback.await('mx-audioplayer:getUserAccounts', false)
     SendReactMessage('open', {
         playlist = self.playlist,
         currentSound = soundData,
         user = self.user,
-        player = player
+        player = player,
+        accounts = accounts
     })
     TriggerServerEvent('mx-audioplayer:setHandlers', id, handlers)
 

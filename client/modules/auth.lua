@@ -10,8 +10,9 @@ function Login(data)
 end
 
 RegisterNUICallback('login', function(data, cb)
-    data.password = joaat(data.password)
+    data.password = data.password and joaat(data.password)
     local token = Login({
+        id = data.id,
         username = data.username,
         password = data.password
     })

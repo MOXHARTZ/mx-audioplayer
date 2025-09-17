@@ -157,7 +157,15 @@
         "sign_up": "Registrati",
         "login_successful": "Accesso riuscito",
         "invalid_username_or_password": "Nome utente o password non validi",
-        "this_user_credentials_has_been_modified": "Le credenziali di questo utente sono state modificate. Si prega di accedere di nuovo."
+        "this_user_credentials_has_been_modified": "Le credenziali di questo utente sono state modificate. Si prega di accedere di nuovo.",
+        "select_account": "Seleziona il tuo account",
+        "select_account_subtitle": "Scegli tra i tuoi account salvati o accedi manualmente",
+        "search_accounts": "Cerca account...",
+        "no_accounts_found": "Nessun account trovato",
+        "try_different_search": "Prova un termine di ricerca diverso",
+        "manual_login": "Accesso manuale",
+        "no_saved_accounts": "Nessun account salvato trovato",
+        "back_to_accounts": "Torna agli account"
     },
     "register": {
         "title": "Unisciti al Lettore Audio",
