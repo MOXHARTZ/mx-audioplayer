@@ -17,6 +17,7 @@ local function mathTrim(value)
 end
 
 local function openUi()
+    if IsNuiFocused() then return end
     local _vehicle = cache.vehicle
     if not _vehicle then return end
     local plate = mathTrim(GetVehicleNumberPlateText(_vehicle))
