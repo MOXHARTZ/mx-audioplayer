@@ -86,7 +86,8 @@
         "cancel": "Atšaukti",
         "done": "Atlikta",
         "delete.confirm": "Prašome dar kartą spustelėti ištrinti, kad patvirtintumėte.",
-        "currently_playing": "Dabar groja"
+        "currently_playing": "Dabar groja",
+        "account_sharing_disabled": "Negalite pasiekti garso grotuvo, nes serveris išjungė paskyros bendrinimą."
     },
     "shared": {
         "title": "Artimiausi žaidėjai",

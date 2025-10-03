@@ -86,7 +86,8 @@
         "cancel": "Annulla",
         "done": "Fatto",
         "delete.confirm": "Si prega di cliccare di nuovo elimina per confermare.",
-        "currently_playing": "In riproduzione"
+        "currently_playing": "In riproduzione",
+        "account_sharing_disabled": "Non puoi accedere al lettore audio perché il server ha disabilitato la condivisione degli account."
     },
     "shared": {
         "title": "Giocatori nelle vicinanze",

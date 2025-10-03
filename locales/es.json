@@ -86,7 +86,8 @@
         "cancel": "Cancelar",
         "done": "Hecho",
         "delete.confirm": "Por favor haz clic en eliminar nuevamente para confirmar.",
-        "currently_playing": "Reproduciendo actualmente"
+        "currently_playing": "Reproduciendo actualmente",
+        "account_sharing_disabled": "No puedes acceder al reproductor porque el servidor deshabilitó el uso compartido de cuentas."
     },
     "shared": {
         "title": "Jugadores cercanos",

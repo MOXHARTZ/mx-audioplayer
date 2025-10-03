@@ -86,7 +86,8 @@
         "cancel": "Abbrechen",
         "done": "Fertig",
         "delete.confirm": "Bitte klicken Sie erneut auf löschen, um zu bestätigen.",
-        "currently_playing": "Wird gerade abgespielt"
+        "currently_playing": "Wird gerade abgespielt",
+        "account_sharing_disabled": "Sie können nicht auf den Audioplayer zugreifen, da die Server die Kontofreigabe deaktiviert haben."
     },
     "shared": {
         "title": "Spieler in der Nähe",

@@ -86,7 +86,8 @@
         "cancel": "Anulează",
         "done": "Gata",
         "delete.confirm": "Vă rugăm să faceți clic din nou pe șterge pentru a confirma.",
-        "currently_playing": "Se redă acum"
+        "currently_playing": "Se redă acum",
+        "account_sharing_disabled": "Nu puteți accesa playerul audio deoarece serverul a dezactivat partajarea contului."
     },
     "shared": {
         "title": "Jucători din apropiere",

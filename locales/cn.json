@@ -86,7 +86,8 @@
         "cancel": "取消",
         "done": "完成",
         "delete.confirm": "请再次点击删除以确认。",
-        "currently_playing": "正在播放"
+        "currently_playing": "正在播放",
+        "account_sharing_disabled": "您无法访问音频播放器，因为服务器已禁用账户共享。"
     },
     "shared": {
         "title": "附近玩家",

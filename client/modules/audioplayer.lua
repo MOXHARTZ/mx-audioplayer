@@ -35,7 +35,7 @@ function audioplayer:isUIDisabled()
     if Config.EnableAccountSharing then return false end
     local hasAccess = lib.callback.await('mx-audioplayer:hasAccess', false, id)
     if not hasAccess then
-        Notification('You can\'t access the audioplayer, because the server disabled the account sharing.', 'info')
+        Notification(i18n.t('general.account_sharing_disabled'), 'info')
         return true
     end
     return false

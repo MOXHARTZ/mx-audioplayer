@@ -86,7 +86,8 @@
         "cancel": "İptal",
         "done": "Tamam",
         "delete.confirm": "Onaylamak için tekrar sil'e tıklayın.",
-        "currently_playing": "Şu Anda Çalıyor"
+        "currently_playing": "Şu Anda Çalıyor",
+        "account_sharing_disabled": "Ses çalara erişemezsiniz çünkü sunucu hesap paylaşımını devre dışı bıraktı."
     },
     "shared": {
         "title": "Yakındaki Oyuncular",

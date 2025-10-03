@@ -86,7 +86,8 @@
         "cancel": "Cancel",
         "done": "Done",
         "delete.confirm": "Please click again delete to confirm.",
-        "currently_playing": "Currently Playing"
+        "currently_playing": "Currently Playing",
+        "account_sharing_disabled": "You can't access the audioplayer, because the server disabled the account sharing."
     },
     "shared": {
         "title": "Nearby Players",

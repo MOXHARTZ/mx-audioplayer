@@ -86,7 +86,8 @@
         "cancel": "Annuler",
         "done": "Terminé",
         "delete.confirm": "Veuillez cliquer à nouveau sur supprimer pour confirmer.",
-        "currently_playing": "En cours de lecture"
+        "currently_playing": "En cours de lecture",
+        "account_sharing_disabled": "Vous ne pouvez pas accéder au lecteur audio, car le serveur a désactivé le partage de compte."
     },
     "shared": {
         "title": "Joueurs à proximité",
