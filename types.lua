@@ -56,6 +56,7 @@
 ---@field id string
 ---@field accountId number
 ---@field player? Player
+---@field creator string
 
 ---@class PlaylistData
 ---@field name string

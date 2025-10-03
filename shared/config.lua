@@ -8,6 +8,12 @@ Config.Radio.Enable = true
 Config.Radio.DisableDefaultRadio = true -- Set to false if you want to use the default radio stations
 Config.Radio.RadioKey = 'N'             -- Default key to open the radio (You can set false if you don't want a key)
 
+--[[
+    If you set this false, and a player connects their account to car
+    other player can't access the audioplayer.
+]]
+Config.EnableAccountSharing = true
+
 Config.Boombox = {}
 Config.Boombox.Enable = true
 Config.Boombox.Item = 'boombox' -- Set false if you don't want item.

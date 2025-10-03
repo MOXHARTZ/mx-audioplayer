@@ -406,6 +406,7 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
     AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= id end)
     AudioPlayerAccounts[#AudioPlayerAccounts + 1] = {
         id = id,
+        creator = user.creator,
         accountId = user.id,
         player = {
             playing = false,
@@ -541,4 +542,16 @@ lib.callback.register('mx-audioplayer:getUserAccounts', function(source)
         return false
     end
     return db.getUserAccounts(identifier)
+end)
+
+lib.callback.register('mx-audioplayer:hasAccess', function(source, id)
+    local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    if not user then
+        return true
+    end
+    local identifier = GetIdentifier(source)
+    if not identifier then
+        return false
+    end
+    return user.creator == identifier
 end)
