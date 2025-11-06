@@ -1,0 +1,189 @@
+{
+    "or": "ELLER",
+    "you_have_logged_out": "Du har logget ut av kontoen din.",
+    "required": "Vennligst fyll ut dette feltet",
+    "header": {
+        "title": "Tittel",
+        "artist": "Artist",
+        "playlist": "Spilleliste",
+        "edit_profile": "Rediger Profil",
+        "logout": "Logg ut"
+    },
+    "profile": {
+        "title": "Administrer Konto",
+        "username": "Nytt Brukernavn",
+        "username_placeholder": "Oppdater brukernavnet ditt",
+        "password": "Nytt Passord",
+        "password_placeholder": "Skriv inn passordet ditt",
+        "avatar": "Avatar-URL",
+        "avatar_placeholder": "Skriv inn avatar-URL",
+        "delete_account": "Slett Konto",
+        "update_account": "Oppdater Konto"
+    },
+    "playlist": {
+        "empty": "Ingen sanger i spillelisten",
+        "not_selected": "Ingen sang valgt",
+        "deleted_songs": "Sanger ble slettet",
+        "cleared": "Spillelisten ble tømt",
+        "no_more_songs": "Ingen flere sanger å spille",
+        "song_already_playing": "Sangen spilles allerede",
+        "song_not_exist": "Sangen eksisterer ikke",
+        "search": "Søk…",
+        "select_playlist": "Velg først en spilleliste. Du kan opprette en spilleliste ved å høyreklikke på venstre side",
+        "already_exist": "Du mottok en spilleliste fra {{senderName}}, men du har allerede denne spillelisten. Den blir derfor ikke lagt til. Spilleliste: {{playlistName}}",
+        "received": "Du mottok en spilleliste fra {{senderName}}. Spilleliste: {{playlistName}}",
+        "dialog": {
+            "created": "Spilleliste opprettet",
+            "name": "Navn",
+            "description": "Beskrivelse",
+            "image_url": "Bilde-URL",
+            "create": "Opprett spilleliste",
+            "edit": "Rediger detaljer"
+        },
+        "context": {
+            "edit": "Rediger Detaljer",
+            "delete": "Slett Spilleliste",
+            "create": "Opprett Spilleliste",
+            "share": "Del Spilleliste Med En Spiller",
+            "actions": "Handlinger",
+            "danger": "Fareområde"
+        },
+        "confirm": {
+            "delete_all": {
+                "title": "Er du sikker på at du vil slette alle sanger?",
+                "content": "Denne handlingen kan ikke angres"
+            }
+        },
+        "no_songs": "Ingen tilgjengelige sanger",
+        "ready_to_play": "Klar til å spille",
+        "song": "Sang",
+        "songs": "Sanger",
+        "selected": "Valgt",
+        "loading": "Laster spilleliste...",
+        "no_results": "Ingen resultater",
+        "no_song_match": "Ingen sanger matcher søket ditt",
+        "add_some_songs": "Legg til noen sanger for å komme i gang"
+    },
+    "edit": {
+        "clear": "Slett alt",
+        "delete": "Slett valgte sanger",
+        "cancel": "Avbryt"
+    },
+    "search_track": {
+        "content": "Du kan legge til en sang i spillelisten ved å skrive inn et sangnavn, eller ved å bruke en Spotify- eller YouTube-lenke",
+        "title": "Legg til en sang i spillelisten",
+        "subtitle": "Søk og oppdag ny musikk",
+        "placeholder": "Sangnavn eller URL (støtter spilleliste og album)",
+        "invalid_url": "Ugyldig URL",
+        "add_all": "Legg til alle i spillelisten"
+    },
+    "general": {
+        "play": "Spill",
+        "unknown": "Ukjent",
+        "something_went_wrong": "Noe gikk galt",
+        "ui_disabled": "Du kan ikke åpne radioen akkurat nå fordi den brukes av en annen spiller.",
+        "edit_enabled": "Redigeringsmodus er aktivert. Du kan nå sortere spillelisten og sanger ved å dra dem.",
+        "cancel": "Avbryt",
+        "done": "Ferdig",
+        "delete.confirm": "Klikk på slett igjen for å bekrefte.",
+        "currently_playing": "Spiller Nå",
+        "account_sharing_disabled": "Du kan ikke få tilgang til lydspilleren fordi kontodeling er deaktivert på serveren."
+    },
+    "shared": {
+        "title": "Spillere i nærheten",
+        "no_players": "Ingen spillere funnet å dele spillelisten med",
+        "success": "Spilleliste delt"
+    },
+    "boombox": {
+        "target": {
+            "open": "Åpne",
+            "destroy": "Ødelegg Boombox",
+            "pickup": "Plukk opp Boombox"
+        },
+        "drop": {
+            "text": "Trykk [H] for å slippe boomboxen"
+        }
+    },
+    "dj": {
+        "open": {
+            "menu": "Trykk [E] for å åpne DJ-menyen"
+        },
+        "target": {
+            "open": "Åpne UI"
+        }
+    },
+    "radio": {
+        "command": "Åpne Bilradio"
+    },
+    "modal": {
+        "confirm": "Bekreft",
+        "cancel": "Avbryt"
+    },
+    "settings": {
+        "title": "Innstillinger",
+        "subtitle": "Tilpass din lydopplevelse",
+        "minimal_hud": {
+            "title": "Minimal HUD",
+            "description": "Når du aktiverer dette, kan du styre sangene i spillelisten din med hurtigtaster selv om menyen er lukket. For å lære hurtigtastene, før musen over spill, neste og forrige-knappene.",
+            "position": {
+                "title": "Plassering av Minimal HUD",
+                "top_left": "Øverst til venstre",
+                "top_left_description": "Den minimale HUD-en vil bli plassert øverst til venstre på skjermen",
+                "top_right": "Øverst til høyre",
+                "top_right_description": "Den minimale HUD-en vil bli plassert øverst til høyre på skjermen",
+                "bottom_left": "Nederst til venstre",
+                "bottom_left_description": "Den minimale HUD-en vil bli plassert nederst til venstre på skjermen",
+                "bottom_right": "Nederst til høyre",
+                "bottom_right_description": "Den minimale HUD-en vil bli plassert nederst til høyre på skjermen"
+            }
+        }
+    },
+    "keyboard": {
+        "shortcut": {
+            "toggle": "Spill/Pause",
+            "volume": "Volum Opp/Ned",
+            "forward": "Forrige/Neste"
+        }
+    },
+    "login": {
+        "title": "Velkommen Tilbake",
+        "subtitle": "Logg inn",
+        "username": "Brukernavn",
+        "password": "Passord",
+        "username_placeholder": "Skriv inn brukernavnet ditt",
+        "password_placeholder": "Skriv inn passordet ditt",
+        "sign_in": "Logg Inn",
+        "sign_in_loading": "Logger Inn...",
+        "need_to_create_account": "Trenger du å opprette en konto?",
+        "sign_up": "Registrer Deg",
+        "login_successful": "Innlogging vellykket",
+        "invalid_username_or_password": "Ugyldig brukernavn eller passord",
+        "this_user_credentials_has_been_modified": "Brukerinformasjonen har blitt endret. Logg inn på nytt.",
+        "select_account": "Velg Konto",
+        "select_account_subtitle": "Velg fra lagrede kontoer eller logg inn manuelt",
+        "search_accounts": "Søk etter kontoer...",
+        "no_accounts_found": "Ingen kontoer funnet",
+        "try_different_search": "Prøv et annet søkeord",
+        "manual_login": "Manuell Innlogging",
+        "no_saved_accounts": "Ingen lagrede kontoer funnet",
+        "back_to_accounts": "Tilbake til Kontoer"
+    },
+    "register": {
+        "title": "Bli med i Lydspilleren",
+        "subtitle": "Opprett din konto",
+        "firstname": "Fornavn",
+        "lastname": "Etternavn",
+        "firstname_placeholder": "Skriv inn fornavnet ditt",
+        "lastname_placeholder": "Skriv inn etternavnet ditt",
+        "username": "Brukernavn",
+        "username_placeholder": "Velg et unikt brukernavn",
+        "password": "Passord",
+        "password_placeholder": "Opprett et sterkt passord",
+        "sign_up_loading": "Oppretter Konto...",
+        "already_have_account": "Har du allerede en konto?",
+        "sign_in": "Logg Inn",
+        "sign_up": "Registrer Deg",
+        "registration_successful": "Registrering vellykket",
+        "registration_failed": "Registrering mislyktes"
+    }
+}
