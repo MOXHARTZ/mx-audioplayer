@@ -286,7 +286,7 @@ RegisterNetEvent('mx-audioplayer:sync', function(id, type, data)
         if user.player?.soundId ~= data.soundId then
             return Debug('mx-audioplayer:sync ::: SoundId not found', data.soundId, user.player.soundId)
         end
-        user.player = nil
+        user.player.playing = false
         Surround:Destroy(-1, data.soundId)
     else
         Debug('mx-audioplayer:sync ::: type is not valid', type)
@@ -432,7 +432,7 @@ lib.callback.register('mx-audioplayer:logout', function(source, id)
     end
     if user.player then
         Surround:Destroy(-1, user.player.soundId)
-        user.player = nil
+        user.player.playing = false
     end
     AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= id end)
     return true
