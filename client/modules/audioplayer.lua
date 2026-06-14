@@ -110,6 +110,13 @@ function audioplayer:close()
     TriggerServerEvent('mx-audioplayer:disableUi', id, false)
 end
 
+AddEventHandler('onResourceStop', function(resource)
+    if resource ~= GetCurrentResourceName() then return end
+    if audioplayer.visible and audioplayer.id then
+        TriggerServerEvent('mx-audioplayer:disableUi', audioplayer.id, false)
+    end
+end)
+
 ---@param player Player
 function audioplayer:setPlayerData(player)
     if not player or player?.id ~= self.player?.id then

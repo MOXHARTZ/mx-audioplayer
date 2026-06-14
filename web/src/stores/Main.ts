@@ -172,7 +172,11 @@ const Static = createSlice({
         })
         builder.addCase(handlePlay.rejected, (state, { payload }) => {
             state.waitingForResponse = false;
-            notification((payload ?? i18next.t('general.something_went_wrong') as any), 'error');
+            const errorKey = typeof payload === 'string' ? payload : '';
+            const message = errorKey && i18next.exists(`general.${errorKey}`)
+                ? i18next.t(`general.${errorKey}`)
+                : i18next.t('general.something_went_wrong');
+            notification(message, 'error');
         })
         builder.addCase(handlePlay.pending, (state) => {
             state.waitingForResponse = true;

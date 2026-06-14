@@ -87,7 +87,11 @@
         "done": "Ferdig",
         "delete.confirm": "Klikk på slett igjen for å bekrefte.",
         "currently_playing": "Spiller Nå",
-        "account_sharing_disabled": "Du kan ikke få tilgang til lydspilleren fordi kontodeling er deaktivert på serveren."
+        "account_sharing_disabled": "Du kan ikke få tilgang til lydspilleren fordi kontodeling er deaktivert på serveren.",
+        "play_account_not_found": "Lydkonto ikke funnet. Logg inn på nytt.",
+        "play_playlist_not_selected": "Velg en spilleliste før du spiller av.",
+        "play_track_search_failed": "Fant ikke dette sporet. Prøv igjen.",
+        "play_failed": "Kunne ikke spille av sporet. Prøv igjen."
     },
     "shared": {
         "title": "Spillere i nærheten",

@@ -47,27 +47,30 @@ end
 ---@param source number
 ---@param id string
 ---@param data PlaySound
----@return Player | false
+---@return Player | false, string | nil
 local function playSound(source, id, data)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
     if not user then
         Error('mx-audioplayer:play ::: User not found', id)
-        return false
+        return false, 'play_account_not_found'
     end
+
+    user.player = user.player or { playing = false, volume = 1 }
+
     local options, soundId = data.options or {}, data.soundId
-    if user.player?.soundId then
+    if user.player.soundId then
         Surround:Destroy(-1, user.player.soundId)
         user.player.soundId = nil
     end
 
-    local volume = options.silent and 0.0 or (user.player?.volume or 1)
+    local volume = options.silent and 0.0 or (user.player.volume or 1)
 
     local playlist = db.getPlaylist(user.accountId)
     assert(playlist, 'mx-audioplayer:play ::: Playlist not found')
 
-    if not user.player?.currentPlaylistId then
+    if not user.player.currentPlaylistId then
         Debug('mx-audioplayer:play ::: Current playlist id not found', user.accountId)
-        return false
+        return false, 'play_playlist_not_selected'
     end
 
     if not data.soundData.url then
@@ -80,7 +83,7 @@ local function playSound(source, id, data)
         local response = Surround:searchTrack(data.soundData.title .. ' - ' .. data.soundData.artist, 1)
         if not response then
             Error('mx-audioplayer:play ::: Failed to search track', data.soundData.title .. ' - ' .. data.soundData.artist)
-            return false
+            return false, 'play_track_search_failed'
         end
         local url = 'https://www.youtube.com/watch?v=' .. response[1].videoId
         playlist[currentPlaylistIndex].songs[soundIndex].url = url
@@ -91,7 +94,7 @@ local function playSound(source, id, data)
 
     local success = Surround:Play(-1, soundId, data.soundData.url, data.coords, false, volume, options.panner)
     if not success then
-        return false
+        return false, 'play_failed'
     end
 
     for _, location in ipairs(Config.DJ.Locations) do
@@ -218,9 +221,13 @@ end
 
 ---@param source number
 ---@param data PlaySound
----@return Player | false
+---@return Player | { error: string }
 lib.callback.register('mx-audioplayer:play', function(source, id, data)
-    return playSound(source, id, data)
+    local player, err = playSound(source, id, data)
+    if not player then
+        return { error = err or 'play_failed' }
+    end
+    return player
 end)
 
 local disabledUis = {}
@@ -234,19 +241,42 @@ RegisterNetEvent('mx-audioplayer:disableUi', function(customId, disabled)
 end)
 
 lib.callback.register('mx-audioplayer:isUiDisabled', function(source, customId)
-    if not disabledUis[customId] then return false end
-    return disabledUis[customId].src ~= source and disabledUis[customId].disabled
+    local entry = disabledUis[customId]
+    if not entry then return false end
+    if entry.disabled and not DoesPlayerExist(entry.src) then
+        disabledUis[customId] = nil
+        TriggerClientEvent('mx-audioplayer:disableUi', -1, entry.src, customId, false)
+        return false
+    end
+    return entry.src ~= source and entry.disabled
 end)
 
 AddEventHandler('playerDropped', function()
     local src = source
-    for k, v in pairs(AudioPlayerAccounts) do
-        if not v.player then goto continue end
-        if v.player.source == src then
+
+    for customId, entry in pairs(disabledUis) do
+        if entry.src == src and entry.disabled then
+            disabledUis[customId] = nil
+            TriggerClientEvent('mx-audioplayer:disableUi', -1, src, customId, false)
+        end
+    end
+
+    for _, v in pairs(AudioPlayerAccounts) do
+        if not v.player or v.player.source ~= src then goto continue end
+
+        if v.player.soundId then
             Surround:Destroy(-1, v.player.soundId)
             Debug('Player dropped we destroyed the sound', src, v.player.soundId)
-            v.player = nil
         end
+
+        v.player = {
+            playing = false,
+            volume = v.player.volume or 1,
+            currentPlaylistId = v.player.currentPlaylistId,
+            repeatState = v.player.repeatState,
+            shuffle = v.player.shuffle,
+        }
+
         ::continue::
     end
 end)
@@ -256,13 +286,15 @@ end)
 ---@param data any
 RegisterNetEvent('mx-audioplayer:sync', function(id, type, data)
     local user = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
-    if not user or not user.player then
-        return Debug('mx-audioplayer:sync ::: User not found or player not found', {
+    if not user then
+        return Debug('mx-audioplayer:sync ::: User not found', {
             id = id,
             type = type,
             data = data
         })
     end
+
+    user.player = user.player or { playing = false, volume = 1 }
 
     if type == 'volume' then
         user.player.volume = data.volume
@@ -403,6 +435,9 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
         end
     end
 
+    local existing = table.find(AudioPlayerAccounts, function(v) return v.id == id end)
+    local preservedPlayer = existing?.player
+
     AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= id end)
     AudioPlayerAccounts[#AudioPlayerAccounts + 1] = {
         id = id,
@@ -410,7 +445,10 @@ lib.callback.register('mx-audioplayer:login', function(source, id, data)
         accountId = user.id,
         player = {
             playing = false,
-            volume = 1,
+            volume = preservedPlayer?.volume or 1,
+            currentPlaylistId = preservedPlayer?.currentPlaylistId,
+            repeatState = preservedPlayer?.repeatState,
+            shuffle = preservedPlayer?.shuffle,
         }
     }
     if not data.token then

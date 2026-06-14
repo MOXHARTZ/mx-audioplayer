@@ -87,7 +87,11 @@
         "done": "Fatto",
         "delete.confirm": "Si prega di cliccare di nuovo elimina per confermare.",
         "currently_playing": "In riproduzione",
-        "account_sharing_disabled": "Non puoi accedere al lettore audio perché il server ha disabilitato la condivisione degli account."
+        "account_sharing_disabled": "Non puoi accedere al lettore audio perché il server ha disabilitato la condivisione degli account.",
+        "play_account_not_found": "Account audio non trovato. Accedi di nuovo.",
+        "play_playlist_not_selected": "Seleziona una playlist prima di riprodurre.",
+        "play_track_search_failed": "Impossibile trovare questo brano. Riprova.",
+        "play_failed": "Impossibile riprodurre il brano. Riprova."
     },
     "shared": {
         "title": "Giocatori nelle vicinanze",

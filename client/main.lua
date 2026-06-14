@@ -84,7 +84,7 @@ end)
 
 RegisterNUICallback('play', function(data, cb)
     local soundData = data.soundData
-    if not soundData then return cb(false) end
+    if not soundData then return cb({ error = 'play_failed' }) end
 
     local id = audioplayer.id
     local options = audioplayer.options
@@ -97,7 +97,10 @@ RegisterNUICallback('play', function(data, cb)
         coords = coords,
         options = options
     })
-    if not player then return cb(false) end
+    if type(player) == 'table' and player.error then
+        return cb({ error = player.error })
+    end
+    if not player then return cb({ error = 'play_failed' }) end
     cb(true)
 end)
 

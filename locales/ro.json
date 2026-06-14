@@ -87,7 +87,11 @@
         "done": "Gata",
         "delete.confirm": "Vă rugăm să faceți clic din nou pe șterge pentru a confirma.",
         "currently_playing": "Se redă acum",
-        "account_sharing_disabled": "Nu puteți accesa playerul audio deoarece serverul a dezactivat partajarea contului."
+        "account_sharing_disabled": "Nu puteți accesa playerul audio deoarece serverul a dezactivat partajarea contului.",
+        "play_account_not_found": "Contul audio nu a fost găsit. Conectează-te din nou.",
+        "play_playlist_not_selected": "Selectează un playlist înainte de redare.",
+        "play_track_search_failed": "Nu s-a putut găsi acest titlu. Încearcă din nou.",
+        "play_failed": "Redarea titlului a eșuat. Încearcă din nou."
     },
     "shared": {
         "title": "Jucători din apropiere",

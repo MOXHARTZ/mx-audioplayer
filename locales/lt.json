@@ -87,7 +87,11 @@
         "done": "Atlikta",
         "delete.confirm": "Prašome dar kartą spustelėti ištrinti, kad patvirtintumėte.",
         "currently_playing": "Dabar groja",
-        "account_sharing_disabled": "Negalite pasiekti garso grotuvo, nes serveris išjungė paskyros bendrinimą."
+        "account_sharing_disabled": "Negalite pasiekti garso grotuvo, nes serveris išjungė paskyros bendrinimą.",
+        "play_account_not_found": "Garso paskyra nerasta. Prisijunkite dar kartą.",
+        "play_playlist_not_selected": "Prieš grodami pasirinkite grojaraštį.",
+        "play_track_search_failed": "Nepavyko rasti šio takelio. Bandykite dar kartą.",
+        "play_failed": "Nepavyko paleisti takelio. Bandykite dar kartą."
     },
     "shared": {
         "title": "Artimiausi žaidėjai",

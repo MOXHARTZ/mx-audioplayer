@@ -87,7 +87,11 @@
         "done": "Fertig",
         "delete.confirm": "Bitte klicken Sie erneut auf löschen, um zu bestätigen.",
         "currently_playing": "Wird gerade abgespielt",
-        "account_sharing_disabled": "Sie können nicht auf den Audioplayer zugreifen, da die Server die Kontofreigabe deaktiviert haben."
+        "account_sharing_disabled": "Sie können nicht auf den Audioplayer zugreifen, da die Server die Kontofreigabe deaktiviert haben.",
+        "play_account_not_found": "Audiokonto nicht gefunden. Bitte melden Sie sich erneut an.",
+        "play_playlist_not_selected": "Bitte wählen Sie eine Wiedergabeliste aus, bevor Sie abspielen.",
+        "play_track_search_failed": "Dieser Titel konnte nicht gefunden werden. Bitte versuchen Sie es erneut.",
+        "play_failed": "Titel konnte nicht abgespielt werden. Bitte versuchen Sie es erneut."
     },
     "shared": {
         "title": "Spieler in der Nähe",

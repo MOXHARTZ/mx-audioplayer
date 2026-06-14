@@ -87,7 +87,11 @@
         "done": "Hecho",
         "delete.confirm": "Por favor haz clic en eliminar nuevamente para confirmar.",
         "currently_playing": "Reproduciendo actualmente",
-        "account_sharing_disabled": "No puedes acceder al reproductor porque el servidor deshabilitó el uso compartido de cuentas."
+        "account_sharing_disabled": "No puedes acceder al reproductor porque el servidor deshabilitó el uso compartido de cuentas.",
+        "play_account_not_found": "Cuenta de audio no encontrada. Por favor, inicia sesión de nuevo.",
+        "play_playlist_not_selected": "Selecciona una lista de reproducción antes de reproducir.",
+        "play_track_search_failed": "No se pudo encontrar esta pista. Inténtalo de nuevo.",
+        "play_failed": "No se pudo reproducir la pista. Inténtalo de nuevo."
     },
     "shared": {
         "title": "Jugadores cercanos",

@@ -87,7 +87,11 @@
         "done": "Terminé",
         "delete.confirm": "Veuillez cliquer à nouveau sur supprimer pour confirmer.",
         "currently_playing": "En cours de lecture",
-        "account_sharing_disabled": "Vous ne pouvez pas accéder au lecteur audio, car le serveur a désactivé le partage de compte."
+        "account_sharing_disabled": "Vous ne pouvez pas accéder au lecteur audio, car le serveur a désactivé le partage de compte.",
+        "play_account_not_found": "Compte audio introuvable. Veuillez vous reconnecter.",
+        "play_playlist_not_selected": "Veuillez sélectionner une playlist avant de lire.",
+        "play_track_search_failed": "Impossible de trouver ce morceau. Veuillez réessayer.",
+        "play_failed": "Échec de la lecture du morceau. Veuillez réessayer."
     },
     "shared": {
         "title": "Joueurs à proximité",
