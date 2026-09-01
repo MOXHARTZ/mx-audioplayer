@@ -66,9 +66,8 @@ local function openUi()
 end
 
 RegisterCommand('carRadio', openUi, false)
-if Config.Radio.RadioKey then
-    RegisterKeyMapping('carRadio', i18n.t('radio.command'), 'keyboard', Config.Radio.RadioKey)
-end
+-- It seems that if statement is sometimes broken, so do not use if statement here.
+RegisterKeyMapping('carRadio', i18n.t('radio.command'), 'keyboard', Config.Radio.RadioKey)
 
 AddEventHandler('mx-audioplayer:vehicleEntered', function(vehicle)
     audioplayer:toggleShortDisplay(true, {
