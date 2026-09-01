@@ -7,10 +7,20 @@
         "artist": "Artiste",
         "playlist": "Liste de lecture",
         "edit_profile": "Modifier le profil",
-        "logout": "Se déconnecter"
+        "logout": "Se déconnecter",
+        "good_evening": "Bonsoir",
+        "good_morning": "Bonjour",
+        "good_afternoon": "Bon après-midi",
+        "good_night": "Bonne nuit",
+        "jump_back_into_your_music": "Revenez à votre musique",
+        "your_playlists": "Vos listes de lecture",
+        "songs": "{{count}} chansons",
+        "create_your_first_playlist": "Créez votre première liste de lecture",
+        "it_s_easy_we_ll_help_you": "C'est facile, nous vous aiderons"
     },
     "profile": {
         "title": "Gérer le compte",
+        "subtitle": "Mettez à jour les informations de votre compte",
         "username": "Nouveau nom d'utilisateur",
         "username_placeholder": "Mettez à jour votre nom d'utilisateur",
         "password": "Nouveau mot de passe",
@@ -18,7 +28,9 @@
         "avatar": "URL de l'avatar",
         "avatar_placeholder": "Entrez l'URL de votre avatar",
         "delete_account": "Supprimer le compte",
-        "update_account": "Mettre à jour le compte"
+        "update_account": "Mettre à jour le compte",
+        "update_failed": "Échec de la mise à jour",
+        "updated": "Profil mis à jour avec succès"
     },
     "playlist": {
         "empty": "Aucune chanson dans la liste de lecture",
@@ -62,7 +74,8 @@
         "loading": "Chargement de la liste de lecture...",
         "no_results": "Aucun résultat",
         "no_song_match": "Aucune chanson ne correspond à votre recherche",
-        "add_some_songs": "Ajoutez quelques chansons pour commencer"
+        "add_some_songs": "Ajoutez quelques chansons pour commencer",
+        "deleted": "Playlist supprimée"
     },
     "edit": {
         "clear": "Tout supprimer",
@@ -75,23 +88,26 @@
         "subtitle": "Recherchez et découvrez de nouvelles musiques",
         "placeholder": "Nom de la piste ou URL (prend en charge les listes de lecture et albums)",
         "invalid_url": "URL invalide",
-        "add_all": "Tout ajouter à la liste de lecture"
+        "add_all": "Tout ajouter à la liste de lecture",
+        "by_name": "Nom du titre",
+        "added": "{{count}} titres ajoutés",
+        "title_short": "Ajouter des titres"
     },
     "general": {
         "play": "Jouer",
         "unknown": "Inconnu",
         "something_went_wrong": "Quelque chose s'est mal passé",
+        "play_account_not_found": "Compte audio introuvable. Veuillez vous reconnecter.",
+        "play_playlist_not_selected": "Veuillez sélectionner une playlist avant de lire.",
+        "play_track_search_failed": "Impossible de trouver ce morceau. Veuillez réessayer.",
+        "play_failed": "Échec de la lecture du morceau. Veuillez réessayer.",
         "ui_disabled": "Pour le moment, vous ne pouvez pas ouvrir la radio car elle est utilisée par un autre joueur.",
         "edit_enabled": "Le mode édition est activé. Maintenant vous pouvez trier la liste de lecture et les chansons en les faisant glisser",
         "cancel": "Annuler",
         "done": "Terminé",
         "delete.confirm": "Veuillez cliquer à nouveau sur supprimer pour confirmer.",
         "currently_playing": "En cours de lecture",
-        "account_sharing_disabled": "Vous ne pouvez pas accéder au lecteur audio, car le serveur a désactivé le partage de compte.",
-        "play_account_not_found": "Compte audio introuvable. Veuillez vous reconnecter.",
-        "play_playlist_not_selected": "Veuillez sélectionner une playlist avant de lire.",
-        "play_track_search_failed": "Impossible de trouver ce morceau. Veuillez réessayer.",
-        "play_failed": "Échec de la lecture du morceau. Veuillez réessayer."
+        "account_sharing_disabled": "Vous ne pouvez pas accéder au lecteur audio, car le serveur a désactivé le partage de compte."
     },
     "shared": {
         "title": "Joueurs à proximité",
@@ -104,8 +120,16 @@
             "destroy": "Détruire le boombox",
             "pickup": "Ramasser le boombox"
         },
+        "text": {
+            "open": "Appuyez sur [E] pour ouvrir le boombox",
+            "open_pickup": "Appuyez sur [E] pour ouvrir le boombox | Appuyez sur [G] pour le ramasser"
+        },
         "drop": {
             "text": "Appuyez sur [H] pour lâcher le boombox"
+        },
+        "create": {
+            "already_nearby": "Vous avez déjà un boombox à proximité.",
+            "not_networked": "Ce boombox n'est pas utilisable. Veuillez en créer un autre."
         }
     },
     "dj": {
@@ -140,6 +164,11 @@
                 "bottom_right": "Bas droite",
                 "bottom_right_description": "Le HUD minimal sera placé dans le coin inférieur droit de votre écran"
             }
+        },
+        "theme": {
+            "title": "Thème",
+            "description": "Choisissez un préréglage ou votre propre couleur d’accent",
+            "custom_accent": "Couleur d’accent personnalisée"
         }
     },
     "keyboard": {
@@ -173,7 +202,7 @@
         "back_to_accounts": "Retour aux comptes"
     },
     "register": {
-        "title": "Rejoignez le lecteur audio",
+        "title": "S'inscrire",
         "subtitle": "Créez votre compte",
         "firstname": "Prénom",
         "lastname": "Nom de famille",
@@ -189,5 +218,17 @@
         "sign_up": "S'inscrire",
         "registration_successful": "Inscription réussie",
         "registration_failed": "Échec de l'inscription"
+    },
+    "nav": {
+        "home": "Accueil",
+        "search": "Rechercher",
+        "library": "Votre bibliothèque",
+        "no_playlists": "Aucune playlist pour l'instant"
+    },
+    "search": {
+        "placeholder": "Recherchez vos titres et playlists",
+        "hint": "Recherchez dans toute votre bibliothèque",
+        "no_results": "Aucun résultat trouvé",
+        "try_different": "Essayez un autre terme de recherche"
     }
 }

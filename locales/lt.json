@@ -7,10 +7,20 @@
         "artist": "Atlikėjas",
         "playlist": "Grojaraštis",
         "edit_profile": "Redaguoti profilį",
-        "logout": "Atsijungti"
+        "logout": "Atsijungti",
+        "good_evening": "Labas vakaras",
+        "good_morning": "Labas rytas",
+        "good_afternoon": "Laba diena",
+        "good_night": "Labanakt",
+        "jump_back_into_your_music": "Grįžkite prie savo muzikos",
+        "your_playlists": "Jūsų grojaraščiai",
+        "songs": "{{count}} dainos",
+        "create_your_first_playlist": "Sukurkite savo pirmą grojaraštį",
+        "it_s_easy_we_ll_help_you": "Tai lengva, mes jums padėsime"
     },
     "profile": {
         "title": "Valdyti paskyrą",
+        "subtitle": "Atnaujinkite savo paskyros informaciją",
         "username": "Naujas vartotojo vardas",
         "username_placeholder": "Atnaujinkite savo vartotojo vardą",
         "password": "Naujas slaptažodis",
@@ -18,7 +28,9 @@
         "avatar": "Avataro URL",
         "avatar_placeholder": "Įveskite savo avataro URL",
         "delete_account": "Ištrinti paskyrą",
-        "update_account": "Atnaujinti paskyrą"
+        "update_account": "Atnaujinti paskyrą",
+        "update_failed": "Atnaujinti nepavyko",
+        "updated": "Profilis sėkmingai atnaujintas"
     },
     "playlist": {
         "empty": "Grojaraštyje nėra dainų",
@@ -62,7 +74,8 @@
         "loading": "Kraunamas grojaraštis...",
         "no_results": "Nėra rezultatų",
         "no_song_match": "Nėra dainų, atitinkančių jūsų paiešką",
-        "add_some_songs": "Pridėkite keletą dainų, kad pradėtumėte"
+        "add_some_songs": "Pridėkite keletą dainų, kad pradėtumėte",
+        "deleted": "Grojaraštis ištrintas"
     },
     "edit": {
         "clear": "Ištrinti viską",
@@ -75,23 +88,26 @@
         "subtitle": "Ieškoti ir atrasti naują muziką",
         "placeholder": "Takelio pavadinimas arba URL (palaiko grojaraščius ir albumus)",
         "invalid_url": "Neteisingas URL",
-        "add_all": "Pridėti viską prie grojaraščio"
+        "add_all": "Pridėti viską prie grojaraščio",
+        "by_name": "Dainos pavadinimas",
+        "added": "Pridėta dainų: {{count}}",
+        "title_short": "Pridėti dainų"
     },
     "general": {
         "play": "Groti",
         "unknown": "Nežinoma",
         "something_went_wrong": "Kažkas nutiko negerai",
+        "play_account_not_found": "Garso paskyra nerasta. Prisijunkite dar kartą.",
+        "play_playlist_not_selected": "Prieš grodami pasirinkite grojaraštį.",
+        "play_track_search_failed": "Nepavyko rasti šio takelio. Bandykite dar kartą.",
+        "play_failed": "Nepavyko paleisti takelio. Bandykite dar kartą.",
         "ui_disabled": "Šiuo metu negalite atidaryti radijo, nes jį naudoja kitas žaidėjas.",
         "edit_enabled": "Redagavimo režimas įjungtas. Dabar galite rūšiuoti grojaraštį ir dainas vilkdami",
         "cancel": "Atšaukti",
         "done": "Atlikta",
         "delete.confirm": "Prašome dar kartą spustelėti ištrinti, kad patvirtintumėte.",
         "currently_playing": "Dabar groja",
-        "account_sharing_disabled": "Negalite pasiekti garso grotuvo, nes serveris išjungė paskyros bendrinimą.",
-        "play_account_not_found": "Garso paskyra nerasta. Prisijunkite dar kartą.",
-        "play_playlist_not_selected": "Prieš grodami pasirinkite grojaraštį.",
-        "play_track_search_failed": "Nepavyko rasti šio takelio. Bandykite dar kartą.",
-        "play_failed": "Nepavyko paleisti takelio. Bandykite dar kartą."
+        "account_sharing_disabled": "Negalite pasiekti garso grotuvo, nes serveris išjungė paskyros bendrinimą."
     },
     "shared": {
         "title": "Artimiausi žaidėjai",
@@ -104,8 +120,16 @@
             "destroy": "Sunaikinti boombox",
             "pickup": "Paimti boombox"
         },
+        "text": {
+            "open": "Paspauskite [E], kad atidarytumėte boombox",
+            "open_pickup": "Paspauskite [E], kad atidarytumėte boombox | Paspauskite [G], kad paimtumėte"
+        },
         "drop": {
             "text": "Paspauskite [H], kad numestumėte boombox"
+        },
+        "create": {
+            "already_nearby": "Netoliese jau turite boombox.",
+            "not_networked": "Šis boombox neveikia. Prašome sukurti kitą boombox."
         }
     },
     "dj": {
@@ -140,6 +164,11 @@
                 "bottom_right": "Apačioje dešinėje",
                 "bottom_right_description": "Minimalus HUD bus patalpintas apatiniame dešiniajame ekrano kampe"
             }
+        },
+        "theme": {
+            "title": "Tema",
+            "description": "Pasirink paruoštą temą arba savo akcento spalvą",
+            "custom_accent": "Pasirinktinė akcento spalva"
         }
     },
     "keyboard": {
@@ -173,7 +202,7 @@
         "back_to_accounts": "Grįžti į paskyras"
     },
     "register": {
-        "title": "Prisijunkite prie Garso Grotuvo",
+        "title": "Registruotis",
         "subtitle": "Sukurkite savo paskyrą",
         "firstname": "Vardas",
         "lastname": "Pavardė",
@@ -189,5 +218,17 @@
         "sign_up": "Registruotis",
         "registration_successful": "Registracija sėkminga",
         "registration_failed": "Registracija nepavyko"
+    },
+    "nav": {
+        "home": "Pradžia",
+        "search": "Paieška",
+        "library": "Tavo biblioteka",
+        "no_playlists": "Grojaraščių dar nėra"
+    },
+    "search": {
+        "placeholder": "Ieškok dainų ir grojaraščių",
+        "hint": "Ieškok visoje bibliotekoje",
+        "no_results": "Rezultatų nerasta",
+        "try_different": "Pabandyk kitą paieškos frazę"
     }
 }

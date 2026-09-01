@@ -3,11 +3,12 @@ game 'gta5'
 author 'https://github.com/MOXHARTZ'
 repository 'https://github.com/MOXHARTZ/mx-audioplayer'
 discord 'https://discord.gg/crbtDw9hT7'
-version '3.2.9'
+version '4.0.0'
 lua54 'yes'
 
 shared_scripts {
     '@ox_lib/init.lua',
+    'config/main.lua',
     'shared/*.lua'
 }
 
@@ -32,6 +33,8 @@ files({
     'locales/*.json',
     'web/build/index.html',
     'web/build/**/*',
+
+    -- Exported so another resource can require the player module directly.
     'client/modules/audioplayer.lua',
 })
 

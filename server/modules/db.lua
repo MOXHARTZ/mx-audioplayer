@@ -22,11 +22,8 @@ function SaveTemp(name, data, id, expire)
         Debug('No data to save to cache', name, id)
         return
     end
-    if expire then
-        expire = os.time() + expire
-    else
-        expire = os.time() + 1000 * 60 * 60 -- 60 minutes
-    end
+    expire = os.time() + (expire or 60 * 60)
+    temp = table.filter(temp, function(v) return not (v.name == name and v.id == id) end)
     temp[#temp + 1] = {
         name = name,
         id = id,
@@ -40,7 +37,7 @@ end
 ---@param name string
 ---@param id? string | number
 function DeleteTemp(name, id)
-    local fn = function(v) return v.name ~= name and v.id ~= id end
+    local fn = function(v) return not (v.name == name and v.id == id) end
     if not id then
         fn = function(v) return v.name ~= name end
     end
@@ -52,6 +49,8 @@ end
 ---@param id? string | number
 ---@return any
 function UseTemp(name, id)
+    local now = os.time()
+    temp = table.filter(temp, function(v) return v.expire > now end)
     local fn = function(v) return v.name == name and v.id == id end
     if not id then
         fn = function(v) return v.name == name end
@@ -69,11 +68,11 @@ end
 ---@return number?
 function db.getUserId(username, password)
     local tempId = username .. password
-    local cache = UseTemp('user_id', tempId) ---@type number | nil
+    local cache = UseTemp('user_id', tempId)
     if cache then
         return cache
     end
-    local id = MySQL.prepare.await(Query.SELECT_USER_ID, { username, password }) --[[@as number | nil]]
+    local id = MySQL.prepare.await(Query.SELECT_USER_ID, { username, password })
     SaveTemp('user_id', id, tempId)
     return id
 end
@@ -83,11 +82,11 @@ end
 ---@return Account | nil
 function db.getUser(username, password)
     local tempId = username .. password
-    local cache = UseTemp('user', tempId) ---@type Account | nil
+    local cache = UseTemp('user', tempId)
     if cache then
         return cache
     end
-    local user = MySQL.prepare.await(Query.SELECT_USER, { username, password }) --[[@as Account | nil]]
+    local user = MySQL.prepare.await(Query.SELECT_USER, { username, password })
     SaveTemp('user', user, tempId)
     return user
 end
@@ -95,11 +94,11 @@ end
 ---@param id number
 ---@return Account | nil
 function db.getUserById(id)
-    local cache = UseTemp('user_by_id', id) ---@type Account | nil
+    local cache = UseTemp('user_by_id', id)
     if cache then
         return cache
     end
-    local user = MySQL.prepare.await(Query.SELECT_USER_BY_ID, { id }) --[[@as Account | nil]]
+    local user = MySQL.prepare.await(Query.SELECT_USER_BY_ID, { id })
     SaveTemp('user_by_id', user, id)
     return user
 end
@@ -107,7 +106,7 @@ end
 ---@param userId number
 ---@return PlaylistData[] | nil
 function db.getPlaylist(userId)
-    local cache = UseTemp('playlist', userId) ---@type PlaylistData[] | nil
+    local cache = UseTemp('playlist', userId)
     if cache then
         return cache
     end
@@ -120,7 +119,7 @@ end
 ---@param userId number
 ---@param playlist table
 function db.setPlaylist(userId, playlist)
-    local cache = UseTemp('playlist', userId) ---@type Playlist[] | nil
+    local cache = UseTemp('playlist', userId)
     if cache then
         DeleteTemp('playlist', userId)
     end
@@ -141,7 +140,7 @@ function db.insertUser(username, password, firstname, lastname, identifier)
 end
 
 ---@param identifier string
----@param user AudioplayerAccount
+---@param user AudioPlayerAccount
 ---@param data UpdateProfile
 function db.updateUser(identifier, user, data)
     local userData = db.getUserById(user.accountId)
@@ -159,7 +158,8 @@ function db.updateUser(identifier, user, data)
     end
     if data.password ~= userData.password then
         AudioPlayerAccounts = table.filter(AudioPlayerAccounts, function(v) return v.id ~= user.id end)
-        Debug('db.updateUser', userData.username, 'changed password. Removing from AudioPlayerUsers')
+        if InvalidateTokensForUser then InvalidateTokensForUser(user.accountId) end
+        Debug('db.updateUser', userData.username, 'changed password. Removing from AudioPlayer users')
     end
     local str = 'UPDATE audioplayer_users SET'
     local params = {}
@@ -167,7 +167,7 @@ function db.updateUser(identifier, user, data)
         str = str .. (' `%s` = :%s,'):format(k, k)
         params[k] = v
     end
-    str = str:sub(1, -2) -- Remove last comma
+    str = str:sub(1, -2)
     str = str .. ' WHERE id = :id'
     params.id = user.accountId
     DeleteTemp('user', userData.username .. userData.password)
@@ -185,7 +185,7 @@ end
 ---@param identifier string
 ---@return Account | nil
 function db.getOwnedAccount(id, identifier)
-    return MySQL.prepare.await('SELECT * FROM audioplayer_users WHERE id = ? AND creator = ?', { id, identifier }) --[[@as Account | nil]]
+    return MySQL.prepare.await('SELECT * FROM audioplayer_users WHERE id = ? AND creator = ?', { id, identifier })
 end
 
 CreateThread(function()

@@ -6,7 +6,6 @@
 ---@field panner? {panningModel: string, refDistance: number, rolloffFactor: number, distanceModel: string}
 ---@field coords? vector3
 
--- Check mx-surround's types.lua for the types of the following functions
 ---@class OpenAudioPlayerHandlers
 ---@field onPlay? fun(sound)
 ---@field onPause? fun(sound)
@@ -17,6 +16,8 @@
 
 ---@class Settings
 ---@field minimalHud boolean
+---@field fadeIn? number Seconds. nil falls back to Config.Fade.In
+---@field fadeOut? number Seconds. nil falls back to Config.Fade.Out
 
 ---@class ShortDisplay
 ---@field visible? boolean
@@ -40,6 +41,11 @@
 ---@field password string | number
 ---@field avatar? string
 
+---@class QueueEntry
+---@field uid string Server minted. Songs can be queued twice, so ids are not unique
+---@field song PlaylistSong
+---@field playlistId string Playlist the entry came from. Playback continues there once it plays
+
 ---@class Player
 ---@field id? string
 ---@field soundId? string
@@ -51,8 +57,11 @@
 ---@field repeatState? boolean
 ---@field shuffle? boolean
 ---@field currentPlaylistId? string
+---@field queue? QueueEntry[] Session only. Never persisted
+---@field queueSeq? number
+---@field playContext? {coords: vector3, options: AudioPlayerOptions} Needed to replay without the original closure
 
----@class AudioplayerAccount
+---@class AudioPlayerAccount
 ---@field id string
 ---@field accountId number
 ---@field player? Player
@@ -77,9 +86,17 @@
 ---@field cover string
 ---@field artist string
 ---@field duration number
+---@field isStream? boolean Endless radio stream. Never auto advances
 
 ---@class LoginData
 ---@field id? number
 ---@field token? string
 ---@field username? string
 ---@field password? number
+
+---@class RadioStation
+---@field id string
+---@field title string
+---@field artist string
+---@field cover string
+---@field url string Direct audio stream, not a YouTube link

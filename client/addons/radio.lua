@@ -8,7 +8,6 @@ local HideHudComponentThisFrame = HideHudComponentThisFrame
 local DoesEntityExist = DoesEntityExist
 local NetworkGetNetworkIdFromEntity = NetworkGetNetworkIdFromEntity
 
--- https://github.com/zaphosting/esx/blob/master/es_extended/common/modules/math.lua
 ---@param value string | number
 ---@return string | nil
 local function mathTrim(value)
@@ -16,13 +15,18 @@ local function mathTrim(value)
     return (string.gsub(value, '^%s*(.-)%s*$', '%1'))
 end
 
+local function vehicleAudioId(vehicle)
+    local plate = mathTrim(GetVehicleNumberPlateText(vehicle))
+    if plate ~= '' then return plate end
+    return ('veh:%d'):format(NetworkGetNetworkIdFromEntity(vehicle))
+end
+
 local function openUi()
     if IsNuiFocused() then return end
     local _vehicle = cache.vehicle
     if not _vehicle then return end
-    local plate = mathTrim(GetVehicleNumberPlateText(_vehicle))
     local radioSettings = {
-        id = plate,
+        id = vehicleAudioId(_vehicle),
         silent = true,
         vehicle = _vehicle,
     }
@@ -52,7 +56,9 @@ local function openUi()
                 token = account
             })
             if not success then
-                Notification(i18n.t('login.this_user_credentials_has_been_modified'), 'error')
+                if ShouldReportDeadToken(account) then
+                    Notification(i18n.t('login.this_user_credentials_has_been_modified'), 'error')
+                end
                 Entity(_vehicle).state:set('audioplayer_account', nil, true)
             end
         end,
@@ -65,10 +71,9 @@ if Config.Radio.RadioKey then
 end
 
 AddEventHandler('mx-audioplayer:vehicleEntered', function(vehicle)
-    local plate = mathTrim(GetVehicleNumberPlateText(vehicle))
     audioplayer:toggleShortDisplay(true, {
         vehicle = vehicle,
-        id = plate
+        id = vehicleAudioId(vehicle)
     })
 
     if Config.Radio.DisableDefaultRadio then

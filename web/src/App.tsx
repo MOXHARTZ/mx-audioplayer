@@ -1,153 +1,108 @@
-import { useEffect, useMemo, useState } from 'react'
-import { formattedTypes, isEnvBrowser } from '@/utils/misc'
-import { useAppDispatch, useAppSelector } from './stores'
-import useNuiEvent from './hooks/useNuiEvent'
-import { useExitListener } from './hooks/useExitListener'
-import { fetchNui } from './utils/fetchNui'
-import { addPlaylist, clearSound, setAccounts, setCurrentPlaylistId, setPlaying, setPlaylist, setRepeat, setSettings, setShuffle, setUserData, setVolume, setWaitingForResponse } from './stores/Main'
-import { Song } from './fake-api/song'
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import type { Account, Playlist, Player, ReadyListener } from './utils/types'
-import router from './routes'
-import { RouterProvider } from 'react-router-dom'
-import { addToast, HeroUIProvider } from '@heroui/react';
-import ShortDisplay from './components/shortdisplay';
-import { AnimatePresence, motion } from "motion/react"
-import { nextSongThunk } from './thunks/nextSong';
-import { setPositionThunk } from './thunks/setPosition'
+import { useEffect } from 'react';
+import { RouterProvider } from 'react-router-dom';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { loadLocale } from '@/lib/i18n';
+import { useStore } from '@/store';
+import { fetchNui, isEnvBrowser, useNuiEvent } from '@/lib/nui';
+import { usePlayerBridge } from '@/hooks/usePlayerBridge';
+import router from '@/routes';
+import ShortDisplay from '@/components/ShortDisplay';
+import BusyCursor from '@/components/BusyCursor';
+import type { LuaPlayer, OpenPayload, Playlist, QueueEntry, ReadyListener, Song } from '@/types';
+
 if (isEnvBrowser()) {
-  import('@/mocks/open');
+    import('@/lib/mock');
 }
 
 function App() {
-  const [visible, setVisible] = useState(false);
-  const [shortDisplay, setShortDisplay] = useState(false)
-  const dispatch = useAppDispatch()
-  const { settings, playing, repeat, playlist, currentSongData } = useAppSelector(state => state.Main)
-  const currentSongChildren = useMemo(() => playlist?.find(playlist => playlist.id === currentSongData?.playlistId)?.songs, [playlist, currentSongData])
-  const closeUI = () => {
-    setVisible(false)
-    fetchNui('close')
-  }
-  useEffect(() => {
-    fetchNui('uiReady')
-    if (!isEnvBrowser()) return;
-    document.body.style.backgroundImage = 'url(https://wallpaperaccess.com/full/707055.jpg)'
-  }, [])
-  useNuiEvent<{ playlist: Playlist[]; currentSound: Song; user?: Account; player: Player; accounts: Account[] }>('open', (data) => {
-    setVisible(true)
-    dispatch(setVolume(data.player.volume))
-    dispatch(setRepeat(data.player.repeatState))
-    dispatch(setShuffle(data.player.shuffle))
-    dispatch(setPlaylist(data.playlist))
-    dispatch(setUserData(data.user))
-    dispatch(setCurrentPlaylistId(data.player.currentPlaylistId))
-    if (!data.currentSound) {
-      return dispatch(clearSound(true));
-    }
-    dispatch(setPlaying(data.player.playing ?? false))
-    dispatch(setPositionThunk(data.currentSound))
-    dispatch(setAccounts(data.accounts))
-  })
-  useNuiEvent<{ state: boolean, playlist: Playlist[]; currentSound?: Song; player: Player }>('toggleShortDisplay', (data) => {
-    setShortDisplay(data.state)
-    if (!data.state) return;
-    dispatch(setPlaylist(data.playlist))
-    if (data.player.playing) {
-      dispatch(setPlaying(true))
-      dispatch(setShuffle(data.player.shuffle))
-      dispatch(setRepeat(data.player.repeatState))
-      dispatch(setVolume(data.player.volume))
-      dispatch(setCurrentPlaylistId(data.player.currentPlaylistId))
-    }
-    if (!data.currentSound) {
-      dispatch(clearSound(true));
-      return;
-    }
-    dispatch(setPositionThunk(data.currentSound))
-  })
-  useNuiEvent('destroyed', () => {
-    dispatch(clearSound(true));
-  })
-  useNuiEvent('clearSound', () => {
-    dispatch(clearSound(true))
-    dispatch(setPlaylist([]))
-  })
-  useNuiEvent<Playlist[]>('setPlaylist', (data) => {
-    dispatch(setPlaylist(data))
-  })
-  useExitListener(() => closeUI())
-  useNuiEvent<ReadyListener>('onUiReady', (data) => {
-    i18n.use(initReactI18next).init({
-      lng: data.languageName,
-      resources: data.resources,
-      fallbackLng: 'en',
-      interpolation: {
-        escapeValue: false
-      }
-    })
-    dispatch(setSettings(data.settings))
-  })
-  useNuiEvent<Playlist>('receivePlaylist', (newPlaylist) => {
-    if (!visible) return;
-    dispatch(addPlaylist(newPlaylist))
-  })
-  useNuiEvent('close', closeUI)
-  useNuiEvent<{ playlist: Playlist, position: number | string }>('end', (data) => {
-    if (currentSongChildren?.length === 0) return;
-    dispatch(nextSongThunk(true, data.playlist, data.position))
-  })
-  useNuiEvent<{ soundData: Song }>('setCurrentSong', (data) => {
-    dispatch(setPlaying(true))
-    dispatch(setPositionThunk(data.soundData))
-  })
-  useNuiEvent<boolean>('setWaitingForResponse', (data) => {
-    dispatch(setWaitingForResponse(data))
-  })
-  useNuiEvent<{ msg: string, type: keyof typeof formattedTypes }>('notification', (data) => {
-    addToast({
-      title: data.type.toUpperCase(),
-      description: data.msg,
-      color: formattedTypes[data.type],
-      shouldShowTimeoutProgress: true,
-      timeout: 3000,
-      variant: 'flat',
-    })
-  })
-  return (
-    <>
-      <ShortDisplay
-        position={settings.minimalHudPosition}
-        visible={!visible && settings.minimalHud && shortDisplay && playing}
-      />
-      <AnimatePresence>
-        {visible && (
-          <motion.main
-            animate={{
-              scale: 1,
-              opacity: 1,
-            }}
-            initial={{
-              opacity: 0,
-              scale: 1.10,
-            }}
-            exit={{
-              opacity: 0,
-              scale: 1.10,
-            }}
-            transition={{
-              duration: 0.3
-            }}
-            className='items-center justify-center w-full h-full dark'>
-            <HeroUIProvider className='w-full h-full items-center flex justify-center'>
-              <RouterProvider router={router} />
-            </HeroUIProvider>
-          </motion.main>
-        )}
-      </AnimatePresence>
-    </>
-  )
+    const reduce = useReducedMotion();
+    const visible = useStore(s => s.visible);
+    const setVisible = useStore(s => s.setVisible);
+
+    usePlayerBridge();
+
+    useEffect(() => {
+        fetchNui('uiReady');
+        if (isEnvBrowser()) {
+            document.body.style.background = '#3a4048 url(https://picsum.photos/seed/game/1920/1080) center/cover';
+        }
+    }, []);
+
+    useNuiEvent<ReadyListener>('onUiReady', (data) => {
+        loadLocale(data);
+        useStore.getState().hydrateReady(data);
+    });
+
+    useNuiEvent<OpenPayload>('open', (data) => {
+        useStore.getState().hydrateOpen(data);
+    });
+
+    useNuiEvent<{ state: boolean; playlist?: Playlist[]; currentSound?: Song; player?: LuaPlayer }>(
+        'toggleShortDisplay',
+        (data) => useStore.getState().hydrateShortDisplay(data),
+    );
+
+    useNuiEvent<LuaPlayer>('setCurrentSong', (data) => {
+        useStore.getState().hydrateCurrentSong(data);
+    });
+
+    useNuiEvent<Playlist[]>('setPlaylist', (data) => {
+        useStore.getState().hydratePlaylists(data);
+    });
+
+    useNuiEvent<QueueEntry[]>('setQueue', (queue) => {
+        useStore.getState().hydrateQueue(queue ?? []);
+    });
+
+    useNuiEvent<Playlist>('receivePlaylist', (playlist) => {
+        const { playlists } = useStore.getState();
+        if (!playlists) return;
+        useStore.getState().persistPlaylists([...playlists, playlist]);
+    });
+
+    useNuiEvent('destroyed', () => useStore.getState().hydrateCleared());
+    useNuiEvent('clearSound', () => useStore.getState().hydrateCleared());
+    useNuiEvent<boolean>('setWaitingForResponse', (waiting) => useStore.getState().hydrateWaiting(waiting));
+    useNuiEvent<{ time: number }>('timeUpdate', ({ time }) => useStore.getState().hydrateTime(time));
+
+    useNuiEvent<{ msg: string; type: 'info' | 'error' | 'success' }>('notification', (data) => {
+        useStore.getState().toast(data.msg, data.type);
+    });
+
+    useNuiEvent('close', () => {
+        setVisible(false);
+        fetchNui('close');
+    });
+
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            if (e.code !== 'Escape' || !useStore.getState().visible) return;
+            setVisible(false);
+            fetchNui('close');
+        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, [setVisible]);
+
+    return (
+        <>
+            <BusyCursor />
+            <ShortDisplay />
+            <AnimatePresence>
+                {visible && (
+                    <motion.main
+                        initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
+                        transition={{ duration: 0.24, ease: [0.23, 1, 0.32, 1] }}
+                        className="w-full h-full flex items-center justify-center bg-black/45"
+                    >
+                        <RouterProvider router={router} />
+                    </motion.main>
+                )}
+            </AnimatePresence>
+        </>
+    );
 }
 
-export default App
+export default App;

@@ -7,10 +7,20 @@
         "artist": "Artista",
         "playlist": "Playlist",
         "edit_profile": "Modifica profilo",
-        "logout": "Logout"
+        "logout": "Logout",
+        "good_evening": "Buona sera",
+        "good_morning": "Buongiorno",
+        "good_afternoon": "Buon pomeriggio",
+        "good_night": "Buona notte",
+        "jump_back_into_your_music": "Torna alla tua musica",
+        "your_playlists": "Le tue playlist",
+        "songs": "{{count}} canzoni",
+        "create_your_first_playlist": "Crea la tua prima playlist",
+        "it_s_easy_we_ll_help_you": "È facile, ti aiuteremo"
     },
     "profile": {
         "title": "Gestisci account",
+        "subtitle": "Aggiorna le informazioni del tuo account",
         "username": "Nuovo nome utente",
         "username_placeholder": "Aggiorna il tuo nome utente",
         "password": "Nuova password",
@@ -18,7 +28,9 @@
         "avatar": "URL avatar",
         "avatar_placeholder": "Inserisci l'URL del tuo avatar",
         "delete_account": "Elimina account",
-        "update_account": "Aggiorna account"
+        "update_account": "Aggiorna account",
+        "update_failed": "Aggiornamento non riuscito",
+        "updated": "Profilo aggiornato con successo"
     },
     "playlist": {
         "empty": "Nessuna canzone nella playlist",
@@ -62,7 +74,8 @@
         "loading": "Caricamento playlist...",
         "no_results": "Nessun risultato",
         "no_song_match": "Nessuna canzone corrisponde alla tua ricerca",
-        "add_some_songs": "Aggiungi alcune canzoni per iniziare"
+        "add_some_songs": "Aggiungi alcune canzoni per iniziare",
+        "deleted": "Playlist eliminata"
     },
     "edit": {
         "clear": "Elimina tutto",
@@ -75,23 +88,26 @@
         "subtitle": "Cerca e scopri nuova musica",
         "placeholder": "Nome traccia o URL (supporta playlist e album)",
         "invalid_url": "URL non valida",
-        "add_all": "Aggiungi tutto alla playlist"
+        "add_all": "Aggiungi tutto alla playlist",
+        "by_name": "Nome del brano",
+        "added": "{{count}} brani aggiunti",
+        "title_short": "Aggiungi brani"
     },
     "general": {
         "play": "Riproduci",
         "unknown": "Sconosciuto",
         "something_went_wrong": "Qualcosa è andato storto",
+        "play_account_not_found": "Account audio non trovato. Accedi di nuovo.",
+        "play_playlist_not_selected": "Seleziona una playlist prima di riprodurre.",
+        "play_track_search_failed": "Impossibile trovare questo brano. Riprova.",
+        "play_failed": "Impossibile riprodurre il brano. Riprova.",
         "ui_disabled": "Al momento non puoi aprire la radio perché è utilizzata da un altro giocatore.",
         "edit_enabled": "La modalità modifica è abilitata. Ora puoi ordinare la playlist e le canzoni trascinando",
         "cancel": "Annulla",
         "done": "Fatto",
         "delete.confirm": "Si prega di cliccare di nuovo elimina per confermare.",
         "currently_playing": "In riproduzione",
-        "account_sharing_disabled": "Non puoi accedere al lettore audio perché il server ha disabilitato la condivisione degli account.",
-        "play_account_not_found": "Account audio non trovato. Accedi di nuovo.",
-        "play_playlist_not_selected": "Seleziona una playlist prima di riprodurre.",
-        "play_track_search_failed": "Impossibile trovare questo brano. Riprova.",
-        "play_failed": "Impossibile riprodurre il brano. Riprova."
+        "account_sharing_disabled": "Non puoi accedere al lettore audio perché il server ha disabilitato la condivisione degli account."
     },
     "shared": {
         "title": "Giocatori nelle vicinanze",
@@ -104,8 +120,16 @@
             "destroy": "Distruggi boombox",
             "pickup": "Raccogli boombox"
         },
+        "text": {
+            "open": "Premi [E] per aprire il boombox",
+            "open_pickup": "Premi [E] per aprire il boombox | Premi [G] per raccoglierlo"
+        },
         "drop": {
             "text": "Premi [H] per lasciare cadere il boombox"
+        },
+        "create": {
+            "already_nearby": "Hai già un boombox nelle vicinanze.",
+            "not_networked": "Questo boombox non è utilizzabile. Per favore creane un altro."
         }
     },
     "dj": {
@@ -140,6 +164,11 @@
                 "bottom_right": "In basso a destra",
                 "bottom_right_description": "L'HUD minimo sarà posizionato nell'angolo inferiore destro del tuo schermo"
             }
+        },
+        "theme": {
+            "title": "Tema",
+            "description": "Scegli un preset o il tuo colore di accento",
+            "custom_accent": "Colore di accento personalizzato"
         }
     },
     "keyboard": {
@@ -173,7 +202,7 @@
         "back_to_accounts": "Torna agli account"
     },
     "register": {
-        "title": "Unisciti al Lettore Audio",
+        "title": "Registrati",
         "subtitle": "Crea il tuo account",
         "firstname": "Nome",
         "lastname": "Cognome",
@@ -189,5 +218,17 @@
         "sign_up": "Registrati",
         "registration_successful": "Registrazione riuscita",
         "registration_failed": "Registrazione fallita"
+    },
+    "nav": {
+        "home": "Home",
+        "search": "Cerca",
+        "library": "La tua libreria",
+        "no_playlists": "Nessuna playlist"
+    },
+    "search": {
+        "placeholder": "Cerca tra brani e playlist",
+        "hint": "Cerca in tutta la tua libreria",
+        "no_results": "Nessun risultato trovato",
+        "try_different": "Prova un altro termine"
     }
 }

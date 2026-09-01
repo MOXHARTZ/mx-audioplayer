@@ -1,3 +1,13 @@
+local reportedTokens = {}
+
+---@param token string?
+---@return boolean
+function ShouldReportDeadToken(token)
+    if not token or reportedTokens[token] then return false end
+    reportedTokens[token] = true
+    return true
+end
+
 ---@param data LoginData
 ---@return false | string
 function Login(data)
@@ -40,13 +50,15 @@ end)
 RegisterNUICallback('register', function(data, cb)
     local id = audioplayer.id
     local success = lib.callback.await('mx-audioplayer:register', 0, id, data.username, data.password, data.firstname, data.lastname)
-    cb('ok')
+    cb(success == true)
 end)
 
 ---@param data UpdateProfile
 RegisterNUICallback('updateProfile', function(data, cb)
     local id = audioplayer.id
     local success = lib.callback.await('mx-audioplayer:updateProfile', 0, id, data)
-    CloseUI()
-    cb('ok')
+    if success then
+        CloseUI()
+    end
+    cb(success and true or false)
 end)

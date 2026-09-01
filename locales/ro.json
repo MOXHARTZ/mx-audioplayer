@@ -7,10 +7,20 @@
         "artist": "Artist",
         "playlist": "Listă de redare",
         "edit_profile": "Editează profilul",
-        "logout": "Deconectare"
+        "logout": "Deconectare",
+        "good_evening": "Bună seara",
+        "good_morning": "Bună dimineața",
+        "good_afternoon": "Bună ziua",
+        "good_night": "Noapte bună",
+        "jump_back_into_your_music": "Reveniți la muzica dvs.",
+        "your_playlists": "Listele dvs. de redare",
+        "songs": "{{count}} melodii",
+        "create_your_first_playlist": "Creați prima listă de redare",
+        "it_s_easy_we_ll_help_you": "Este ușor, vă vom ajuta"
     },
     "profile": {
         "title": "Gestionează contul",
+        "subtitle": "Actualizați informațiile contului dvs.",
         "username": "Nume de utilizator nou",
         "username_placeholder": "Actualizează numele de utilizator",
         "password": "Parolă nouă",
@@ -18,7 +28,9 @@
         "avatar": "URL avatar",
         "avatar_placeholder": "Introduceți URL-ul avatarului dvs.",
         "delete_account": "Șterge contul",
-        "update_account": "Actualizează contul"
+        "update_account": "Actualizează contul",
+        "update_failed": "Actualizare eșuată",
+        "updated": "Profil actualizat cu succes"
     },
     "playlist": {
         "empty": "Nu există melodii în lista de redare",
@@ -62,7 +74,8 @@
         "loading": "Se încarcă lista de redare...",
         "no_results": "Nu există rezultate",
         "no_song_match": "Nicio melodie nu corespunde căutării dvs.",
-        "add_some_songs": "Adăugați câteva melodii pentru a începe"
+        "add_some_songs": "Adăugați câteva melodii pentru a începe",
+        "deleted": "Playlist șters"
     },
     "edit": {
         "clear": "Șterge totul",
@@ -75,23 +88,26 @@
         "subtitle": "Caută și descoperă muzică nouă",
         "placeholder": "Numele track-ului sau URL (suportă liste de redare și albume)",
         "invalid_url": "URL invalid",
-        "add_all": "Adaugă totul la lista de redare"
+        "add_all": "Adaugă totul la lista de redare",
+        "by_name": "Numele melodiei",
+        "added": "{{count}} melodii adăugate",
+        "title_short": "Adaugă melodii"
     },
     "general": {
         "play": "Redă",
         "unknown": "Necunoscut",
         "something_went_wrong": "Ceva a mers prost",
+        "play_account_not_found": "Contul audio nu a fost găsit. Conectează-te din nou.",
+        "play_playlist_not_selected": "Selectează un playlist înainte de redare.",
+        "play_track_search_failed": "Nu s-a putut găsi acest titlu. Încearcă din nou.",
+        "play_failed": "Redarea titlului a eșuat. Încearcă din nou.",
         "ui_disabled": "În acest moment nu puteți deschide radioul deoarece este folosit de alt jucător.",
         "edit_enabled": "Modul de editare este activat. Acum puteți sorta lista de redare și melodiile prin tragere",
         "cancel": "Anulează",
         "done": "Gata",
         "delete.confirm": "Vă rugăm să faceți clic din nou pe șterge pentru a confirma.",
         "currently_playing": "Se redă acum",
-        "account_sharing_disabled": "Nu puteți accesa playerul audio deoarece serverul a dezactivat partajarea contului.",
-        "play_account_not_found": "Contul audio nu a fost găsit. Conectează-te din nou.",
-        "play_playlist_not_selected": "Selectează un playlist înainte de redare.",
-        "play_track_search_failed": "Nu s-a putut găsi acest titlu. Încearcă din nou.",
-        "play_failed": "Redarea titlului a eșuat. Încearcă din nou."
+        "account_sharing_disabled": "Nu puteți accesa playerul audio deoarece serverul a dezactivat partajarea contului."
     },
     "shared": {
         "title": "Jucători din apropiere",
@@ -104,8 +120,16 @@
             "destroy": "Distruge boombox",
             "pickup": "Ridică boombox"
         },
+        "text": {
+            "open": "Apăsați [E] pentru a deschide boombox-ul",
+            "open_pickup": "Apăsați [E] pentru a deschide boombox-ul | Apăsați [G] pentru a-l ridica"
+        },
         "drop": {
             "text": "Apăsați [H] pentru a lăsa boombox-ul"
+        },
+        "create": {
+            "already_nearby": "Ai deja un boombox în apropiere.",
+            "not_networked": "Acest boombox nu poate fi folosit. Te rugăm să creezi alt boombox."
         }
     },
     "dj": {
@@ -140,6 +164,11 @@
                 "bottom_right": "Jos dreapta",
                 "bottom_right_description": "HUD-ul minimal va fi plasat în colțul din dreapta jos al ecranului dvs."
             }
+        },
+        "theme": {
+            "title": "Temă",
+            "description": "Alege un preset sau propria culoare de accent",
+            "custom_accent": "Culoare de accent personalizată"
         }
     },
     "keyboard": {
@@ -173,7 +202,7 @@
         "back_to_accounts": "Înapoi la conturi"
     },
     "register": {
-        "title": "Alăturați-vă Player-ului Audio",
+        "title": "Înregistrare",
         "subtitle": "Creați-vă contul",
         "firstname": "Prenume",
         "lastname": "Nume",
@@ -189,5 +218,17 @@
         "sign_up": "Înregistrare",
         "registration_successful": "Înregistrare reușită",
         "registration_failed": "Înregistrarea a eșuat"
+    },
+    "nav": {
+        "home": "Acasă",
+        "search": "Căutare",
+        "library": "Biblioteca ta",
+        "no_playlists": "Încă nu există playlisturi"
+    },
+    "search": {
+        "placeholder": "Caută în melodii și playlisturi",
+        "hint": "Caută în toată biblioteca",
+        "no_results": "Niciun rezultat găsit",
+        "try_different": "Încearcă alt termen"
     }
 }

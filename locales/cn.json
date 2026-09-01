@@ -7,10 +7,20 @@
         "artist": "艺术家",
         "playlist": "播放列表",
         "edit_profile": "编辑个人资料",
-        "logout": "退出登录"
+        "logout": "退出登录",
+        "good_evening": "晚上好",
+        "good_morning": "早上好",
+        "good_afternoon": "下午好",
+        "good_night": "晚安",
+        "jump_back_into_your_music": "回到您的音乐",
+        "your_playlists": "您的播放列表",
+        "songs": "{{count}} 首歌曲",
+        "create_your_first_playlist": "创建您的第一个播放列表",
+        "it_s_easy_we_ll_help_you": "很简单，我们会帮助您"
     },
     "profile": {
         "title": "管理账户",
+        "subtitle": "更新您的账户信息",
         "username": "新用户名",
         "username_placeholder": "更新您的用户名",
         "password": "新密码",
@@ -18,7 +28,9 @@
         "avatar": "头像链接",
         "avatar_placeholder": "输入您的头像链接",
         "delete_account": "删除账户",
-        "update_account": "更新账户"
+        "update_account": "更新账户",
+        "update_failed": "更新失败",
+        "updated": "个人资料更新成功"
     },
     "playlist": {
         "empty": "播放列表中没有歌曲",
@@ -62,7 +74,8 @@
         "loading": "正在加载播放列表...",
         "no_results": "没有结果",
         "no_song_match": "没有歌曲匹配您的搜索",
-        "add_some_songs": "添加一些歌曲开始使用"
+        "add_some_songs": "添加一些歌曲开始使用",
+        "deleted": "播放列表已删除"
     },
     "edit": {
         "clear": "删除全部",
@@ -75,23 +88,26 @@
         "subtitle": "搜索并发现新音乐",
         "placeholder": "曲目名称或链接（支持播放列表和专辑）",
         "invalid_url": "无效链接",
-        "add_all": "全部添加到播放列表"
+        "add_all": "全部添加到播放列表",
+        "by_name": "歌曲名称",
+        "added": "已添加 {{count}} 首歌曲",
+        "title_short": "添加歌曲"
     },
     "general": {
         "play": "播放",
         "unknown": "未知",
         "something_went_wrong": "出现错误",
+        "play_account_not_found": "未找到音频账户，请重新登录。",
+        "play_playlist_not_selected": "播放前请先选择播放列表。",
+        "play_track_search_failed": "找不到此曲目，请重试。",
+        "play_failed": "播放失败，请重试。",
         "ui_disabled": "目前您无法打开收音机，因为它正在被其他玩家使用。",
         "edit_enabled": "编辑模式已启用。现在您可以通过拖拽来排序播放列表和歌曲",
         "cancel": "取消",
         "done": "完成",
         "delete.confirm": "请再次点击删除以确认。",
         "currently_playing": "正在播放",
-        "account_sharing_disabled": "您无法访问音频播放器，因为服务器已禁用账户共享。",
-        "play_account_not_found": "未找到音频账户，请重新登录。",
-        "play_playlist_not_selected": "播放前请先选择播放列表。",
-        "play_track_search_failed": "找不到此曲目，请重试。",
-        "play_failed": "播放失败，请重试。"
+        "account_sharing_disabled": "您无法访问音频播放器，因为服务器已禁用账户共享。"
     },
     "shared": {
         "title": "附近玩家",
@@ -104,8 +120,16 @@
             "destroy": "销毁音响",
             "pickup": "拾取音响"
         },
+        "text": {
+            "open": "按[E]键打开音响",
+            "open_pickup": "按[E]键打开音响 | 按[G]键拾取音响"
+        },
         "drop": {
             "text": "按[H]键放下音响"
+        },
+        "create": {
+            "already_nearby": "附近已经有一个音响了。",
+            "not_networked": "这个音响无法使用。请重新创建一个音响。"
         }
     },
     "dj": {
@@ -140,6 +164,11 @@
                 "bottom_right": "右下角",
                 "bottom_right_description": "最小化HUD将放置在屏幕的右下角"
             }
+        },
+        "theme": {
+            "title": "主题",
+            "description": "选择预设主题或自定义强调色",
+            "custom_accent": "自定义强调色"
         }
     },
     "keyboard": {
@@ -173,7 +202,7 @@
         "back_to_accounts": "返回账户"
     },
     "register": {
-        "title": "加入音频播放器",
+        "title": "注册",
         "subtitle": "创建您的账户",
         "firstname": "名字",
         "lastname": "姓氏",
@@ -189,5 +218,17 @@
         "sign_up": "注册",
         "registration_successful": "注册成功",
         "registration_failed": "注册失败"
+    },
+    "nav": {
+        "home": "首页",
+        "search": "搜索",
+        "library": "你的媒体库",
+        "no_playlists": "暂无播放列表"
+    },
+    "search": {
+        "placeholder": "搜索你的歌曲和播放列表",
+        "hint": "搜索媒体库中的所有内容",
+        "no_results": "未找到结果",
+        "try_different": "尝试其他搜索词"
     }
 }

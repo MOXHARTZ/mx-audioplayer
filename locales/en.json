@@ -7,10 +7,20 @@
         "artist": "Artist",
         "playlist": "Playlist",
         "edit_profile": "Edit Profile",
-        "logout": "Logout"
+        "logout": "Logout",
+        "good_evening": "Good evening",
+        "good_morning": "Good morning",
+        "good_afternoon": "Good afternoon",
+        "good_night": "Good night",
+        "jump_back_into_your_music": "Jump back into your music",
+        "your_playlists": "Your Playlists",
+        "songs": "{{count}} songs",
+        "create_your_first_playlist": "Create your first playlist",
+        "it_s_easy_we_ll_help_you": "It's easy, we'll help you"
     },
     "profile": {
         "title": "Manage Account",
+        "subtitle": "Update your account information",
         "username": "New Username",
         "username_placeholder": "Update your username",
         "password": "New Password",
@@ -18,7 +28,9 @@
         "avatar": "Avatar Url",
         "avatar_placeholder": "Enter your avatar URL",
         "delete_account": "Delete Account",
-        "update_account": "Update Account"
+        "update_account": "Update Account",
+        "update_failed": "Update failed",
+        "updated": "Profile updated successfully"
     },
     "playlist": {
         "empty": "No songs in playlist",
@@ -62,7 +74,8 @@
         "loading": "Loading playlist...",
         "no_results": "No results",
         "no_song_match": "No songs match your search",
-        "add_some_songs": "Add some songs to get started"
+        "add_some_songs": "Add some songs to get started",
+        "deleted": "Playlist deleted"
     },
     "edit": {
         "clear": "Delete all",
@@ -75,7 +88,10 @@
         "subtitle": "Search and discover new music",
         "placeholder": "Track name or url (supports playlist and album)",
         "invalid_url": "Invalid url",
-        "add_all": "Add all to playlist"
+        "add_all": "Add all to playlist",
+        "by_name": "Track name",
+        "added": "{{count}} songs added",
+        "title_short": "Add songs"
     },
     "general": {
         "play": "Play",
@@ -104,8 +120,16 @@
             "destroy": "Destroy Boombox",
             "pickup": "Pickup Boombox"
         },
+        "text": {
+            "open": "Press [E] to open the boombox",
+            "open_pickup": "Press [E] to open the boombox | Press [G] to pickup"
+        },
         "drop": {
             "text": "Press [H] to drop the boombox"
+        },
+        "create": {
+            "already_nearby": "You already have a boombox nearby.",
+            "not_networked": "This boombox is not usable. Please create another boombox."
         }
     },
     "dj": {
@@ -140,6 +164,11 @@
                 "bottom_right": "Bottom Right",
                 "bottom_right_description": "The minimal hud will be placed on the bottom right corner of your screen"
             }
+        },
+        "theme": {
+            "title": "Theme",
+            "description": "Pick a preset or choose your own accent color",
+            "custom_accent": "Custom accent color"
         }
     },
     "keyboard": {
@@ -173,7 +202,7 @@
         "back_to_accounts": "Back to Accounts"
     },
     "register": {
-        "title": "Join the Audio Player",
+        "title": "Register",
         "subtitle": "Create your account",
         "firstname": "First Name",
         "lastname": "Last Name",
@@ -189,5 +218,79 @@
         "sign_up": "Sign Up",
         "registration_successful": "Registration successful",
         "registration_failed": "Registration failed"
+    },
+    "nav": {
+        "home": "Home",
+        "search": "Search",
+        "library": "Your Library",
+        "no_playlists": "No playlists yet"
+    },
+    "search": {
+        "placeholder": "Search your songs and playlists",
+        "hint": "Search across everything in your library",
+        "no_results": "No results found",
+        "try_different": "Try a different search term"
+    },
+    "queue": {
+        "title": "Queue",
+        "now_playing": "Now playing",
+        "next_up": "Next up",
+        "next_from": "Next from {{name}}",
+        "empty": "Nothing queued",
+        "empty_hint": "Right click a song and pick \"Add to queue\".",
+        "clear": "Clear queue",
+        "cleared": "Queue cleared",
+        "add": "Add to queue",
+        "play_next": "Play next",
+        "added": "Added to queue",
+        "remove": "Remove from queue",
+        "full": "The queue is full",
+        "repeat_on": "Repeat is on, so the queue stays put until you turn it off."
+    },
+    "station": {
+        "title": "Radio",
+        "subtitle": "Live stations. No account or playlist needed.",
+        "live": "LIVE",
+        "empty": "No stations configured",
+        "listening": "Listening"
+    },
+    "share": {
+        "tab_nearby": "Nearby player",
+        "tab_code": "Share code",
+        "generate": "Create code",
+        "generating": "Creating...",
+        "code_hint": "Valid for 24 hours. Anyone who types it gets a copy of this playlist.",
+        "failed": "Could not create a share code",
+        "too_big": "This playlist has too many songs to share by code",
+        "redeem_title": "Add with a code",
+        "redeem_subtitle": "Type the 6 character code you were given.",
+        "redeem_placeholder": "ABC234",
+        "redeem": "Add playlist",
+        "invalid": "That code is not valid or has expired",
+        "redeemed": "Playlist added"
+    },
+    "fade": {
+        "title": "Track fade",
+        "description": "Fades a track out as it ends and the next one in. Playback is one track at a time, so a long fade turns into a long silence.",
+        "out": "Fade out",
+        "in": "Fade in",
+        "off": "Off",
+        "seconds": "{{value}}s"
+    },
+    "song": {
+        "add_to_playlist": "Add to playlist",
+        "move_to": "Move to",
+        "like": "Add to liked songs",
+        "unlike": "Remove from liked songs",
+        "remove": "Remove from this playlist",
+        "liked": "Added to liked songs",
+        "unliked": "Removed from liked songs",
+        "added_to": "Added to {{name}}",
+        "already_in": "Already in {{name}}",
+        "liked_playlist": "Liked Songs",
+        "recent_playlist": "Recently played",
+        "duplicate": "Duplicate",
+        "duplicated": "Playlist duplicated",
+        "copy_suffix": "copy"
     }
 }

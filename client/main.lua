@@ -1,6 +1,6 @@
 local uiReady = false
 local playlist = {}
-Surround = exports['mx-surround']
+Sound = exports['mx-surround']
 local vehicleEvents = {
     ['enter'] = 'mx-audioplayer:vehicleEntered',
     ['leave'] = 'mx-audioplayer:vehicleLeft'
@@ -23,25 +23,6 @@ function Notification(msg, type)
         msg = msg,
         type = type
     })
-    -- if type == 'info' then
-    --     lib.notify({
-    --         title = 'AUDIOPLAYER',
-    --         description = msg,
-    --         type = 'info'
-    --     })
-    -- elseif type == 'error' then
-    --     lib.notify({
-    --         title = 'AUDIOPLAYER',
-    --         description = msg,
-    --         type = 'error'
-    --     })
-    -- elseif type == 'success' then
-    --     lib.notify({
-    --         title = 'AUDIOPLAYER',
-    --         description = msg,
-    --         type = 'success'
-    --     })
-    -- end
 end
 
 CreateThread(function()
@@ -95,7 +76,8 @@ RegisterNUICallback('play', function(data, cb)
         soundId = soundId,
         soundData = soundData,
         coords = coords,
-        options = options
+        options = options,
+        playlistId = data.playlistId
     })
     if type(player) == 'table' and player.error then
         return cb({ error = player.error })
@@ -118,6 +100,7 @@ RegisterNUICallback('togglePlay', function(playing, cb)
     if not player then
         return cb('ok')
     end
+    playing = playing == true
     audioplayer:updatePlayerData({
         playing = playing
     })
@@ -138,7 +121,6 @@ RegisterNUICallback('setRepeat', function(state, cb)
         return cb('ok')
     end
     audioplayer:updatePlayerData({
-        -- lua doesn't support `repeat` as data or variable so we need to use this shitty name
         repeatState = state
     })
     TriggerServerEvent('mx-audioplayer:sync', id, 'repeat', state)
@@ -172,14 +154,14 @@ end)
 RegisterNUICallback('getCurrentSongDuration', function(data, cb)
     local player = audioplayer:getPlayer()
     if not player then return cb(0) end
-    local maxDuration = Surround:getMaxDuration(player.soundId)
+    local maxDuration = Sound:getMaxDuration(player.soundId)
     cb(maxDuration)
 end)
 
 RegisterNUICallback('getCurrentSongTimeStamp', function(data, cb)
     local player = audioplayer:getPlayer()
     if not player then return cb(0) end
-    local timeStamp = Surround:getTimeStamp(player.soundId)
+    local timeStamp = Sound:getTimeStamp(player.soundId)
     cb(math.floor(timeStamp))
 end)
 
@@ -189,17 +171,20 @@ RegisterNUICallback('setVolume', function(data, cb)
     audioplayer:updatePlayerData({
         volume = data.volume
     })
-    TriggerServerEvent('mx-audioplayer:sync', id, 'volume', {
-        soundId = player.soundId,
-        volume = data.volume
-    })
+    if player.soundId then
+        TriggerServerEvent('mx-audioplayer:sync', id, 'volume', {
+            soundId = player.soundId,
+            volume = data.volume
+        })
+    end
     audioplayer:triggerListener('onVolumeChange')
     cb('ok')
 end)
 
 RegisterNUICallback('seek', function(data, cb)
     local id, player = audioplayer.id, audioplayer:getPlayer()
-    if not player then return cb(0) end
+    if not player or not player.soundId then return cb(0) end
+    audioplayer:cancelFade(player.soundId, true)
     audioplayer:updatePlayerData({
         playing = true
     })
@@ -213,20 +198,36 @@ end)
 
 RegisterNUICallback('getSoundData', function(data, cb)
     local url = data.url
-    local info = Surround:getInfoFromUrl(url)
+    local info = Sound:getInfoFromUrl(url)
     cb(info)
 end)
 
 RegisterNUICallback('searchQuery', function(data, cb)
     local query = data.query
-    local response = Surround:searchTrack(query)
+    local response = Sound:searchTrack(query)
     cb(response)
 end)
 
 RegisterNUICallback('searchTracks', function(data, cb)
     local query = data.query
-    local response = Surround:searchTracks(query)
+    local response = Sound:searchTracks(query)
     cb(response)
+end)
+
+RegisterNUICallback('queue', function(data, cb)
+    TriggerServerEvent('mx-audioplayer:sync', audioplayer.id, 'queue', data)
+    cb('ok')
+end)
+
+RegisterNUICallback('nextFromQueue', function(data, cb)
+    local player = audioplayer:getPlayer()
+    local ok = lib.callback.await('mx-audioplayer:next', false, audioplayer.id, player.soundId)
+    cb(ok == true)
+end)
+
+RegisterNetEvent('mx-audioplayer:queue', function(id, queue)
+    if audioplayer.id ~= id then return end
+    SendReactMessage('setQueue', queue or {})
 end)
 
 RegisterNUICallback('setPlaylist', function(data, cb)
@@ -238,18 +239,40 @@ end)
 
 ---@param data Settings
 RegisterNUICallback('saveSettings', function(data, cb)
+    audioplayer:applySettings(data)
     SetResourceKvp('mx_audioplayer_settings', json.encode(data))
     if data.minimalHud then
         audioplayer:toggleShortDisplay(true, {
-            id = audioplayer.shortDisplay.customId,
+            id = audioplayer.id,
             vehicle = cache.vehicle
         })
+    else
+        audioplayer:toggleShortDisplay(false)
     end
     cb('ok')
 end)
 
+RegisterNUICallback('createShareCode', function(data, cb)
+    local code = lib.callback.await('mx-audioplayer:createShareCode', false, audioplayer.id, data.playlistId)
+    cb(code or false)
+end)
+
+RegisterNUICallback('redeemShareCode', function(data, cb)
+    local playlist = lib.callback.await('mx-audioplayer:redeemShareCode', false, audioplayer.id, data.code)
+    cb(playlist or false)
+end)
+
 RegisterNUICallback('close', function(data, cb)
     audioplayer:close()
+    cb('ok')
+end)
+
+RegisterNUICallback('stop', function(data, cb)
+    audioplayer:destroySound()
+    cb('ok')
+end)
+
+RegisterNUICallback('play_sound', function(data, cb)
     cb('ok')
 end)
 
@@ -264,13 +287,20 @@ end
 RegisterNUICallback('uiReady', function(data, cb)
     while not _T do Wait(200) end
     local locale, resources = languageToI18Next()
-    local settings = GetResourceKvpString('mx_audioplayer_settings')
     SendNUIMessage({
         action = 'onUiReady',
         data = {
             languageName = locale,
             resources = resources,
-            settings = settings and json.decode(settings) or {}
+            settings = audioplayer:getSettings(),
+            stations = Config.Stations.Enable and Config.Stations.List or {},
+            stationsPlaylistId = Config.Stations.PlaylistId,
+            fade = {
+                enable = Config.Fade.Enable,
+                ['in'] = Config.Fade.In,
+                out = Config.Fade.Out,
+                allowPlayerOverride = Config.Fade.AllowPlayerOverride,
+            }
         }
     })
     uiReady = true

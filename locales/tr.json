@@ -7,10 +7,20 @@
         "artist": "Sanatçı",
         "playlist": "Çalma Listesi",
         "edit_profile": "Profili Düzenle",
-        "logout": "Çıkış Yap"
+        "logout": "Çıkış Yap",
+        "good_evening": "İyi akşamlar",
+        "good_morning": "Günaydın",
+        "good_afternoon": "İyi öğleden sonralar",
+        "good_night": "İyi geceler",
+        "jump_back_into_your_music": "Müziğinize geri dönün",
+        "your_playlists": "Çalma Listeleriniz",
+        "songs": "{{count}} şarkı",
+        "create_your_first_playlist": "İlk çalma listenizi oluşturun",
+        "it_s_easy_we_ll_help_you": "Kolay, size yardımcı olacağız"
     },
     "profile": {
         "title": "Hesabı Yönet",
+        "subtitle": "Hesap bilgilerinizi güncelleyin",
         "username": "Yeni Kullanıcı Adı",
         "username_placeholder": "Kullanıcı adınızı güncelleyin",
         "password": "Yeni Şifre",
@@ -18,7 +28,9 @@
         "avatar": "Avatar URL",
         "avatar_placeholder": "Avatar URL'nizi girin",
         "delete_account": "Hesabı Sil",
-        "update_account": "Hesabı Güncelle"
+        "update_account": "Hesabı Güncelle",
+        "update_failed": "Güncelleme başarısız",
+        "updated": "Profil başarıyla güncellendi"
     },
     "playlist": {
         "empty": "Çalma listesinde şarkı yok",
@@ -62,7 +74,8 @@
         "loading": "Çalma listesi yükleniyor...",
         "no_results": "Sonuç yok",
         "no_song_match": "Aramanızla eşleşen şarkı yok",
-        "add_some_songs": "Başlamak için bazı şarkılar ekleyin"
+        "add_some_songs": "Başlamak için bazı şarkılar ekleyin",
+        "deleted": "Çalma listesi silindi"
     },
     "edit": {
         "clear": "Tümünü sil",
@@ -75,7 +88,10 @@
         "subtitle": "Ara ve yeni müzik keşfet",
         "placeholder": "Şarkı adı veya url (çalma listesi ve albüm destekler)",
         "invalid_url": "Geçersiz url",
-        "add_all": "Tümünü çalma listesine ekle"
+        "add_all": "Tümünü çalma listesine ekle",
+        "by_name": "Şarkı adı",
+        "added": "{{count}} şarkı eklendi",
+        "title_short": "Şarkı ekle"
     },
     "general": {
         "play": "Çal",
@@ -104,8 +120,16 @@
             "destroy": "Boombox'ı Yok Et",
             "pickup": "Boombox'ı Al"
         },
+        "text": {
+            "open": "Boombox'ı açmak için [E] tuşuna basın",
+            "open_pickup": "Boombox'ı açmak için [E] | Almak için [G] tuşuna basın"
+        },
         "drop": {
             "text": "Boombox'ı bırakmak için [H] tuşuna basın"
+        },
+        "create": {
+            "already_nearby": "Yakınında zaten bir boombox var.",
+            "not_networked": "Bu boombox kullanılabilir değil. Lütfen başka bir boombox oluşturun."
         }
     },
     "dj": {
@@ -140,6 +164,11 @@
                 "bottom_right": "Sağ Alt",
                 "bottom_right_description": "Minimal hud ekranınızın sağ alt köşesine yerleştirilecek"
             }
+        },
+        "theme": {
+            "title": "Tema",
+            "description": "Hazır bir tema seç veya kendi vurgu rengini belirle",
+            "custom_accent": "Özel vurgu rengi"
         }
     },
     "keyboard": {
@@ -173,7 +202,7 @@
         "back_to_accounts": "Hesaplara Dön"
     },
     "register": {
-        "title": "Ses Çalar'a Katılın",
+        "title": "Kayıt Ol",
         "subtitle": "Hesabınızı oluşturun",
         "firstname": "Ad",
         "lastname": "Soyad",
@@ -189,5 +218,79 @@
         "sign_up": "Kayıt Ol",
         "registration_successful": "Kayıt başarılı",
         "registration_failed": "Kayıt başarısız"
+    },
+    "nav": {
+        "home": "Ana Sayfa",
+        "search": "Ara",
+        "library": "Kitaplığın",
+        "no_playlists": "Henüz çalma listesi yok"
+    },
+    "search": {
+        "placeholder": "Şarkı ve çalma listelerinde ara",
+        "hint": "Kitaplığındaki her şeyde ara",
+        "no_results": "Sonuç bulunamadı",
+        "try_different": "Farklı bir arama terimi dene"
+    },
+    "queue": {
+        "title": "Kuyruk",
+        "now_playing": "Şimdi çalıyor",
+        "next_up": "Sırada",
+        "next_from": "{{name}} listesinden devam",
+        "empty": "Kuyruk boş",
+        "empty_hint": "Bir şarkıya sağ tıklayıp \"Kuyruğa ekle\" seçebilirsin.",
+        "clear": "Kuyruğu temizle",
+        "cleared": "Kuyruk temizlendi",
+        "add": "Kuyruğa ekle",
+        "play_next": "Sıradaki olarak çal",
+        "added": "Kuyruğa eklendi",
+        "remove": "Kuyruktan çıkar",
+        "full": "Kuyruk dolu",
+        "repeat_on": "Tekrar açık, kapatana kadar kuyruk beklemede kalır."
+    },
+    "station": {
+        "title": "Radyo",
+        "subtitle": "Canlı istasyonlar. Hesap ya da çalma listesi gerekmez.",
+        "live": "CANLI",
+        "empty": "Tanımlı istasyon yok",
+        "listening": "Dinleniyor"
+    },
+    "share": {
+        "tab_nearby": "Yakındaki oyuncu",
+        "tab_code": "Paylaşım kodu",
+        "generate": "Kod oluştur",
+        "generating": "Oluşturuluyor...",
+        "code_hint": "24 saat geçerli. Kodu giren herkes bu listenin bir kopyasını alır.",
+        "failed": "Paylaşım kodu oluşturulamadı",
+        "too_big": "Bu listede kod ile paylaşılamayacak kadar çok şarkı var",
+        "redeem_title": "Kod ile ekle",
+        "redeem_subtitle": "Sana verilen 6 karakterlik kodu yaz.",
+        "redeem_placeholder": "ABC234",
+        "redeem": "Listeyi ekle",
+        "invalid": "Bu kod geçersiz ya da süresi dolmuş",
+        "redeemed": "Çalma listesi eklendi"
+    },
+    "fade": {
+        "title": "Şarkı geçişi",
+        "description": "Şarkıyı biterken kısar, yenisini açarak başlatır. Aynı anda tek şarkı çaldığı için uzun bir geçiş uzun bir sessizliğe dönüşür.",
+        "out": "Kapanma",
+        "in": "Açılma",
+        "off": "Kapalı",
+        "seconds": "{{value}}sn"
+    },
+    "song": {
+        "add_to_playlist": "Çalma listesine ekle",
+        "move_to": "Şuraya taşı",
+        "like": "Beğenilenlere ekle",
+        "unlike": "Beğenilenlerden çıkar",
+        "remove": "Bu listeden kaldır",
+        "liked": "Beğenilenlere eklendi",
+        "unliked": "Beğenilenlerden çıkarıldı",
+        "added_to": "{{name}} listesine eklendi",
+        "already_in": "Zaten {{name}} listesinde",
+        "liked_playlist": "Beğenilenler",
+        "recent_playlist": "Son çalınanlar",
+        "duplicate": "Çoğalt",
+        "duplicated": "Çalma listesi çoğaltıldı",
+        "copy_suffix": "kopya"
     }
 }

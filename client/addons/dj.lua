@@ -46,9 +46,9 @@ if Config.DJ.Target then
     CreateThread(function()
         for k, v in pairs(Config.DJ.Locations) do
             local enterCoords = v.coords
-            local id = 'mx_audioplayer_dj' .. k
+            local id = 'dj' .. k
             exports['qtarget']:AddBoxZone(id, enterCoords, 2.0, 2.0, {
-                name = id, -- This must be same with first param. qb-target is weird asf
+                name = id,
                 heading = 90.0,
                 debugPoly = false,
                 minZ = enterCoords.z - 15.0,

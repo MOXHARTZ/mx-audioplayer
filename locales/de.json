@@ -7,10 +7,20 @@
         "artist": "Künstler",
         "playlist": "Wiedergabeliste",
         "edit_profile": "Profil bearbeiten",
-        "logout": "Abmelden"
+        "logout": "Abmelden",
+        "good_evening": "Guten Abend",
+        "good_morning": "Guten Morgen",
+        "good_afternoon": "Guten Tag",
+        "good_night": "Gute Nacht",
+        "jump_back_into_your_music": "Kehren Sie zu Ihrer Musik zurück",
+        "your_playlists": "Ihre Wiedergabelisten",
+        "songs": "{{count}} Songs",
+        "create_your_first_playlist": "Erstellen Sie Ihre erste Wiedergabeliste",
+        "it_s_easy_we_ll_help_you": "Es ist einfach, wir helfen Ihnen"
     },
     "profile": {
         "title": "Konto verwalten",
+        "subtitle": "Aktualisieren Sie Ihre Kontoinformationen",
         "username": "Neuer Benutzername",
         "username_placeholder": "Aktualisieren Sie Ihren Benutzernamen",
         "password": "Neues Passwort",
@@ -18,7 +28,9 @@
         "avatar": "Avatar URL",
         "avatar_placeholder": "Geben Sie Ihre Avatar URL ein",
         "delete_account": "Konto löschen",
-        "update_account": "Konto aktualisieren"
+        "update_account": "Konto aktualisieren",
+        "update_failed": "Aktualisierung fehlgeschlagen",
+        "updated": "Profil erfolgreich aktualisiert"
     },
     "playlist": {
         "empty": "Keine Songs in der Wiedergabeliste",
@@ -62,7 +74,8 @@
         "loading": "Wiedergabeliste wird geladen...",
         "no_results": "Keine Ergebnisse",
         "no_song_match": "Keine Songs entsprechen Ihrer Suche",
-        "add_some_songs": "Fügen Sie einige Songs hinzu, um zu beginnen"
+        "add_some_songs": "Fügen Sie einige Songs hinzu, um zu beginnen",
+        "deleted": "Playlist gelöscht"
     },
     "edit": {
         "clear": "Alles löschen",
@@ -75,23 +88,26 @@
         "subtitle": "Suchen und entdecken Sie neue Musik",
         "placeholder": "Trackname oder URL (unterstützt Wiedergabelisten und Alben)",
         "invalid_url": "Ungültige URL",
-        "add_all": "Alle zur Wiedergabeliste hinzufügen"
+        "add_all": "Alle zur Wiedergabeliste hinzufügen",
+        "by_name": "Titelname",
+        "added": "{{count}} Songs hinzugefügt",
+        "title_short": "Songs hinzufügen"
     },
     "general": {
         "play": "Abspielen",
         "unknown": "Unbekannt",
         "something_went_wrong": "Etwas ist schiefgelaufen",
+        "play_account_not_found": "Audiokonto nicht gefunden. Bitte melden Sie sich erneut an.",
+        "play_playlist_not_selected": "Bitte wählen Sie eine Wiedergabeliste aus, bevor Sie abspielen.",
+        "play_track_search_failed": "Dieser Titel konnte nicht gefunden werden. Bitte versuchen Sie es erneut.",
+        "play_failed": "Titel konnte nicht abgespielt werden. Bitte versuchen Sie es erneut.",
         "ui_disabled": "Derzeit können Sie das Radio nicht öffnen, da es von einem anderen Spieler verwendet wird.",
         "edit_enabled": "Bearbeitungsmodus ist aktiviert. Jetzt können Sie die Wiedergabeliste und Songs durch Ziehen sortieren",
         "cancel": "Abbrechen",
         "done": "Fertig",
         "delete.confirm": "Bitte klicken Sie erneut auf löschen, um zu bestätigen.",
         "currently_playing": "Wird gerade abgespielt",
-        "account_sharing_disabled": "Sie können nicht auf den Audioplayer zugreifen, da die Server die Kontofreigabe deaktiviert haben.",
-        "play_account_not_found": "Audiokonto nicht gefunden. Bitte melden Sie sich erneut an.",
-        "play_playlist_not_selected": "Bitte wählen Sie eine Wiedergabeliste aus, bevor Sie abspielen.",
-        "play_track_search_failed": "Dieser Titel konnte nicht gefunden werden. Bitte versuchen Sie es erneut.",
-        "play_failed": "Titel konnte nicht abgespielt werden. Bitte versuchen Sie es erneut."
+        "account_sharing_disabled": "Sie können nicht auf den AudioPlayer zugreifen, da die Server die Kontofreigabe deaktiviert haben."
     },
     "shared": {
         "title": "Spieler in der Nähe",
@@ -104,8 +120,16 @@
             "destroy": "Boombox zerstören",
             "pickup": "Boombox aufheben"
         },
+        "text": {
+            "open": "Drücken Sie [E], um die Boombox zu öffnen",
+            "open_pickup": "Drücken Sie [E], um die Boombox zu öffnen | Drücken Sie [G], um sie aufzuheben"
+        },
         "drop": {
             "text": "Drücken Sie [H], um die Boombox fallen zu lassen"
+        },
+        "create": {
+            "already_nearby": "Du hast bereits eine Boombox in der Nähe.",
+            "not_networked": "Diese Boombox ist nicht nutzbar. Bitte erstelle eine andere Boombox."
         }
     },
     "dj": {
@@ -140,6 +164,11 @@
                 "bottom_right": "Unten rechts",
                 "bottom_right_description": "Das minimale HUD wird in der unteren rechten Ecke Ihres Bildschirms platziert"
             }
+        },
+        "theme": {
+            "title": "Design",
+            "description": "Wähle eine Vorlage oder deine eigene Akzentfarbe",
+            "custom_accent": "Eigene Akzentfarbe"
         }
     },
     "keyboard": {
@@ -173,7 +202,7 @@
         "back_to_accounts": "Zurück zu Konten"
     },
     "register": {
-        "title": "Treten Sie dem Audio Player bei",
+        "title": "Registrieren",
         "subtitle": "Erstellen Sie Ihr Konto",
         "firstname": "Vorname",
         "lastname": "Nachname",
@@ -189,5 +218,17 @@
         "sign_up": "Registrieren",
         "registration_successful": "Registrierung erfolgreich",
         "registration_failed": "Registrierung fehlgeschlagen"
+    },
+    "nav": {
+        "home": "Start",
+        "search": "Suche",
+        "library": "Deine Bibliothek",
+        "no_playlists": "Noch keine Playlists"
+    },
+    "search": {
+        "placeholder": "In Songs und Playlists suchen",
+        "hint": "Durchsuche alles in deiner Bibliothek",
+        "no_results": "Keine Ergebnisse gefunden",
+        "try_different": "Versuche einen anderen Suchbegriff"
     }
 }

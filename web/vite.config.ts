@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import * as path from 'path';
 import viteCompression from 'vite-plugin-compression2';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react({
@@ -12,7 +11,7 @@ export default defineConfig({
       },
     }),
     viteCompression({
-      algorithms: ['gzip'],
+      algorithms: ['brotliCompress'],
       threshold: 10240,
     })
   ],
@@ -31,5 +30,14 @@ export default defineConfig({
   },
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/test/setup.ts',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text'],
+    },
   },
 });
