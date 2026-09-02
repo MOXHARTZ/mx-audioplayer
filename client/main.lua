@@ -6,6 +6,15 @@ local vehicleEvents = {
     ['leave'] = 'mx-audioplayer:vehicleLeft'
 }
 
+---@param vehicle number
+---@return string
+function GetVehicleAudioId(vehicle)
+    local plate = GetVehicleNumberPlateText(vehicle)
+    plate = plate and (plate:gsub('^%s*(.-)%s*$', '%1')) or ''
+    if plate ~= '' then return plate end
+    return ('veh:%d'):format(NetworkGetNetworkIdFromEntity(vehicle))
+end
+
 RegisterNetEvent('mx-audioplayer:notification', function(msg, type)
     Notification(msg, type)
 end)

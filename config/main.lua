@@ -25,6 +25,40 @@ Config.DJ = {}
 Config.DJ.Enable = true
 Config.DJ.Target = true
 Config.DJ.Jobs = { 'police', 'ambulance', 'mechanic' }
+--[[
+    Each location can say what kind of space it is. That one line is what
+    stops the music being a point in the middle of the room and makes it the
+    room itself -- speakers spread around the floor, the sound going
+    non-directional once you are inside, and the walls still doing their job
+    from the street.
+
+    space: one of mx-surround's presets --
+        nightclub   indoor, loud, bass carries through the walls
+        bar         indoor, smaller, drier
+        lounge      indoor, background music
+        beach       outdoor, wide, open
+        concert     outdoor, a stage rig
+        carmeet     outdoor, a handful of boots
+
+    Everything below `space` is optional and overrides that preset:
+
+        emitterCount    speakers in a ring around the sound, up to 8
+        emitterRadius   metres out from the sound
+        emitterHeight   metres above it
+        emitters        exact speaker positions; replaces the ring entirely
+        fillsSpace      the zone that stops it being directional. Not needed
+                        for an interior -- sharing the room does that on its
+                        own. Draw one with /surroundcreator for an outdoor
+                        venue and paste it in.
+        leakDistance    how far it bleeds through walls
+        rolloff         { scale, plateau }: how far it carries
+
+    A location with no `space` at all still works: a sound inside an interior
+    fills its own room, which mx-surround does with nothing configured.
+
+    Hear the difference before you commit to it: stand in the venue with the
+    music playing and run /surroundspace nightclub, then /surroundspace bar.
+]]
 Config.DJ.Locations = {
     {
         id = 'Sex On The Beach',
@@ -35,8 +69,23 @@ Config.DJ.Locations = {
             rolloffFactor = 1.8,
             distanceModel = 'exponential',
         },
-        maxDistance = 150.0
-    }
+        maxDistance = 150.0,
+
+        -- An open-air beach party: the preset's sphere covers it, so there is
+        -- no footprint to draw.
+        space = 'nightclub',
+        emitterCount = 4,
+        emitterRadius = 12.0,
+    },
+
+    -- An indoor club. `space` is all it needs: the room it stands in is what
+    -- fills, and the walls keep the street quiet.
+    -- {
+    --     id = 'Galaxy',
+    --     coords = vector3(-1606.5, -3012.9, -78.0),
+    --     maxDistance = 120.0,
+    --     space = 'nightclub',
+    -- },
 }
 
 Config.Queue = {}

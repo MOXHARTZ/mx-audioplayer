@@ -446,6 +446,23 @@ end
 ---@param data? ShortDisplay Not necessary if state is false
 function audioplayer:toggleShortDisplay(state, data)
     data = data or {}
+
+    if state then
+        local vehicle = data.vehicle or self.shortDisplay?.vehicle
+        local id = data.id ~= '' and data.id or nil
+        id = id or self.id
+
+        local isVehiclePlayer = vehicle
+            and vehicle == cache.vehicle
+            and DoesEntityExist(vehicle)
+            and id == GetVehicleAudioId(vehicle)
+
+        if not isVehiclePlayer then
+            state = false
+            data = {}
+        end
+    end
+
     if state then
         if data.id == '' then data.id = nil end
         data.id = data.id or self.id

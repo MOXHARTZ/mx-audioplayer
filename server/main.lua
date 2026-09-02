@@ -1,5 +1,5 @@
 while not Version do Wait(0) end
-local versionCheck = Version.checkScriptVersion('mx-surround', '1.0.0')
+local versionCheck = Version.checkScriptVersion('mx-surround', '4.1.0')
 if not versionCheck then return end
 
 AudioPlayerAccounts = {}
@@ -7,6 +7,54 @@ AudioPlayerAccounts = {}
 local TOKENS_KVP <const> = 'mx-audioplayer:tokens'
 local tokens = {}
 local Sound = exports['mx-surround']
+
+---@param location table
+---@return table | nil
+local function buildSpaceOverrides(location)
+    local overrides
+
+    local function set(key, value)
+        if value == nil then return end
+        overrides = overrides or {}
+        overrides[key] = value
+    end
+
+    set('fillsSpace', location.fillsSpace)
+    set('leakDistance', location.leakDistance)
+    set('rolloff', location.rolloff)
+
+    if location.emitters then
+        set('emitters', location.emitters)
+    elseif location.emitterCount or location.emitterRadius or location.emitterHeight then
+        set('emitters', {
+            count = location.emitterCount,
+            radius = location.emitterRadius,
+            height = location.emitterHeight,
+            heading = location.emitterHeading,
+        })
+    end
+
+    return overrides
+end
+
+---@param soundId string
+---@param locationId? string
+function ApplyLocationSpace(soundId, locationId)
+    if not locationId then return end
+    if not Config.DJ?.Locations then return end
+
+    local location = table.find(Config.DJ.Locations, function(v) return v.id == locationId end)
+    if not location then return end
+
+    if location.stereo ~= nil then
+        Sound:setStereoMode(-1, soundId, location.stereo)
+    end
+
+    local overrides = buildSpaceOverrides(location)
+    if not location.space and not overrides then return end
+
+    Sound:setSpacePreset(-1, soundId, location.space, overrides)
+end
 
 local function saveTokens()
     SetResourceKvp(TOKENS_KVP, json.encode(tokens))
@@ -185,12 +233,7 @@ local function playSound(source, id, data)
         return false, 'play_failed'
     end
 
-    for _, location in ipairs(Config.DJ.Locations) do
-        if location.id == data.options?.id and location.stereo ~= nil then
-            Sound:setStereoMode(-1, soundId, location.stereo)
-            break
-        end
-    end
+    ApplyLocationSpace(soundId, data.options?.id)
 
     if data.netId then
         Sound:attachEntity(-1, soundId, data.netId)

@@ -8,18 +8,7 @@ local HideHudComponentThisFrame = HideHudComponentThisFrame
 local DoesEntityExist = DoesEntityExist
 local NetworkGetNetworkIdFromEntity = NetworkGetNetworkIdFromEntity
 
----@param value string | number
----@return string | nil
-local function mathTrim(value)
-    value = tostring(value)
-    return (string.gsub(value, '^%s*(.-)%s*$', '%1'))
-end
-
-local function vehicleAudioId(vehicle)
-    local plate = mathTrim(GetVehicleNumberPlateText(vehicle))
-    if plate ~= '' then return plate end
-    return ('veh:%d'):format(NetworkGetNetworkIdFromEntity(vehicle))
-end
+local vehicleAudioId = GetVehicleAudioId
 
 local function openUi()
     if IsNuiFocused() then return end
