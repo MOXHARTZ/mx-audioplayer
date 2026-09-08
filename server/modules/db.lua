@@ -211,10 +211,24 @@ CreateThread(function()
             CREATE TABLE `audioplayer_playlists` (
                 `id` INT(11) NOT NULL AUTO_INCREMENT,
                 `userId` INT(11) NOT NULL,
-                `data` TEXT NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+                `data` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
                 PRIMARY KEY (`id`) USING BTREE,
                 UNIQUE INDEX `userId` (`userId`) USING BTREE
             )
         ]])
+    else
+        local dataType = MySQL.scalar.await([[
+            SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_SCHEMA = DATABASE()
+              AND TABLE_NAME = 'audioplayer_playlists'
+              AND COLUMN_NAME = 'data'
+        ]])
+        if dataType and dataType ~= 'longtext' then
+            MySQL.query([[
+                ALTER TABLE `audioplayer_playlists`
+                MODIFY `data` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci'
+            ]])
+            Info('audioplayer_playlists.data widened from ' .. dataType .. ' to longtext')
+        end
     end
 end)
